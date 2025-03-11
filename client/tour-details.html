@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md p-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Tour Details</h1>
+            <a href="index.html" class="bg-blue-500 text-white px-4 py-2 rounded">Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Tour Details Section -->
+    <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-6">
+        <img id="tourImage" src="" alt="Tour Image" class="w-full h-72 object-cover rounded">
+        
+        <h2 id="tourTitle" class="text-2xl font-bold mt-4"></h2>
+        <p id="tourDescription" class="text-gray-700 mt-2"></p>
+
+        <h3 class="text-lg font-semibold mt-4">Price: ₹ <span id="tourPrice"></span></h3>
+        
+        <button class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600">Book Now</button>
+    </div>
+
+    <script>
+        // Sample Tour Data (this can be fetched from a backend API)
+        const tours = {
+            1: {
+                title: "Nainital Lake Tour",
+                description: "Enjoy the scenic beauty of Naini Lake with boating and sightseeing.",
+                price: "2,999",
+                image: "assets/nainital1.jpg"
+            },
+            2: {
+                title: "Snow View Point",
+                description: "Experience the mesmerizing view of snow-capped Himalayas.",
+                price: "3,499",
+                image: "assets/nainital2.jpg"
+            },
+            3: {
+                title: "Eco Cave Gardens",
+                description: "Adventure through the mysterious caves of Nainital.",
+                price: "1,999",
+                image: "assets/nainital3.jpg"
+            }
+        };
+
+        // Get Tour ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const tourId = urlParams.get("id");
+
+        // Set Tour Details
+        if (tourId && tours[tourId]) {
+            document.getElementById("tourTitle").textContent = tours[tourId].title;
+            document.getElementById("tourDescription").textContent = tours[tourId].description;
+            document.getElementById("tourPrice").textContent = tours[tourId].price;
+            document.getElementById("tourImage").src = tours[tourId].image;
+        } else {
+            document.querySelector(".max-w-4xl").innerHTML = "<h2 class='text-2xl text-center'>Tour Not Found</h2>";
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "trip-client",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.21",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.10.0",
+    "pdfkit": "^0.16.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.12",
+    "telegraf": "^4.16.3",
+    "vite": "^4.5.9"
+  }
+}
