@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Seat Temporarily Reserved</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f9f9f9; font-family:Arial, sans-serif;">
+  <!-- Outer Table -->
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f9f9f9; padding:20px 0;">
+    <tr>
+      <td align="center">
+        <!-- Main Container -->
+        <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color:#ffffff; border:1px solid #ddd;">
+          
+          <!-- Header -->
+          <tr>
+            <td style="background-color:#ffc107; padding:20px; text-align:center; color:#ffffff;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="left" style="vertical-align:middle;">
+                    <h1 style="margin:0; font-size:24px; font-weight:bold; line-height:1.2; font-family:Arial, sans-serif;">
+                      Nainital Trip
+                    </h1>
+                    <p style="margin:0; font-size:14px; color:#fff7e6; font-family:Arial, sans-serif;">
+                      Adventure & Leisure Specialists
+                    </p>
+                  </td>
+                  <!-- Icon (exclamation or warning) on the right -->
+                  <td align="right" style="vertical-align:middle;">
+                    <div style="display:inline-block; background-color:#e0a800; padding:10px; border-radius:50%;">
+                      <svg
+                        width="24" height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M12 9v2m0 4h.01M5.22 3.31A9 9 0 0118.78 3.31L21 7a9 9 0 11-18 0l2.22-3.69z"/>
+                      </svg>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Body Content -->
+          <tr>
+            <td style="padding:20px;">
+              <h2 style="font-size:20px; margin:0 0 15px 0; color:#212529; font-family:Arial, sans-serif;">
+                Seat Temporarily Reserved
+              </h2>
+              <p style="font-size:14px; margin:0 0 15px 0; color:#333; line-height:1.6;">
+                Hello <strong>{{fullName}}</strong>,
+              </p>
+              <p style="font-size:14px; margin:0 0 15px 0; color:#333; line-height:1.6;">
+                Your seat for our Nainital trip is now locked. We have received your partial payment and reserved your seat(s) for <strong>48 hours</strong>. Please finalize the remaining payment to confirm your booking. Below are the details:
+              </p>
+
+              <!-- Trip Details Box -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px;">
+                <tr>
+                  <td style="background-color:#fff8e1; padding:15px; border-left:4px solid #ffc107;">
+                    <p style="margin:0; font-size:14px; color:#212529; line-height:1.6;">
+                      <strong>Booking ID:</strong> {{bookingID}}<br/>
+                      <strong>Trip Duration:</strong> {{tripStart}} to {{tripEnd}}<br/>
+                      <strong>Total People:</strong> {{totalPeople}}<br/>
+                      <strong>Amount Paid So Far:</strong> ₹{{totalPaid}}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Traveler Details Table -->
+              <h3 style="font-size:16px; margin:20px 0 10px 0; color:#212529; font-family:Arial, sans-serif;">
+                Traveler Details:
+              </h3>
+              <table
+                width="100%" border="0" cellspacing="0" cellpadding="0"
+                style="border:1px solid #ddd; border-collapse:collapse; font-family:Arial, sans-serif;"
+              >
+                <thead style="background-color:#f9f9f9;">
+                  <tr>
+                    <th
+                      style="text-align:left; padding:8px; border-bottom:1px solid #ddd;
+                      font-weight:600; font-size:14px; color:#333;"
+                    >
+                      #
+                    </th>
+                    <th
+                      style="text-align:left; padding:8px; border-bottom:1px solid #ddd;
+                      font-weight:600; font-size:14px; color:#333;"
+                    >
+                      Name
+                    </th>
+                    <th
+                      style="text-align:left; padding:8px; border-bottom:1px solid #ddd;
+                      font-weight:600; font-size:14px; color:#333;"
+                    >
+                      Age
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Insert dynamic rows here from server code -->
+                  {{peopleRows}}
+                </tbody>
+              </table>
+              <p style="margin-top:5px; font-size:12px; color:#999; font-style:italic; font-family:Arial, sans-serif;">
+                *Table generated dynamically from data
+              </p>
+
+              <!-- Important Info Box -->
+              <table
+                width="100%" border="0" cellspacing="0" cellpadding="0"
+                style="margin-top:20px; background-color:#fff8e1; border:1px solid #ffd27f;"
+              >
+                <tr>
+                  <td style="padding:15px;">
+                    <h4 style="margin:0 0 10px 0; font-size:14px; color:#212529; font-family:Arial, sans-serif;">
+                      Next Steps
+                    </h4>
+                    <ul style="margin:0; padding:0 0 0 20px; font-size:14px; line-height:1.6; color:#212529; font-family:Arial, sans-serif;">
+                      <li style="margin-bottom:8px;">Complete the remaining payment within 48 hours.</li>
+                      <li style="margin-bottom:8px;">Ensure you have valid ID proof for all travelers.</li>
+                      <li style="margin-bottom:8px;">Keep your phone handy for any updates.</li>
+                    </ul>
+                    
+                    <!-- CTA Button -->
+                    <div style="text-align:center; margin-top:15px;">
+                      <a
+                        href="https://wa.me/919456875817"
+                        style="
+                          background-color:#ffc107;
+                          color:#ffffff;
+                          text-decoration:none;
+                          padding:10px 20px;
+                          display:inline-block;
+                          font-weight:bold;
+                          font-size:14px;
+                          font-family:Arial, sans-serif;
+                        "
+                      >
+                        Have Questions? Chat With Us
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#fff3cd; text-align:center; padding:15px; font-size:12px; color:#856404; font-family:Arial, sans-serif;">
+              Nainital Trip - Adventure & Leisure Specialists<br />
+              GLA University, Mathura, Uttarpradesh<br />
+              © 2025 Nainital Trip. All rights reserved.
+            </td>
+          </tr>
+        </table>
+        <!-- End Main Container -->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

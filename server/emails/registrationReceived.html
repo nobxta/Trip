@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registration Received</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f3f3f3; font-family:Arial, sans-serif;">
+  <!-- Outer Table -->
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f3f3f3; padding:20px 0;">
+    <tr>
+      <td align="center">
+        <!-- Main Container -->
+        <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color:#ffffff; border:1px solid #ddd;">
+          
+          <!-- Header -->
+          <tr>
+            <td style="background-color:#007bff; padding:20px; text-align:center; color:#ffffff;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="left" style="vertical-align:middle;">
+                    <h1 style="margin:0; font-size:24px; font-weight:bold; line-height:1.2; font-family:Arial, sans-serif;">
+                      Nainital Trip
+                    </h1>
+                    <p style="margin:0; font-size:14px; color:#dbeafe; font-family:Arial, sans-serif;">
+                      Adventure & Leisure Specialists
+                    </p>
+                  </td>
+                  <!-- Envelope icon on the right (optional) -->
+                  <td align="right" style="vertical-align:middle;">
+                    <div style="display:inline-block; background-color:#0069d9; padding:10px; border-radius:50%;">
+                      <svg
+                        width="24" height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M3 8l7.89 5.26c.21.14.48.14.69 0L19 8m-5 8h5.5a2.5 2.5 0 002.5-2.5v-9A2.5 2.5 0 0019.5 2h-15A2.5 2.5 0 002 4.5v9A2.5 2.5 0 004.5 16H10"/>
+                      </svg>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Content -->
+          <tr>
+            <td style="padding:20px;">
+              <h2 style="font-size:20px; margin:0 0 15px 0; color:#212529; font-family:Arial, sans-serif;">
+                Registration Received
+              </h2>
+              <p style="font-size:14px; margin:0 0 15px 0; color:#333; line-height:1.6;">
+                Hello <strong>{{fullName}}</strong>,
+              </p>
+              <p style="font-size:14px; margin:0 0 15px 0; color:#333; line-height:1.6;">
+                Thank you for registering for our upcoming trip. We’ve received your details and started the verification process. Below is a summary:
+              </p>
+
+              <!-- Info Box -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px;">
+                <tr>
+                  <td style="background-color:#e2eafc; padding:15px; border-left:4px solid #007bff;">
+                    <p style="margin:0; font-size:14px; color:#212529; line-height:1.6;">
+                      <strong>Booking ID:</strong> {{bookingID}}<br/>
+                      <strong>Transaction ID:</strong> {{txid}}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="font-size:14px; margin:0 0 15px 0; color:#333; line-height:1.6;">
+                We will contact you within <strong>24-48 hours</strong> to confirm availability and finalize your booking. Please keep your phone handy.
+              </p>
+
+              <!-- Optional Additional Info -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f9f9f9; border:1px solid #ddd;">
+                <tr>
+                  <td style="padding:15px;">
+                    <h4 style="margin:0 0 10px 0; font-size:14px; color:#212529; font-family:Arial, sans-serif;">
+                      What Happens Next?
+                    </h4>
+                    <ul style="margin:0; padding:0 0 0 20px; font-size:14px; line-height:1.6; color:#212529; font-family:Arial, sans-serif;">
+                      <li style="margin-bottom:8px;">Our team verifies your payment and traveler details.</li>
+                      <li style="margin-bottom:8px;">You’ll receive a confirmation email once everything is approved.</li>
+                      <li style="margin-bottom:8px;">Keep an eye on your inbox and WhatsApp for any urgent updates.</li>
+                    </ul>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#f1f3f5; text-align:center; padding:15px; font-size:12px; color:#6c757d; font-family:Arial, sans-serif;">
+                Nainital Trip - Adventure & Leisure Specialists<br />
+                Bhimtal Road, Nainital, Uttarakhand<br />
+                © 2025 Nainital Trip. All rights reserved.
+            </td>
+          </tr>
+        </table>
+        <!-- End Main Container -->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

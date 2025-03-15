@@ -4,172 +4,657 @@ import cors from "cors";
 import nodemailer from "nodemailer";
 import bodyParser from "body-parser";
 import multer from "multer";
-import { Telegraf, Markup } from "telegraf";
 import fs from "fs";
-import PDFDocument from "pdfkit";
+import mongoose from "mongoose";
+import { Telegraf, Markup } from "telegraf";
+
+// 1️⃣ Connect to MongoDB
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => {
+    console.error("❌ MongoDB connection error:", err);
+    process.exit(1);
+  });
+
+// 2️⃣ Define Mongoose Schema & Model
+const registrationSchema = new mongoose.Schema({
+  bookingID: Number,
+  fullName: String,
+  email: String,
+  mobile: String,
+  whatsapp: String,
+  paymentType: Number, // e.g. 1200 or 3300
+  txid: String,
+  peopleCount: Number,
+  peopleDetails: [
+    {
+      name: String,
+      age: Number,
+    },
+  ],
+  status: {
+    type: String,
+    default: "pending", // possible: pending, locked, confirmed, rejected
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+const Registration = mongoose.model("Registration", registrationSchema);
+
+// 3️⃣ Environment-based Trip Details
+const tripDetails = {
+  tripStart: process.env.TRIP_START || "30/March/2025",
+  tripEnd: process.env.TRIP_END || "2/Apr/2025",
+  fromLocation: process.env.FROM_LOCATION || "Mathura",
+  toLocation: process.env.TO_LOCATION || "Nainital & Kainchi Dham",
+};
 
 const app = express();
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
-// ✅ Ensure all required environment variables exist
-if (!process.env.SMTP_USER || !process.env.SMTP_PASS || !process.env.SMTP_HOST || !process.env.SMTP_PORT || !process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) {
-    console.error("❌ Missing environment variables. Please check your .env file.");
-    process.exit(1);
+// Ensure required environment variables
+if (
+  !process.env.SMTP_USER ||
+  !process.env.SMTP_PASS ||
+  !process.env.SMTP_HOST ||
+  !process.env.SMTP_PORT ||
+  !process.env.SMTP_ADMIN ||
+  !process.env.TELEGRAM_BOT_TOKEN ||
+  !process.env.TELEGRAM_CHAT_ID
+) {
+  console.error("Missing environment variables. Check your .env file.");
+  process.exit(1);
 }
 
-app.use(cors({ origin: ["http://localhost:5173"], methods: "GET,POST" }));
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 app.use(bodyParser.json());
 
-// ✅ Configure Multer for Aadhaar uploads
+// 4️⃣ Configure Multer for Aadhaar file uploads
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const uploadPath = "./uploads";
-        if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath);
-        cb(null, uploadPath);
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
+  destination: (req, file, cb) => {
+    const uploadPath = "./uploads";
+    if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath);
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
 });
 const upload = multer({ storage });
 
-// ✅ Configure Nodemailer (SMTP)
+// 5️⃣ Configure Nodemailer (SMTP)
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    secure: false,
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-    },
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT, 10),
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
 });
 
-// ✅ Handle User Registration
+/**
+ * Helper: Load an email template from /emails folder.
+ * Optionally replace placeholders, e.g. {{fullName}}, {{bookingID}}.
+ */
+function loadEmailTemplate(filename, replacements = {}) {
+  const filePath = `./emails/${filename}`;
+  let content = fs.readFileSync(filePath, "utf-8");
+
+  for (const [key, value] of Object.entries(replacements)) {
+    const regex = new RegExp(`{{${key}}}`, "g");
+    content = content.replace(regex, value);
+  }
+  return content;
+}
+
+// 6️⃣ Handle Trip Registration
 app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
-    try {
-        // ✅ Extract Data
-        const { fullName, age, email, mobile, whatsapp, paymentType } = req.body;
-        const additionalPeople = req.body.additionalPeople ? JSON.parse(req.body.additionalPeople) : [];
-        const aadhaarFiles = req.files ? req.files.map(file => file.filename) : [];
-        const bookingID = Math.floor(10000000 + Math.random() * 90000000);
+  try {
+    const {
+      peopleCount,
+      fullName,
+      email,
+      mobile,
+      whatsapp,
+      paymentType,
+      txid,
+      peopleDetails,
+    } = req.body;
 
-        if (!fullName || !email || !mobile || !age || !paymentType) {
-            return res.status(400).json({ success: false, message: "Missing required fields" });
-        }
-
-        // ✅ Calculate Total Cost
-        const numPeople = additionalPeople.length + 1;
-        const totalAmount = paymentType === "seat" ? numPeople * 1200 : numPeople * 3300;
-
-        // ✅ Thank You Email for User
-        const userThankYouEmail = `
-            <h2>Thank You for Registering</h2>
-            <p>Dear ${fullName},</p>
-            <p>Your trip registration is received. We will confirm your seat soon.</p>
-            <p><strong>Booking ID:</strong> ${bookingID}</p>
-            <p><strong>Total Amount Paid:</strong> ₹${totalAmount}</p>
-            <p>If your details are incorrect, please re-submit the form with the same transaction ID.</p>
-            <p>For any queries, contact us.</p>
-        `;
-
-        await transporter.sendMail({
-            from: process.env.SMTP_USER,
-            to: email,
-            subject: "Thank You for Registering",
-            html: userThankYouEmail,
-        });
-
-        // ✅ Admin Notification Email
-        const adminEmailContent = `
-            <h2>New Trip Registration</h2>
-            <p><strong>Booking ID:</strong> ${bookingID}</p>
-            <p><strong>Main Person:</strong> ${fullName}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Mobile:</strong> ${mobile}</p>
-            <p><strong>WhatsApp:</strong> ${whatsapp}</p>
-            <p><strong>Total People:</strong> ${numPeople}</p>
-            <p><strong>Amount Paid:</strong> ₹${totalAmount}</p>
-            <h3>Aadhaar Files:</h3>
-            <ul>${aadhaarFiles.map(file => `<li>${file}</li>`).join("")}</ul>
-        `;
-
-        await transporter.sendMail({
-            from: process.env.SMTP_USER,
-            to: process.env.SMTP_ADMIN,
-            subject: "New Trip Registration Received",
-            html: adminEmailContent,
-        });
-
-        // ✅ Telegram Notification with Inline Buttons
-        const telegramMessage = `
-        New Trip Registration
-        Booking ID: ${bookingID}
-        Main Person: ${fullName}
-        Email: ${email}
-        Mobile: ${mobile}
-        Total People: ${numPeople}
-        Amount Paid: ₹${totalAmount}
-        `;
-
-        bot.telegram.sendMessage(
-            process.env.TELEGRAM_CHAT_ID, 
-            telegramMessage, 
-            Markup.inlineKeyboard([
-                Markup.button.callback("Confirm", `confirm_${email}_${bookingID}`),
-                Markup.button.callback("Reject", `reject_${email}`)
-            ])
-        );
-
-        res.json({ success: true, message: "Registration successful. Redirecting..." });
-
-    } catch (error) {
-        console.error("❌ Error in /register:", error);
-        res.status(500).json({ success: false, message: "Something went wrong." });
+    // Basic validation
+    if (
+      !fullName ||
+      !email ||
+      !mobile ||
+      !paymentType ||
+      !txid ||
+      !peopleCount
+    ) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
+
+    // Parse peopleDetails if it's a JSON string
+    let parsedPeople = [];
+    if (typeof peopleDetails === "string") {
+      try {
+        parsedPeople = JSON.parse(peopleDetails);
+      } catch (err) {
+        console.error("Failed to parse peopleDetails as JSON:", err);
+        return res
+          .status(400)
+          .json({ message: "Invalid peopleDetails JSON" });
+      }
+    } else if (Array.isArray(peopleDetails)) {
+      parsedPeople = peopleDetails;
+    }
+
+    // Generate a random 8-digit Booking ID
+    const bookingID = Math.floor(10000000 + Math.random() * 90000000);
+
+    // Save to MongoDB
+    const newReg = await Registration.create({
+      bookingID,
+      fullName,
+      email,
+      mobile,
+      whatsapp,
+      paymentType,
+      txid,
+      peopleCount,
+      peopleDetails: parsedPeople,
+      status: "pending",
+    });
+
+    // Aadhaar attachments
+    let aadhaarAttachments = [];
+    if (req.files && req.files.length > 0) {
+      aadhaarAttachments = req.files.map((file) => ({
+        filename: file.originalname,
+        path: file.path,
+      }));
+    }
+
+    // (A) "Registration Received" Email to user
+    const registrationReceivedHTML = loadEmailTemplate(
+      "registrationReceived.html",
+      {
+        fullName,
+        bookingID: String(bookingID),
+        txid,
+      }
+    );
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: "Registration Received - Our Team Will Review",
+      html: registrationReceivedHTML,
+    });
+
+    // (B) Admin Email
+    let peopleListHTML = parsedPeople
+      .map(
+        (person, idx) =>
+          `<li><strong>Person ${idx + 1}:</strong> ${person.name} (Age: ${person.age})</li>`
+      )
+      .join("");
+
+    const adminHTML = `
+      <h2>New Trip Registration</h2>
+      <p><strong>Booking ID:</strong> ${bookingID}</p>
+      <p><strong>Main Person:</strong> ${fullName}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Mobile:</strong> ${mobile}</p>
+      <p><strong>WhatsApp:</strong> ${whatsapp}</p>
+      <p><strong>Payment Type (pp):</strong> ₹${paymentType}</p>
+      <p><strong>Transaction ID (TXID):</strong> ${txid}</p>
+      <p><strong>Total People:</strong> ${peopleCount}</p>
+      <h3>People Details</h3>
+      <ul>${peopleListHTML}</ul>
+    `;
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: process.env.SMTP_ADMIN,
+      subject: "New Trip Registration Received",
+      html: adminHTML,
+      attachments: aadhaarAttachments,
+    });
+
+    // (C) Telegram Notification w/ Accept/Reject Buttons
+    const telegramMsg = `
+<b>New Registration</b>
+<b>Booking ID:</b> ${bookingID}
+<b>Main Person:</b> ${fullName}
+<b>Email:</b> ${email}
+<b>Mobile:</b> ${mobile}
+<b>PaymentType (pp):</b> ₹${paymentType}
+<b>TXID:</b> ${txid}
+<b>Total People:</b> ${peopleCount}
+    `;
+    bot.telegram.sendMessage(process.env.TELEGRAM_CHAT_ID, telegramMsg, {
+      parse_mode: "HTML",
+      ...Markup.inlineKeyboard([
+        Markup.button.callback("Accept", `accept_${bookingID}`),
+        Markup.button.callback("Reject", `reject_${bookingID}`),
+      ]),
+    });
+
+    console.log("Registration successful, Booking ID:", bookingID);
+    return res.json({ message: "Registration successful" });
+  } catch (error) {
+    console.error("Error in /register:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
 });
 
-// ✅ Handle Telegram Button Clicks
+// 7️⃣ Handle Telegram Accept/Reject + new /lock flows
 bot.on("callback_query", async (ctx) => {
-    const callbackData = ctx.callbackQuery.data;
-    const chatId = ctx.callbackQuery.message.chat.id;
+  try {
+    await ctx.answerCbQuery(); // short ack
+  } catch (err) {
+    console.error("Error answering callback:", err);
+  }
 
-    if (callbackData.startsWith("confirm_")) {
-        const [_, email, bookingID] = callbackData.split("_");
-        const bookingDate = new Date().toISOString().split("T")[0];
+  const data = ctx.callbackQuery.data; 
+  // e.g. "accept_12345678" or "reject_12345678" or "lockinfo_..." etc.
 
-        // ✅ Generate PDF Invoice
-        const invoicePath = `./invoices/${bookingID}.pdf`;
-        const doc = new PDFDocument();
-        doc.pipe(fs.createWriteStream(invoicePath));
-        doc.text(`Booking ID: ${bookingID}`, 100, 100);
-        doc.text(`Booking Date: ${bookingDate}`, 100, 120);
-        doc.text(`Recipient Mobile: ${email}`, 100, 140);
-        doc.text(`Trip Confirmation`, 100, 160);
-        doc.end();
-
-        // ✅ Send Confirmation Email with Invoice
-        await transporter.sendMail({
-            from: process.env.SMTP_USER,
-            to: email,
-            subject: "Your Trip is Confirmed",
-            html: `<p>Your seat has been confirmed. Please find your invoice attached.</p>`,
-            attachments: [{ filename: `${bookingID}.pdf`, path: invoicePath }]
-        });
-
-        await ctx.answerCbQuery("Booking Confirmed");
-        await ctx.editMessageText(ctx.callbackQuery.message.text + "\n\nConfirmed", { parse_mode: "Markdown" });
+  // A) ACCEPT
+  if (data.startsWith("accept_")) {
+    const bookingID = data.split("_")[1];
+    const record = await Registration.findOne({ bookingID: Number(bookingID) });
+    if (!record) {
+      await ctx.editMessageText(
+        ctx.callbackQuery.message.text + "\n\nBooking Not Found ❌"
+      );
+      return;
     }
 
-    if (callbackData.startsWith("reject_")) {
-        const userEmail = callbackData.split("_")[1];
-        await ctx.answerCbQuery("Booking Rejected");
-        await ctx.editMessageText(ctx.callbackQuery.message.text + "\n\nRejected", { parse_mode: "Markdown" });
+    // Decide seatLock or tripConfirm
+    let statusToUpdate, templateFile, emailSubject;
+    if (record.paymentType === 1200) {
+      statusToUpdate = "locked";
+      templateFile = "seatLock.html";
+      emailSubject = "Your Seat Is Locked";
+    } else if (record.paymentType === 3300) {
+      statusToUpdate = "confirmed";
+      templateFile = "tripConfirm.html";
+      emailSubject = "Your Trip Is Confirmed";
+    } else {
+      // Some other amount, handle as locked by default
+      statusToUpdate = "locked";
+      templateFile = "seatLock.html";
+      emailSubject = "Your Seat Is Locked (Custom Payment)";
     }
+
+    record.status = statusToUpdate;
+    await record.save();
+
+    // Replacements
+    const replacements = {
+      fullName: record.fullName,
+      bookingID: String(record.bookingID),
+      email: record.email,
+      mobile: record.mobile,
+      whatsapp: record.whatsapp,
+      paymentType: String(record.paymentType),
+      txid: record.txid,
+      totalPeople: String(record.peopleCount),
+      totalPaid: String(record.peopleCount * record.paymentType),
+      tripStart: tripDetails.tripStart,
+      tripEnd: tripDetails.tripEnd,
+      fromLocation: tripDetails.fromLocation,
+      toLocation: tripDetails.toLocation,
+    };
+
+    // Generate dynamic people rows
+    let peopleRows = "";
+    record.peopleDetails.forEach((person, idx) => {
+      peopleRows += `
+      <tr>
+        <td>${idx + 1}</td>
+        <td>${person.name}</td>
+        <td>${person.age}</td>
+      </tr>`;
+    });
+    replacements.peopleRows = peopleRows;
+
+    const finalHTML = loadEmailTemplate(templateFile, replacements);
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: record.email,
+      subject: emailSubject,
+      html: finalHTML,
+    });
+
+    console.log("Booking accepted:", bookingID, `Status: ${statusToUpdate}`);
+    await ctx.editMessageText(
+      ctx.callbackQuery.message.text + `\n\nBooking ${statusToUpdate} ✅`
+    );
+  }
+
+  // B) REJECT
+  else if (data.startsWith("reject_")) {
+    const bookingID = data.split("_")[1];
+    const record = await Registration.findOne({ bookingID: Number(bookingID) });
+    if (!record) {
+      await ctx.editMessageText(
+        ctx.callbackQuery.message.text + "\n\nBooking Not Found ❌"
+      );
+      return;
+    }
+
+    record.status = "rejected";
+    await record.save();
+
+    const rejectionHTML = loadEmailTemplate("rejection.html", {
+      fullName: record.fullName,
+      bookingID: String(record.bookingID),
+      mobile: record.mobile,
+      whatsapp: record.whatsapp,
+    });
+
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: record.email,
+      subject: "Your Registration Has Been Cancelled",
+      html: rejectionHTML,
+    });
+
+    console.log("Booking rejected:", bookingID, "User:", record.email);
+    await ctx.editMessageText(
+      ctx.callbackQuery.message.text + "\n\nBooking Rejected ❌"
+    );
+  }
+
+  // ---------- NEW LOCK-RELATED CALLBACKS ----------
+
+  // C) Show info for a locked user
+  else if (data.startsWith("lockinfo_")) {
+    const bookingID = data.split("_")[1];
+    await handleLockInfo(ctx, bookingID);
+  }
+  // D) Send reminder to locked user
+  else if (data.startsWith("lockreminder_")) {
+    const bookingID = data.split("_")[1];
+    await handleLockReminder(ctx, bookingID);
+  }
+  // E) Confirm from locked => "confirmed"
+  else if (data.startsWith("lockconfirm_")) {
+    const bookingID = data.split("_")[1];
+    await handleLockConfirm(ctx, bookingID);
+  }
 });
 
-// ✅ Start Server & Bot
+// Helper for LOCK flow #1: show locked user info + 2 inline buttons
+async function handleLockInfo(ctx, bookingID) {
+  try {
+    const record = await Registration.findOne({ bookingID: Number(bookingID) });
+    if (!record) {
+      return ctx.editMessageText("Booking not found.");
+    }
+    if (record.status !== "locked") {
+      return ctx.editMessageText(
+        `Booking ID ${bookingID} is not locked. Current status: ${record.status}`
+      );
+    }
+
+    let msg = `<b>Booking ID:</b> ${record.bookingID}\n`
+      + `<b>Name:</b> ${record.fullName}\n`
+      + `<b>Email:</b> ${record.email}\n`
+      + `<b>Mobile:</b> ${record.mobile}\n`
+      + `<b>WhatsApp:</b> ${record.whatsapp}\n`
+      + `<b>Payment Type:</b> ₹${record.paymentType}\n`
+      + `<b>TXID:</b> ${record.txid}\n`
+      + `<b>People Count:</b> ${record.peopleCount}\n`
+      + `<b>Status:</b> ${record.status}\n\n`
+      + `<b>People Details:</b>\n`;
+
+    record.peopleDetails.forEach((p, idx) => {
+      msg += `  ${idx + 1}. ${p.name} (Age: ${p.age})\n`;
+    });
+
+    const inlineButtons = [
+      [
+        Markup.button.callback("Send Reminder", `lockreminder_${bookingID}`),
+        Markup.button.callback("Confirm Booking", `lockconfirm_${bookingID}`),
+      ],
+    ];
+
+    await ctx.editMessageText(msg, {
+      parse_mode: "HTML",
+      reply_markup: { inline_keyboard: inlineButtons },
+    });
+  } catch (err) {
+    console.error("Error in handleLockInfo:", err);
+    await ctx.editMessageText("Error showing locked user info.");
+  }
+}
+
+// Helper for LOCK flow #2: send reminder email
+async function handleLockReminder(ctx, bookingID) {
+  try {
+    const record = await Registration.findOne({ bookingID: Number(bookingID) });
+    if (!record) {
+      return ctx.editMessageText("Booking not found for reminder.");
+    }
+    if (record.status !== "locked") {
+      return ctx.editMessageText(
+        `Cannot send reminder. Current status: ${record.status}`
+      );
+    }
+
+    const reminderHTML = loadEmailTemplate("reminder.html", {
+      fullName: record.fullName,
+      bookingID: String(record.bookingID),
+    });
+
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: record.email,
+      subject: "Payment Reminder - Your Seat is Locked",
+      html: reminderHTML,
+    });
+
+    console.log(`Reminder email sent -> Booking ${bookingID}, ${record.email}`);
+    await ctx.editMessageText(
+      ctx.callbackQuery.message.text + "\n\nReminder Sent ✅"
+    );
+  } catch (err) {
+    console.error("Error in handleLockReminder:", err);
+    await ctx.editMessageText("Error sending reminder.");
+  }
+}
+
+// Helper for LOCK flow #3: confirm locked => "confirmed"
+async function handleLockConfirm(ctx, bookingID) {
+  try {
+    const record = await Registration.findOne({ bookingID: Number(bookingID) });
+    if (!record) {
+      return ctx.editMessageText("Booking not found for confirm.");
+    }
+    if (record.status !== "locked") {
+      return ctx.editMessageText(
+        `Cannot confirm. Current status: ${record.status}`
+      );
+    }
+
+    // Update to confirmed
+    record.status = "confirmed";
+    await record.save();
+
+    // Build placeholders
+    const replacements = {
+      fullName: record.fullName,
+      bookingID: String(record.bookingID),
+      email: record.email,
+      mobile: record.mobile,
+      whatsapp: record.whatsapp,
+      paymentType: String(record.paymentType),
+      txid: record.txid,
+      totalPeople: String(record.peopleCount),
+      totalPaid: String(record.peopleCount * record.paymentType),
+      tripStart: tripDetails.tripStart,
+      tripEnd: tripDetails.tripEnd,
+      fromLocation: tripDetails.fromLocation,
+      toLocation: tripDetails.toLocation,
+    };
+
+    // People rows
+    let peopleRows = "";
+    record.peopleDetails.forEach((person, idx) => {
+      peopleRows += `
+      <tr>
+        <td>${idx + 1}</td>
+        <td>${person.name}</td>
+        <td>${person.age}</td>
+      </tr>`;
+    });
+    replacements.peopleRows = peopleRows;
+
+    // Send "tripConfirm"
+    const confirmHTML = loadEmailTemplate("tripConfirm.html", replacements);
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: record.email,
+      subject: "Your Trip is Confirmed!",
+      html: confirmHTML,
+    });
+
+    console.log(`Locked booking ${bookingID} is now confirmed.`);
+    await ctx.editMessageText(
+      ctx.callbackQuery.message.text + "\n\nBooking Confirmed ✅"
+    );
+  } catch (err) {
+    console.error("Error in handleLockConfirm:", err);
+    await ctx.editMessageText("Error confirming booking.");
+  }
+}
+
+// 8️⃣ Telegram Bot Commands
+
+// (A) /users - list minimal info about all
+bot.command("users", async (ctx) => {
+  try {
+    const registrations = await Registration.find({});
+    if (!registrations.length) {
+      return ctx.reply("No registrations found.");
+    }
+
+    let msg = "<b>All Registrations</b>\n\n";
+    registrations.forEach((r) => {
+      msg += `ID: <b>${r.bookingID}</b>\nName: ${r.fullName}\nStatus: ${r.status}\nPayment: ₹${r.paymentType}\n\n`;
+    });
+    return ctx.reply(msg, { parse_mode: "HTML" });
+  } catch (err) {
+    console.error("Error in /users:", err);
+    return ctx.reply("Error fetching users.");
+  }
+});
+
+// (B) /user 12345678 - show details for one
+bot.command("user", async (ctx) => {
+  const parts = ctx.message.text.split(" ");
+  if (parts.length < 2) {
+    return ctx.reply("Please provide a Booking ID, e.g. /user 12345678");
+  }
+  const bookingID = parts[1];
+
+  try {
+    const record = await Registration.findOne({ bookingID: Number(bookingID) });
+    if (!record) {
+      return ctx.reply("No user found for Booking ID " + bookingID);
+    }
+
+    let msg = `<b>Booking ID:</b> ${record.bookingID}\n<b>Name:</b> ${record.fullName}\n<b>Email:</b> ${record.email}\n<b>Mobile:</b> ${record.mobile}\n<b>WhatsApp:</b> ${record.whatsapp}\n<b>Payment Type:</b> ₹${record.paymentType}\n<b>TXID:</b> ${record.txid}\n<b>People Count:</b> ${record.peopleCount}\n<b>Status:</b> ${record.status}\n\n<b>People Details:</b>\n`;
+    record.peopleDetails.forEach((p, idx) => {
+      msg += `  ${idx + 1}. ${p.name} (Age: ${p.age})\n`;
+    });
+    return ctx.reply(msg, { parse_mode: "HTML" });
+  } catch (err) {
+    console.error("Error in /user command:", err);
+    return ctx.reply("Error fetching user data.");
+  }
+});
+
+// (C) /stats - aggregated stats
+bot.command("stats", async (ctx) => {
+  try {
+    const totalRegistrations = await Registration.countDocuments({});
+    const lockedCount = await Registration.countDocuments({ status: "locked" });
+    const confirmedCount = await Registration.countDocuments({
+      status: "confirmed",
+    });
+    const rejectedCount = await Registration.countDocuments({
+      status: "rejected",
+    });
+
+    // sum of peopleCount for locked + confirmed
+    const acceptedRegs = await Registration.find({
+      status: { $in: ["locked", "confirmed"] },
+    });
+
+    let totalPeople = 0;
+    let totalMoney = 0;
+    acceptedRegs.forEach((r) => {
+      totalPeople += r.peopleCount;
+      totalMoney += r.peopleCount * r.paymentType;
+    });
+
+    let msg = "<b>Trip Stats</b>\n\n";
+    msg += `Total Registrations: <b>${totalRegistrations}</b>\n`;
+    msg += `Locked: <b>${lockedCount}</b>\n`;
+    msg += `Confirmed: <b>${confirmedCount}</b>\n`;
+    msg += `Rejected: <b>${rejectedCount}</b>\n`;
+    msg += `\nTotal People (locked+confirmed): <b>${totalPeople}</b>\n`;
+    msg += `Total Money (locked+confirmed): <b>₹${totalMoney}</b>\n`;
+
+    return ctx.reply(msg, { parse_mode: "HTML" });
+  } catch (err) {
+    console.error("Error in /stats:", err);
+    return ctx.reply("Error generating stats.");
+  }
+});
+
+// (D) /lock - see all locked
+bot.command("lock", async (ctx) => {
+  try {
+    const lockedRegs = await Registration.find({ status: "locked" });
+    if (!lockedRegs.length) {
+      return ctx.reply("No locked registrations found.");
+    }
+
+    // Build inline keyboard: each locked user => row
+    const inlineButtons = lockedRegs.map((reg) => {
+      // e.g. "John Doe (4)" => "lockinfo_<bookingID>"
+      const buttonText = `${reg.fullName} (${reg.peopleCount})`;
+      return [Markup.button.callback(buttonText, `lockinfo_${reg.bookingID}`)];
+    });
+
+    await ctx.reply("<b>Locked Registrations</b>", {
+      parse_mode: "HTML",
+      reply_markup: { inline_keyboard: inlineButtons },
+    });
+  } catch (err) {
+    console.error("Error in /lock:", err);
+    ctx.reply("Error fetching locked registrations.");
+  }
+});
+
+// 9️⃣ Health Check
+app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
+app.get("/api/", (req, res) => {
+  res.send("API is working!");
+});
+
+// 10️⃣ Start Server & Telegram Bot
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 bot.launch();

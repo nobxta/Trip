@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GLA Travel Club | Premium College Travel Experiences</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Poppins for headings, Montserrat for body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Font Awesome for Icons -->
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  integrity="sha512-p1CmK8Zj/NV0GhY+pWJMRbRbx2p6m0/EpNZotXz7VktU3Syu6q6q60c2X+o8ox8kBCb1GQF8w3+5MDmxg6r6Kg=="
+  referrerpolicy="no-referrer"
+ />
+  <style>
+    
+    /* Custom Fonts */
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+    h1, h2, h3, h4, h5 {
+      font-family: 'Poppins', sans-serif;
+    }
+    /* Custom Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeInUp {
+      animation: fadeInUp 1s ease-out forwards;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+    /* Smooth Gradient Background for Hero */
+    .hero-bg {
+      background: linear-gradient(135deg, #4A90E2 0%, #9013FE 100%);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Navbar -->
+  <nav class="bg-white/90 backdrop-blur-md shadow-lg fixed w-full z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#" class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600">
+        GLA Travel Club
+      </a>
+      <ul class="hidden md:flex space-x-8">
+        <li><a href="/registration_check.html" class="text-lg font-medium hover:text-indigo-600 transition-colors">Track</a></li>
+        <li><a href="#faq" class="text-lg font-medium hover:text-indigo-600 transition-colors">FAQ</a></li>
+        <li><a href="/terms.html" class="text-lg font-medium hover:text-indigo-600 transition-colors">Terms &amp; Conditions</a></li>
+        <li><a href="/submit.html" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-2 rounded-full font-semibold hover:shadow-xl transition-all">Register</a></li>
+      </ul>
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden">
+        <button id="mobile-menu-btn" class="text-gray-700 focus:outline-none">
+          <i class="fa-solid fa-bars fa-xl"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white shadow-md">
+      <ul class="px-6 py-4 space-y-4">
+        <li><a href="/registration_check.html" class="block text-lg font-medium hover:text-indigo-600">Track</a></li>
+        <li><a href="#faq" class="block text-lg font-medium hover:text-indigo-600">FAQ</a></li>
+        <li><a href="/terms.html" class="block text-lg font-medium hover:text-indigo-600">Terms &amp; Conditions</a></li>
+        <li><a href="/submit.html" class="block bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-center px-6 py-2 rounded-full font-semibold">Register</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative flex items-center justify-center min-h-screen pt-24 overflow-hidden hero-bg">
+    <!-- Background Elements -->
+    <img src="https://images.unsplash.com/photo-1564869739044-80aa5bd264f6?auto=format&fit=crop&w=1920&q=80" 
+         alt="Travel Background" class="absolute inset-0 object-cover opacity-30 animate-float">
+    <div class="absolute inset-0 bg-gradient-to-b from-blue-900/60 to-indigo-900/60"></div>
+    <!-- Content -->
+    <div class="relative z-10 text-center px-6">
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 animate-fadeInUp">
+        Explore, Learn &amp; Travel!
+      </h1>
+      <p class="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto animate-fadeInUp" style="animation-delay: 0.3s;">
+        Discover premium group travel experiences designed exclusively for college students.
+      </p>
+      <a href="#trips" class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-100 transition-all animate-fadeInUp" style="animation-delay: 0.6s;">
+        View Upcoming Trips
+      </a>
+    </div>
+  </section>
+
+  <!-- Upcoming Trips Section -->
+  <section id="trips" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Upcoming Trips</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <!-- Trip Card Example: Jaisalmer -->
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300">
+          <img src="https://source.unsplash.com/featured/?jaisalmer,desert" alt="Jaisalmer" class="w-full h-56 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">Jaisalmer</h3>
+            <p class="text-gray-600 mb-4">Desert safari &amp; camping under the stars</p>
+            <p class="text-2xl font-bold text-indigo-600">₹9,999</p>
+          </div>
+        </div>
+        <!-- Jaipur -->
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300">
+          <img src="https://source.unsplash.com/featured/?jaipur,fort" alt="Jaipur" class="w-full h-56 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">Jaipur</h3>
+            <p class="text-gray-600 mb-4">Royal palaces &amp; cultural heritage</p>
+            <p class="text-2xl font-bold text-indigo-600">₹7,999</p>
+          </div>
+        </div>
+        <!-- Nainital -->
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300">
+          <img src="https://source.unsplash.com/featured/?nainital,lake" alt="Nainital" class="w-full h-56 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">Nainital</h3>
+            <p class="text-gray-600 mb-4">Lake city &amp; mountain adventures</p>
+            <p class="text-2xl font-bold text-indigo-600">₹8,999</p>
+          </div>
+        </div>
+        <!-- Kashmir -->
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300">
+          <img src="https://source.unsplash.com/featured/?kashmir,snow" alt="Kashmir" class="w-full h-56 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">Kashmir</h3>
+            <p class="text-gray-600 mb-4">Paradise on Earth experience</p>
+            <p class="text-2xl font-bold text-indigo-600">₹15,999</p>
+          </div>
+        </div>
+        <!-- Manali -->
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300">
+          <img src="https://source.unsplash.com/featured/?manali,mountains" alt="Manali" class="w-full h-56 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">Manali</h3>
+            <p class="text-gray-600 mb-4">Snow adventures &amp; mountain views</p>
+            <p class="text-2xl font-bold text-indigo-600">₹12,999</p>
+          </div>
+        </div>
+        <!-- Shimla -->
+        <div class="bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition duration-300">
+          <img src="https://source.unsplash.com/featured/?shimla,hills" alt="Shimla" class="w-full h-56 object-cover">
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">Shimla</h3>
+            <p class="text-gray-600 mb-4">Colonial charm &amp; hill station vibes</p>
+            <p class="text-2xl font-bold text-indigo-600">₹10,999</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- Why Choose Us Section -->
+<section class="py-20 bg-gradient-to-r from-blue-50 to-white">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-2">Why Choose Us</h2>
+      <p class="text-xl text-gray-700 mb-4 max-w-3xl mx-auto">
+        Experience Travel Like Never Before
+      </p>
+      <p class="text-md text-gray-600 mb-12 max-w-2xl mx-auto">
+        We’ve designed our trips specifically for college students, offering the perfect balance of adventure, comfort, and affordability.
+      </p>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <!-- Card 1: Budget-Friendly Packages -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 flex items-center justify-center bg-blue-50 text-indigo-600 rounded-full mr-3">
+              <i class="fa-solid fa-hand-holding-dollar text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">Budget-Friendly Packages</h3>
+          </div>
+          <ul class="text-left text-gray-600 space-y-2">
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              All-inclusive packages
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Student discounts
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Group pricing available
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Card 2: 4-Star Hotel Stays -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 flex items-center justify-center bg-blue-50 text-indigo-600 rounded-full mr-3">
+              <i class="fa-solid fa-hotel text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">4-Star Hotel Stays</h3>
+          </div>
+          <ul class="text-left text-gray-600 space-y-2">
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Comfortable rooms
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Free Wi-Fi
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Premium amenities
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Card 3: AC Bus Rides -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 flex items-center justify-center bg-blue-50 text-indigo-600 rounded-full mr-3">
+              <i class="fa-solid fa-bus text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">AC Bus Rides</h3>
+          </div>
+          <ul class="text-left text-gray-600 space-y-2">
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Modern AC buses
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Comfortable seats
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Onboard entertainment
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Card 4: Meals Included -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 flex items-center justify-center bg-blue-50 text-indigo-600 rounded-full mr-3">
+              <i class="fa-solid fa-utensils text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">Meals Included</h3>
+          </div>
+          <ul class="text-left text-gray-600 space-y-2">
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              All your meals are covered
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Delicious local cuisine
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Veg &amp; non-veg options
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Special dietary choices
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Card 5: GLA University Pickup/Drop -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 flex items-center justify-center bg-blue-50 text-indigo-600 rounded-full mr-3">
+              <i class="fa-solid fa-map-marker-alt text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">GLA University Pickup/Drop</h3>
+          </div>
+          <ul class="text-left text-gray-600 space-y-2">
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Campus pickup &amp; drop
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Directly from GLA University
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              No extra travel hassle
+            </li>
+          </ul>
+        </div>
+        
+        <!-- Card 6: 24/7 Support -->
+        <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 flex items-center justify-center bg-blue-50 text-indigo-600 rounded-full mr-3">
+              <i class="fa-solid fa-headset text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold">24/7 Support</h3>
+          </div>
+          <ul class="text-left text-gray-600 space-y-2">
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Always ready to assist
+            </li>
+            <li class="flex items-start">
+              <i class="fa-solid fa-check text-indigo-600 mr-2 mt-1"></i>
+              Peace of mind, round the clock
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gradient-to-b from-white to-blue-50">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <!-- Section Heading -->
+      <h2 class="text-4xl font-bold mb-2">Frequently Asked Questions</h2>
+      <p class="text-xl text-gray-700 mb-8">
+        Find answers to some common questions about our trips, bookings, and travel details.
+      </p>
+  
+      <!-- FAQ Items Container -->
+      <div class="space-y-4 text-left">
+        <!-- FAQ Item 1 -->
+        <details class="group bg-white shadow-md p-4 rounded-lg">
+          <summary class="flex items-center justify-between cursor-pointer text-lg font-semibold text-gray-800">
+            <span>How do I book a trip?</span>
+            <!-- Chevron Icon -->
+            <i
+              class="fa-solid fa-chevron-down transition-transform duration-300 group-open:rotate-180 text-gray-500"
+            ></i>
+          </summary>
+          <p class="mt-2 text-gray-600 leading-relaxed">
+            Booking a trip is easy! Simply click on the "Register" button on our website, fill out the form, and our team will contact you to finalize your booking.
+          </p>
+        </details>
+  
+        <!-- FAQ Item 2 -->
+        <details class="group bg-white shadow-md p-4 rounded-lg">
+          <summary class="flex items-center justify-between cursor-pointer text-lg font-semibold text-gray-800">
+            <span>What is included in the trip package?</span>
+            <i
+              class="fa-solid fa-chevron-down transition-transform duration-300 group-open:rotate-180 text-gray-500"
+            ></i>
+          </summary>
+          <p class="mt-2 text-gray-600 leading-relaxed">
+            Our packages include comfortable 4-star accommodations, AC bus rides, daily meals, and convenient pickup/drop from GLA University. We also arrange local sightseeing tours for a complete experience.
+          </p>
+        </details>
+  
+        <!-- FAQ Item 3 -->
+        <details class="group bg-white shadow-md p-4 rounded-lg">
+          <summary class="flex items-center justify-between cursor-pointer text-lg font-semibold text-gray-800">
+            <span>What payment methods do you accept?</span>
+            <i
+              class="fa-solid fa-chevron-down transition-transform duration-300 group-open:rotate-180 text-gray-500"
+            ></i>
+          </summary>
+          <p class="mt-2 text-gray-600 leading-relaxed">
+            We accept various payment methods including credit/debit cards, UPI, net banking, and cash payments at our campus office. 
+          </p>
+        </details>
+  
+        <!-- FAQ Item 4 -->
+        <details class="group bg-white shadow-md p-4 rounded-lg">
+          <summary class="flex items-center justify-between cursor-pointer text-lg font-semibold text-gray-800">
+            <span>What’s your cancellation policy?</span>
+            <i
+              class="fa-solid fa-chevron-down transition-transform duration-300 group-open:rotate-180 text-gray-500"
+            ></i>
+          </summary>
+          <p class="mt-2 text-gray-600 leading-relaxed">
+            We understand plans can change. Please review our Terms &amp; Conditions for detailed information on cancellation deadlines, refund amounts, and rescheduling options.
+          </p>
+        </details>
+  
+        <!-- FAQ Item 5 -->
+        <details class="group bg-white shadow-md p-4 rounded-lg">
+          <summary class="flex items-center justify-between cursor-pointer text-lg font-semibold text-gray-800">
+            <span>Are there any age restrictions for the trips?</span>
+            <i
+              class="fa-solid fa-chevron-down transition-transform duration-300 group-open:rotate-180 text-gray-500"
+            ></i>
+          </summary>
+          <p class="mt-2 text-gray-600 leading-relaxed">
+            Our trips are designed for college students (18+). If you have any special circumstances, please contact us directly to discuss possible arrangements.
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-xl font-semibold">GLA Travel Club</h3>
+        <p class="text-gray-400 mt-2">Premium travel experiences curated for college students.</p>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold">Quick Links</h3>
+        <ul class="text-gray-400 space-y-2 mt-2">
+          <li><a href="#track" class="hover:text-white transition">Track</a></li>
+          <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+          <li><a href="#terms" class="hover:text-white transition">Terms &amp; Conditions</a></li>
+          <li><a href="#register" class="hover:text-white transition">Register</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold">Contact Us</h3>
+        <p class="text-gray-400 mt-2">info@gla-travelclub.com</p>
+      </div>
+    </div>
+    <div class="max-w-7xl mx-auto mt-8 pt-8 border-t border-gray-700 text-gray-400 text-center">
+      <p>© 2025 GLA Travel Club. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Mobile Menu Toggle Script -->
+  <script>
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
+</body>
+</html>

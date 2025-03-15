@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trip Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-600 to-indigo-900 flex justify-center items-center min-h-screen">
+  <div class="bg-white shadow-2xl rounded-lg p-8 max-w-2xl w-full transition-all">
+    <h2 class="text-3xl font-bold text-center text-gray-900">Trip Registration</h2>
+
+    <!-- Progress Bar -->
+    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-4">
+      <div id="progressBar" class="bg-indigo-600 h-2.5 rounded-full w-0 transition-all"></div>
+    </div>
+
+    <form id="tourForm" class="mt-6 space-y-6" enctype="multipart/form-data">
+      <!-- Step 1: Number of People -->
+      <div id="step-1">
+        <label class="block text-sm font-medium text-gray-700">How many people?</label>
+        <select id="peopleCount" name="peopleCount" class="w-full p-3 border rounded-lg" required 
+          onchange="generateUserForms(); generateAadhaarForms();">
+          <option value="">Select</option>
+          <option value="1">1 Person</option>
+          <option value="2">2 People</option>
+          <option value="3">3 People</option>
+          <option value="4">4 People</option>
+          <option value="5">5 People</option>
+          <option value="6">6 People</option>
+          <option value="7">7 People</option>
+          <option value="8">8 People</option>
+          <option value="9">9 People</option>
+          <option value="10">10 People</option>
+        </select>
+        <div class="flex justify-end mt-5">
+          <button type="button" onclick="goToStep(1, 2)" 
+            class="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700">
+            Next
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Contact Details -->
+      <div id="step-2" class="hidden">
+        <h3 class="font-semibold text-gray-900 text-lg mb-3">Contact Details</h3>
+
+        <!-- Full Name -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Full Name</label>
+          <div class="relative">
+            <input type="text" id="fullName" name="fullName" 
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              required onblur="validateOnBlur(this)" oninput="validateContactForm()">
+            <p class="text-red-500 text-sm mt-1 hidden fullName-error"></p>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Email</label>
+          <div class="relative">
+            <input type="email" id="email" name="email" 
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              required onblur="validateOnBlur(this)" oninput="validateContactForm()">
+            <p class="text-red-500 text-sm mt-1 hidden email-error"></p>
+          </div>
+        </div>
+
+        <!-- Mobile Number -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700">Mobile Number</label>
+          <div class="relative">
+            <input type="tel" id="mobile" name="mobile" 
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+              required pattern="^(\+91[\-\s]?)?[6789]\d{9}$" onblur="validateOnBlur(this)" oninput="validateContactForm()">
+            <p class="text-red-500 text-sm mt-1 hidden mobile-error"></p>
+          </div>
+        </div>
+
+        <!-- WhatsApp Checkbox -->
+        <label class="flex items-center mt-2">
+          <input type="checkbox" id="sameAsMobile" class="mr-2" onchange="copyMobileToWhatsApp()">
+          <span class="text-gray-700">Use the same number for WhatsApp</span>
+        </label>
+
+        <!-- WhatsApp Number -->
+        <div class="mb-4 mt-2">
+          <label class="block text-sm font-medium text-gray-700">WhatsApp Number</label>
+          <div class="relative">
+            <input type="tel" id="whatsapp" name="whatsapp" 
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+              required pattern="^(\+91[\-\s]?)?[6789]\d{9}$" onblur="validateOnBlur(this)" oninput="validateContactForm()">
+            <p class="text-red-500 text-sm mt-1 hidden whatsapp-error"></p>
+          </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-5">
+          <button type="button" onclick="goToStep(2, 1)" 
+            class="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600">
+            Back
+          </button>
+          <button type="button" id="nextButton" onclick="goToStep(2, 3)" 
+            class="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 opacity-50 cursor-not-allowed" 
+            disabled>
+            Next
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: User Details -->
+      <div id="step-3" class="hidden">
+        <h3 class="font-semibold text-gray-900">User Details</h3>
+        <div id="userDetailsContainer"></div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-5">
+          <button type="button" onclick="goToStep(3, 2)" 
+            class="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600">
+            Back
+          </button>
+          <button type="button" id="nextButtonStep3" onclick="goToStep(3, 4)" 
+            class="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 opacity-50 cursor-not-allowed" 
+            disabled>
+            Next
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 4: Aadhaar Upload -->
+      <div id="step-4" class="hidden">
+        <h3 class="font-semibold text-gray-900">Aadhaar Upload</h3>
+        <div id="aadhaarContainer"></div>
+        <div class="flex justify-between mt-5">
+          <button type="button" onclick="goToStep(4, 3)" 
+            class="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600">
+            Back
+          </button>
+          <button type="button" onclick="goToStep(4, 5)" 
+            class="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700">
+            Next
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 5: Terms & Conditions -->
+      <div id="step-5" class="hidden">
+        <h3 class="font-semibold text-gray-900">Terms & Conditions</h3>
+        <p class="text-gray-600">
+          By proceeding, you agree to our 
+          <a href="/terms.html" target="_blank" class="text-indigo-600 hover:underline">Terms & Conditions</a>.
+        </p>
+        <label class="flex items-center mt-4">
+          <input type="checkbox" id="agreeTerms" class="mr-2" required />
+          <span class="text-gray-700">I agree to the Terms & Conditions</span>
+        </label>
+        <div class="flex justify-between mt-5">
+          <button type="button" onclick="goToStep(5, 4)" 
+            class="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600">
+            Back
+          </button>
+          <button type="button" onclick="goToStep(5, 6)" 
+            class="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700">
+            Next
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 6: Payment -->
+      <div id="step-6" class="hidden">
+        <h3 class="font-semibold text-gray-900">Payment</h3>
+        <p>Select the payment option (per person):</p>
+        <select id="paymentType" name="paymentType" class="w-full p-3 border rounded-lg" required 
+          onchange="showPaymentDetails()">
+          <option value="">Select</option>
+          <option value="1200">₹1200 (Seat Confirmation)</option>
+          <option value="3300">₹3300 (Full Trip)</option>
+        </select>
+        <div id="paymentDetails" class="hidden mt-4">
+          <h4 class="font-semibold">Payment Details</h4>
+          <p>UPI ID: <strong>your-upi-id@upi</strong></p>
+          <img src="assets/qr-code.png" alt="QR Code for Payment" class="w-40 mx-auto mt-2" />
+          <p id="totalPayText" class="mt-2 font-bold"></p>
+        </div>
+        <label class="block text-sm font-medium text-gray-700 mt-4">Transaction ID (TXID)</label>
+        <input type="text" id="txid" name="txid" 
+          class="w-full p-3 border rounded-lg mt-2"
+          pattern="[A-Za-z0-9-]{8,20}"
+          title="Transaction ID must be 8-20 characters (letters, numbers, or dashes)"
+          required>
+        <div class="flex justify-between mt-5">
+          <button type="button" onclick="goToStep(6, 5)" 
+            class="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600">
+            Back
+          </button>
+          <button type="submit" 
+            class="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600">
+            Confirm & Submit
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Loading Animation -->
+    <div id="loading" class="hidden text-center mt-4">
+      <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 mx-auto"></div>
+      <p class="text-gray-600 mt-2">Processing your registration...</p>
+    </div>
+  </div>
+
+  <script>
+    // Navigation: Show/hide steps and update progress bar
+    function goToStep(currentStep, nextStep) {
+      const currentDiv = document.getElementById(`step-${currentStep}`);
+      const required = [...currentDiv.querySelectorAll("[required]")];
+      
+      // Validate visible fields only
+      for (let input of required) {
+        if (!input.value.trim() && input.offsetParent !== null) {
+          alert("Please fill all required fields!");
+          input.focus();
+          return;
+        }
+      }
+
+      // Special checks
+      if (currentStep === 5 && !document.getElementById("agreeTerms").checked) {
+        alert("You must agree to the Terms & Conditions.");
+        return;
+      }
+
+      currentDiv.classList.add("hidden");
+      document.getElementById(`step-${nextStep}`).classList.remove("hidden");
+      document.getElementById("progressBar").style.width = `${(nextStep) * (100/6)}%`;
+    }
+
+    // Copy mobile to WhatsApp if checkbox is checked
+    function copyMobileToWhatsApp() {
+      if (document.getElementById("sameAsMobile").checked) {
+        document.getElementById("whatsapp").value = document.getElementById("mobile").value;
+        validateContactForm();
+      }
+    }
+
+    function validateOnBlur(input) {
+      input.dataset.touched = "true";
+      if(input.id === "fullName" || input.id === "email" || input.id === "mobile" || input.id === "whatsapp") {
+        validateContactForm();
+      } else {
+        validateUserForm();
+      }
+    }
+
+    function validateContactForm() {
+      let isValid = true;
+      const mobilePattern = /^(\+91[\-\s]?)?[6789]\d{9}$/;
+
+      // Full Name validation
+      const fullName = document.getElementById("fullName");
+      const fullNameError = document.querySelector(".fullName-error");
+      if (fullName.dataset.touched && fullName.value.trim().length < 3) {
+        fullName.classList.add("border-red-500");
+        fullNameError.textContent = "Full Name must be at least 3 characters";
+        fullNameError.classList.remove("hidden");
+        isValid = false;
+      } else {
+        fullName.classList.remove("border-red-500");
+        fullNameError.classList.add("hidden");
+      }
+
+      // Email validation
+      const email = document.getElementById("email");
+      const emailError = document.querySelector(".email-error");
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (email.dataset.touched && !emailPattern.test(email.value.trim())) {
+        email.classList.add("border-red-500");
+        emailError.textContent = "Enter a valid email address";
+        emailError.classList.remove("hidden");
+        isValid = false;
+      } else {
+        email.classList.remove("border-red-500");
+        emailError.classList.add("hidden");
+      }
+
+      // Mobile validation
+      const mobile = document.getElementById("mobile");
+      const mobileError = document.querySelector(".mobile-error");
+      if (mobile.dataset.touched && !mobilePattern.test(mobile.value.trim())) {
+        mobile.classList.add("border-red-500");
+        mobileError.textContent = "Enter valid 10-digit Indian mobile number";
+        mobileError.classList.remove("hidden");
+        isValid = false;
+      } else {
+        mobile.classList.remove("border-red-500");
+        mobileError.classList.add("hidden");
+      }
+
+      // WhatsApp validation
+      const whatsapp = document.getElementById("whatsapp");
+      const whatsappError = document.querySelector(".whatsapp-error");
+      if (whatsapp.dataset.touched && !mobilePattern.test(whatsapp.value.trim())) {
+        whatsapp.classList.add("border-red-500");
+        whatsappError.textContent = "Enter valid 10-digit Indian WhatsApp number";
+        whatsappError.classList.remove("hidden");
+        isValid = false;
+      } else {
+        whatsapp.classList.remove("border-red-500");
+        whatsappError.classList.add("hidden");
+      }
+
+      // Enable/disable Next button
+      const nextButton = document.getElementById("nextButton");
+      nextButton.disabled = !isValid;
+      nextButton.classList.toggle("opacity-50", !isValid);
+      nextButton.classList.toggle("cursor-not-allowed", !isValid);
+    }
+
+    function generateUserForms() {
+      const count = parseInt(document.getElementById("peopleCount").value);
+      const container = document.getElementById("userDetailsContainer");
+      container.innerHTML = "";
+
+      for (let i = 1; i <= count; i++) {
+        const labelName = count === 1 ? "Full Name" : `Full Name (Person ${i})`;
+        container.innerHTML += `
+          <div class="p-6 bg-white shadow-lg rounded-lg border mt-3">
+            <label class="block text-sm font-medium text-gray-700">${labelName}</label>
+            <input type="text" name="userName" 
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 user-name"
+              required oninput="validateUserForm()" onblur="markTouched(this)">
+            <p class="text-red-500 text-sm mt-1 hidden name-error"></p>
+
+            <label class="block text-sm font-medium text-gray-700 mt-3">Age</label>
+            <input type="number" name="userAge" 
+              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 user-age"
+              min="15" max="40" required oninput="validateUserForm()" onblur="markTouched(this)">
+            <p class="text-red-500 text-sm mt-1 hidden age-error"></p>
+          </div>
+        `;
+      }
+      validateUserForm();
+    }
+
+    function markTouched(input) {
+      input.dataset.touched = "true";
+      validateUserForm();
+    }
+
+    function validateUserForm() {
+      let allValid = true;
+      const names = document.querySelectorAll(".user-name");
+      const ages = document.querySelectorAll(".user-age");
+
+      names.forEach(input => {
+        const value = input.value.trim();
+        const errorText = input.nextElementSibling;
+        if (input.dataset.touched && value.length < 3) {
+          input.classList.add("border-red-500");
+          errorText.textContent = "Full Name must be at least 3 characters";
+          errorText.classList.remove("hidden");
+          allValid = false;
+        } else {
+          input.classList.remove("border-red-500");
+          errorText.classList.add("hidden");
+        }
+      });
+
+      ages.forEach(input => {
+        const value = input.value.trim();
+        const age = parseInt(value);
+        const errorText = input.nextElementSibling;
+        if (input.dataset.touched && (isNaN(age) || age < 15 || age > 40)) {
+          input.classList.add("border-red-500");
+          errorText.textContent = age < 15 ? "Age must be at least 15" : "Age must be 40 or below";
+          errorText.classList.remove("hidden");
+          allValid = false;
+        } else {
+          input.classList.remove("border-red-500");
+          errorText.classList.add("hidden");
+        }
+      });
+
+      const step3NextButton = document.getElementById("nextButtonStep3");
+      step3NextButton.disabled = !allValid;
+      step3NextButton.classList.toggle("opacity-50", !allValid);
+      step3NextButton.classList.toggle("cursor-not-allowed", !allValid);
+    }
+
+    function generateAadhaarForms() {
+      const count = parseInt(document.getElementById("peopleCount").value);
+      const container = document.getElementById("aadhaarContainer");
+      container.innerHTML = "";
+      for (let i = 1; i <= count; i++) {
+        container.innerHTML += `
+          <div class="p-3 bg-gray-100 border rounded-lg mt-3">
+            <label class="block text-sm font-medium text-gray-700">Upload Aadhaar (Person ${i})</label>
+            <input type="file" name="aadhaarFiles" 
+              class="w-full p-3 border rounded-lg aadhaar-file" accept=".jpg,.jpeg,.png,.pdf" required>
+          </div>
+        `;
+      }
+    }
+
+    function showPaymentDetails() {
+      const paymentVal = parseInt(document.getElementById("paymentType").value || "0");
+      const count = parseInt(document.getElementById("peopleCount").value || "1");
+      const total = paymentVal * count;
+      document.getElementById("paymentDetails").classList.remove("hidden");
+      document.getElementById("totalPayText").innerText = `Total to Pay: ₹${total}`;
+    }
+
+    document.getElementById("tourForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
+  
+  if (!this.checkValidity()) {
+    alert("Please fill all required fields!");
+    this.reportValidity();
+    return;
+  }
+
+  document.getElementById("loading").classList.remove("hidden");
+
+  try {
+    const formData = new FormData(this);
+    
+    // Add people details
+    const peopleDetails = Array.from(document.querySelectorAll(".user-name")).map((nameInput, index) => ({
+      name: nameInput.value,
+      age: document.querySelectorAll(".user-age")[index].value
+    }));
+    formData.append("peopleDetails", JSON.stringify(peopleDetails));
+
+    // Actual server request
+    const response = await fetch("http://localhost:3000/register", {
+      method: "POST",
+      body: formData
+    });
+
+    const responseData = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(responseData.message || "Server responded with error");
+    }
+
+    // If everything is OK
+    window.location.href = "thank-you.html";
+
+  } catch (err) {
+    console.error("Submission error:", err);
+    alert("Submission failed: " + err.message);
+  } finally {
+    document.getElementById("loading").classList.add("hidden");
+  }
+
+    });
+  </script>
+</body>
+</html>

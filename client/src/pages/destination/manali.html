@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Majestic Manali Tour</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+    body { font-family: 'Montserrat', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-7xl mx-auto p-8 bg-white shadow-lg mt-10 rounded-lg">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+      <!-- Image Gallery -->
+      <div>
+        <div class="flex flex-col space-y-4">
+          <img id="mainImage" src="https://i.ytimg.com/vi/7NKk41YVWyA/maxresdefault.jpg" class="rounded-lg shadow-md w-full h-auto">
+          <div class="flex space-x-2">
+            <img src="https://www.himalayanadrenaline.com/wp-content/uploads/2023/02/Manali-Adventure-1.png" class="cursor-pointer rounded-lg shadow-sm w-24 h-24 object-cover" onclick="changeImage(this.src)">
+            <img src="https://ihplb.b-cdn.net/wp-content/uploads/2017/01/manali-top.jpg" class="cursor-pointer rounded-lg shadow-sm w-24 h-24 object-cover" onclick="changeImage(this.src)">
+            <img src="https://storage.googleapis.com/stateless-www-justwravel-com/2020/08/1581688869_9manali-810x424.jpg" class="cursor-pointer rounded-lg shadow-sm w-24 h-24 object-cover" onclick="changeImage(this.src)">
+            <img src="https://media.istockphoto.com/id/2153478960/photo/the-hidimba-devi-temple-in-manali-himachal-pradesh.webp?a=1&b=1&s=612x612&w=0&k=20&c=pNXYVeIsy69YUt8kA5GKA-JvLtRPnueQm5f0GS-SwnU=" class="cursor-pointer rounded-lg shadow-sm w-24 h-24 object-cover" onclick="changeImage(this.src)">
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tour Details -->
+      <div>
+        <h1 class="text-4xl font-bold text-gray-800">Majestic Manali Tour</h1>
+        <p class="text-lg text-gray-600 mt-2">4 Days / 3 Nights</p>
+        <p class="text-2xl font-semibold text-blue-600 mt-4">₹6,999 - ₹12,999</p>
+        <p class="text-sm text-gray-500">Inclusive of all taxes</p>
+        
+        <div class="mt-6">
+          <h2 class="text-xl font-bold">Itinerary Highlights</h2>
+          <ul class="list-disc pl-5 mt-2 text-gray-700 space-y-2">
+            <li><strong>Day 1:</strong> Arrival & Local Sightseeing</li>
+            <li><strong>Day 2:</strong> Solang Valley & Rohtang Pass</li>
+            <li><strong>Day 3:</strong> Adventure Activities & Shopping</li>
+            <li><strong>Day 4:</strong> Departure</li>
+          </ul>
+        </div>
+        
+        <div class="mt-6">
+          <h2 class="text-xl font-bold">Departure & Destination</h2>
+          <p class="text-gray-700"><strong>Departure:</strong> Delhi</p>
+          <p class="text-gray-700"><strong>Destination:</strong> Manali, Himachal Pradesh</p>
+        </div>
+        
+        <div class="mt-6 flex space-x-4">
+          <a href="/submit.html" class="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700">Book Now</a>
+          <a href="/terms.html" class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50">Terms & Conditions</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function changeImage(src) {
+      document.getElementById("mainImage").src = src;
+    }
+  </script>
+</body>
+</html>

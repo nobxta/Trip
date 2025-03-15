@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Trip Confirmed</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f3f3f3; font-family:Arial, sans-serif;">
+  <!-- Outer Table -->
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color:#f3f3f3; padding:20px 0;">
+    <tr>
+      <td align="center">
+        <!-- Main Container -->
+        <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color:#ffffff; border:1px solid #ddd;">
+          
+          <!-- Header -->
+          <tr>
+            <td style="background-color:#28a745; padding:20px; text-align:center; color:#ffffff;">
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="left" style="vertical-align:middle;">
+                    <h1 style="margin:0; font-size:24px; font-weight:bold; line-height:1.2; font-family:Arial, sans-serif;">
+                      Nainital Trip
+                    </h1>
+                    <p style="margin:0; font-size:14px; color:#e8f5e9; font-family:Arial, sans-serif;">
+                      Adventure & Leisure Specialists
+                    </p>
+                  </td>
+                  <!-- Checkmark icon on the right -->
+                  <td align="right" style="vertical-align:middle;">
+                    <div style="display:inline-block; background-color:#218838; padding:10px; border-radius:50%;">
+                      <svg
+                        width="24" height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M5 13L9 17L19 7"/>
+                      </svg>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Content -->
+          <tr>
+            <td style="padding:20px;">
+              <h2 style="font-size:20px; margin:0 0 15px 0; color:#2d3436; font-family:Arial, sans-serif;">
+                Your Trip Is Confirmed!
+              </h2>
+              <p style="font-size:14px; margin:0 0 15px 0; color:#333; line-height:1.6;">
+                Hello <strong>{{fullName}}</strong>,
+              </p>
+              <p style="font-size:14px; margin:0 0 15px 0; color:#333; line-height:1.6;">
+                We’re delighted to confirm your trip with us! Your booking is now fully secured. Below are the trip details:
+              </p>
+
+              <!-- Trip Details Box -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:20px;">
+                <tr>
+                  <td style="background-color:#e9f7ec; padding:15px; border-left:4px solid #28a745;">
+                    <p style="margin:0; font-size:14px; color:#2d3436; line-height:1.6;">
+                      <strong>Booking ID:</strong> {{bookingID}}<br/>
+                      <strong>From:</strong> {{fromLocation}}<br/>
+                      <strong>To:</strong> {{toLocation}}<br/>
+                      <strong>Trip Dates:</strong> {{tripStart}} to {{tripEnd}}<br/>
+                      <strong>Total People:</strong> {{totalPeople}}<br/>
+                      <strong>Amount Paid:</strong> ₹{{totalPaid}}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Traveler Details Table -->
+              <h3 style="font-size:16px; margin:20px 0 10px 0; color:#2d3436; font-family:Arial, sans-serif;">
+                Traveler Details:
+              </h3>
+              <table
+                width="100%" border="0" cellspacing="0" cellpadding="0"
+                style="border:1px solid #ddd; border-collapse:collapse; font-family:Arial, sans-serif;"
+              >
+                <thead style="background-color:#f9f9f9;">
+                  <tr>
+                    <th
+                      style="text-align:left; padding:8px; border-bottom:1px solid #ddd;
+                      font-weight:600; font-size:14px; color:#333;"
+                    >
+                      #
+                    </th>
+                    <th
+                      style="text-align:left; padding:8px; border-bottom:1px solid #ddd;
+                      font-weight:600; font-size:14px; color:#333;"
+                    >
+                      Name
+                    </th>
+                    <th
+                      style="text-align:left; padding:8px; border-bottom:1px solid #ddd;
+                      font-weight:600; font-size:14px; color:#333;"
+                    >
+                      Age
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Insert dynamic rows here from server code -->
+                  {{peopleRows}}
+                </tbody>
+              </table>
+              <p style="margin-top:5px; font-size:12px; color:#999; font-style:italic; font-family:Arial, sans-serif;">
+                *Table generated dynamically from data
+              </p>
+
+              <!-- Info & CTA -->
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:20px; background-color:#e9f7ec; border:1px solid #c3e6cb;">
+                <tr>
+                  <td style="padding:15px;">
+                    <h4 style="margin:0 0 10px 0; font-size:14px; color:#2d3436; font-family:Arial, sans-serif;">
+                      What’s Next?
+                    </h4>
+                    <ul style="margin:0; padding:0 0 0 20px; font-size:14px; line-height:1.6; color:#2d3436; font-family:Arial, sans-serif;">
+                      <li style="margin-bottom:8px;">Please arrive on time at the pickup point.</li>
+                      <li style="margin-bottom:8px;">Carry valid ID proof for each traveler.</li>
+                      <li style="margin-bottom:8px;">We will keep you updated via email/WhatsApp.</li>
+                    </ul>
+                    
+                    <!-- CTA Button -->
+                    <div style="text-align:center; margin-top:15px;">
+                      <a
+                        href="https://wa.me/919456875817"
+                        style="
+                          background-color:#28a745;
+                          color:#ffffff;
+                          text-decoration:none;
+                          padding:10px 20px;
+                          display:inline-block;
+                          font-weight:bold;
+                          font-size:14px;
+                          font-family:Arial, sans-serif;
+                        "
+                      >
+                        Any Questions? Chat With Us
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          
+          <!-- Footer -->
+          <tr>
+            <td style="background-color:#d4edda; text-align:center; padding:15px; font-size:12px; color:#155724; font-family:Arial, sans-serif;">
+              Nainital Trip - Adventure & Leisure Specialists<br />
+              Bhimtal Road, Nainital, Uttarakhand<br />
+              © 2025 Nainital Trip. All rights reserved.
+            </td>
+          </tr>
+        </table>
+        <!-- End Main Container -->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

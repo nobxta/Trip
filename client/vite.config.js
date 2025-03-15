@@ -1,16 +1,21 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    server: {
-        open: true,
-    },
-    build: {
-        rollupOptions: {
-            input: {
-                main: 'index.html',
-                register: 'submit.html',
-                thankYou: 'thank-you.html'
-            }
-        }
+  root: './src/pages',  // New root directory
+  publicDir: '../../public',  // Points to public directory
+  server: {
+    open: true,
+  },
+  build: {
+    outDir: '../../dist',  // Output directory
+    rollupOptions: {
+      input: {
+        main: 'src/pages/index.html',
+        register: 'src/pages/submit.html',
+        thankYou: 'src/pages/thank-you.html',
+        terms: 'src/pages/terms.html',
+        tourDetails: 'src/pages/tour-details.html'
+      }
     }
+  }
 });

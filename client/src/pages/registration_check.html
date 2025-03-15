@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Booking Status</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Check Your Booking Status</h1>
+        <div class="search-box">
+            <input type="text" id="bookingId" placeholder="Enter your 8-digit Booking ID">
+            <button onclick="fetchBooking()">Search</button>
+        </div>
+        <div id="result" class="result-container"></div>
+    </div>
+
+    <script>
+        async function fetchBooking() {
+            const bookingId = document.getElementById('bookingId').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!/^\d{8}$/.test(bookingId)) {
+                resultDiv.innerHTML = `<div class="error">Please enter a valid 8-digit Booking ID</div>`;
+                return;
+            }
+
+            resultDiv.innerHTML = '<div class="loading">Loading...</div>';
+
+            try {
+                const response = await fetch(`/api/booking/${bookingId}`);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    resultDiv.innerHTML = `<div class="error">${data.error || 'Booking not found'}</div>`;
+                    return;
+                }
+
+                // Format successful response
+                resultDiv.innerHTML = `
+                    <div class="booking-card">
+                        <h2>Booking Details</h2>
+                        <div class="detail-group">
+                            <span class="label">Booking ID:</span>
+                            <span class="value">${data.bookingID}</span>
+                        </div>
+                        <div class="detail-group">
+                            <span class="label">Name:</span>
+                            <span class="value">${data.fullName}</span>
+                        </div>
+                        <div class="detail-group">
+                            <span class="label">Trip Dates:</span>
+                            <span class="value">${data.tripDetails.start} to ${data.tripDetails.end}</span>
+                        </div>
+                        <div class="detail-group">
+                            <span class="label">Route:</span>
+                            <span class="value">${data.tripDetails.from} → ${data.tripDetails.to}</span>
+                        </div>
+                        <h3>Travelers (${data.peopleCount})</h3>
+                        <div class="travelers-list">
+                            ${data.peopleDetails.map((person, index) => `
+                                <div class="traveler">
+                                    <span>${index + 1}.</span>
+                                    <div>${person.name}</div>
+                                    <div>Age: ${person.age}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="status-note">
+                            Need help? Contact us at ${data.whatsapp || data.mobile}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">Failed to fetch booking details. Please try again.</div>`;
+            }
+        }
+
+        // Handle Enter key
+        document.getElementById('bookingId').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') fetchBooking();
+        });
+    </script>
+</body>
+</html>
