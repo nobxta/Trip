@@ -8,7 +8,25 @@ import fs from "fs";
 import mongoose from "mongoose";
 import { Telegraf, Markup } from "telegraf";
 
-// 1️⃣ Connect to MongoDB
+// 1️⃣ Create Express app
+const app = express();
+
+// 2️⃣ Configure CORS to allow requests from your Vercel frontend
+app.use(
+  cors({
+    origin: "https://trip-y8iz.vercel.app", // Replace with your actual frontend URL
+  })
+);
+
+// 3️⃣ Body Parser (JSON)
+app.use(bodyParser.json());
+
+// 4️⃣ Example test route
+app.get("/api/hello", (req, res) => {
+  res.json({ message: "Hello from the backend!" });
+});
+
+// 5️⃣ Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -20,7 +38,7 @@ mongoose
     process.exit(1);
   });
 
-// 2️⃣ Define Mongoose Schema & Model
+// 6️⃣ Define Mongoose Schema & Model
 const registrationSchema = new mongoose.Schema({
   bookingID: Number,
   fullName: String,
@@ -47,7 +65,7 @@ const registrationSchema = new mongoose.Schema({
 });
 const Registration = mongoose.model("Registration", registrationSchema);
 
-// 3️⃣ Environment-based Trip Details
+// 7️⃣ Environment-based Trip Details
 const tripDetails = {
   tripStart: process.env.TRIP_START || "30/March/2025",
   tripEnd: process.env.TRIP_END || "2/Apr/2025",
@@ -55,10 +73,10 @@ const tripDetails = {
   toLocation: process.env.TO_LOCATION || "Nainital & Kainchi Dham",
 };
 
-const app = express();
+// 8️⃣ Initialize Telegram Bot
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
-// Ensure required environment variables
+// 9️⃣ Ensure required environment variables
 if (
   !process.env.SMTP_USER ||
   !process.env.SMTP_PASS ||
@@ -72,10 +90,7 @@ if (
   process.exit(1);
 }
 
-app.use(cors());
-app.use(bodyParser.json());
-
-// 4️⃣ Configure Multer for Aadhaar file uploads
+// 1️⃣0️⃣ Configure Multer for Aadhaar file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = "./uploads";
@@ -88,7 +103,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// 5️⃣ Configure Nodemailer (SMTP)
+// 1️⃣1️⃣ Configure Nodemailer (SMTP)
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: parseInt(process.env.SMTP_PORT, 10),
@@ -101,7 +116,7 @@ const transporter = nodemailer.createTransport({
 
 /**
  * Helper: Load an email template from /emails folder.
- * Optionally replace placeholders, e.g. {{fullName}}, {{bookingID}}.
+ * Optionally replace placeholders, e.g. {{fullName}}, {{bookingID}}, etc.
  */
 function loadEmailTemplate(filename, replacements = {}) {
   const filePath = `./emails/${filename}`;
@@ -114,7 +129,7 @@ function loadEmailTemplate(filename, replacements = {}) {
   return content;
 }
 
-// 6️⃣ Handle Trip Registration
+// 1️⃣2️⃣ Handle Trip Registration
 app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
   try {
     const {
@@ -129,14 +144,7 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
     } = req.body;
 
     // Basic validation
-    if (
-      !fullName ||
-      !email ||
-      !mobile ||
-      !paymentType ||
-      !txid ||
-      !peopleCount
-    ) {
+    if (!fullName || !email || !mobile || !paymentType || !txid || !peopleCount) {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
@@ -147,9 +155,7 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
         parsedPeople = JSON.parse(peopleDetails);
       } catch (err) {
         console.error("Failed to parse peopleDetails as JSON:", err);
-        return res
-          .status(400)
-          .json({ message: "Invalid peopleDetails JSON" });
+        return res.status(400).json({ message: "Invalid peopleDetails JSON" });
       }
     } else if (Array.isArray(peopleDetails)) {
       parsedPeople = peopleDetails;
@@ -253,7 +259,7 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
   }
 });
 
-// 7️⃣ Handle Telegram Accept/Reject + new /lock flows
+// 1️⃣3️⃣ Handle Telegram Bot Callbacks
 bot.on("callback_query", async (ctx) => {
   try {
     await ctx.answerCbQuery(); // short ack
@@ -262,7 +268,7 @@ bot.on("callback_query", async (ctx) => {
   }
 
   const data = ctx.callbackQuery.data; 
-  // e.g. "accept_12345678" or "reject_12345678" or "lockinfo_..." etc.
+  // e.g. "accept_12345678", "reject_12345678", etc.
 
   // A) ACCEPT
   if (data.startsWith("accept_")) {
@@ -373,25 +379,21 @@ bot.on("callback_query", async (ctx) => {
   }
 
   // ---------- NEW LOCK-RELATED CALLBACKS ----------
+  // "lockinfo_", "lockreminder_", "lockconfirm_"
 
-  // C) Show info for a locked user
   else if (data.startsWith("lockinfo_")) {
     const bookingID = data.split("_")[1];
     await handleLockInfo(ctx, bookingID);
-  }
-  // D) Send reminder to locked user
-  else if (data.startsWith("lockreminder_")) {
+  } else if (data.startsWith("lockreminder_")) {
     const bookingID = data.split("_")[1];
     await handleLockReminder(ctx, bookingID);
-  }
-  // E) Confirm from locked => "confirmed"
-  else if (data.startsWith("lockconfirm_")) {
+  } else if (data.startsWith("lockconfirm_")) {
     const bookingID = data.split("_")[1];
     await handleLockConfirm(ctx, bookingID);
   }
 });
 
-// Helper for LOCK flow #1: show locked user info + 2 inline buttons
+// Helper for LOCK flow #1: show locked user info
 async function handleLockInfo(ctx, bookingID) {
   try {
     const record = await Registration.findOne({ bookingID: Number(bookingID) });
@@ -536,8 +538,7 @@ async function handleLockConfirm(ctx, bookingID) {
   }
 }
 
-// 8️⃣ Telegram Bot Commands
-
+// 1️⃣4️⃣ Telegram Bot Commands
 // (A) /users - list minimal info about all
 bot.command("users", async (ctx) => {
   try {
@@ -571,7 +572,18 @@ bot.command("user", async (ctx) => {
       return ctx.reply("No user found for Booking ID " + bookingID);
     }
 
-    let msg = `<b>Booking ID:</b> ${record.bookingID}\n<b>Name:</b> ${record.fullName}\n<b>Email:</b> ${record.email}\n<b>Mobile:</b> ${record.mobile}\n<b>WhatsApp:</b> ${record.whatsapp}\n<b>Payment Type:</b> ₹${record.paymentType}\n<b>TXID:</b> ${record.txid}\n<b>People Count:</b> ${record.peopleCount}\n<b>Status:</b> ${record.status}\n\n<b>People Details:</b>\n`;
+    let msg =
+      `<b>Booking ID:</b> ${record.bookingID}\n` +
+      `<b>Name:</b> ${record.fullName}\n` +
+      `<b>Email:</b> ${record.email}\n` +
+      `<b>Mobile:</b> ${record.mobile}\n` +
+      `<b>WhatsApp:</b> ${record.whatsapp}\n` +
+      `<b>Payment Type:</b> ₹${record.paymentType}\n` +
+      `<b>TXID:</b> ${record.txid}\n` +
+      `<b>People Count:</b> ${record.peopleCount}\n` +
+      `<b>Status:</b> ${record.status}\n\n` +
+      `<b>People Details:</b>\n`;
+
     record.peopleDetails.forEach((p, idx) => {
       msg += `  ${idx + 1}. ${p.name} (Age: ${p.age})\n`;
     });
@@ -646,7 +658,7 @@ bot.command("lock", async (ctx) => {
   }
 });
 
-// 9️⃣ Health Check
+// 1️⃣5️⃣ Health Check Routes
 app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
@@ -654,7 +666,7 @@ app.get("/api/", (req, res) => {
   res.send("API is working!");
 });
 
-// 10️⃣ Start Server & Telegram Bot
+// 1️⃣6️⃣ Start Server & Telegram Bot
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 bot.launch();
