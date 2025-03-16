@@ -14,7 +14,9 @@ export default defineConfig({
         register: 'src/pages/submit.html',
         thankYou: 'src/pages/thank-you.html',
         terms: 'src/pages/terms.html',
-        tourDetails: 'src/pages/tour-details.html'
+        tourDetails: 'src/pages/tour-details.html',
+        privacy: 'src/pages/privacy.html'
+
       }
     }
   }
