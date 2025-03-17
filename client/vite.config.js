@@ -17,7 +17,7 @@ export default defineConfig({
         terms: path.resolve(__dirname, 'src/pages/terms.html'),
         tourDetails: path.resolve(__dirname, 'src/pages/tour-details.html'),
         privacy: path.resolve(__dirname, 'src/pages/privacy.html'),  // Ensure privacy.html is built
-        registrationCheck: path.resolve(__dirname, 'src/pages/registration_check.html')
+        registrationCheck: path.resolve(__dirname, 'src/pages/booking.html')
       }
     }
   }
