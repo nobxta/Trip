@@ -1,22 +1,23 @@
 import { defineConfig } from 'vite';
+import path from 'path';
 
 export default defineConfig({
-  root: './src/pages',  // New root directory
-  publicDir: '../../public',  // Points to public directory
+  root: './src/pages', // Ensures Vite starts from pages directory
+  publicDir: path.resolve(__dirname, 'public'), 
   server: {
     open: true,
   },
   build: {
-    outDir: '../../dist',  // Output directory
+    outDir: path.resolve(__dirname, 'dist'), // Ensures output is inside dist
     rollupOptions: {
       input: {
-        main: 'src/pages/index.html',
-        register: 'src/pages/submit.html',
-        thankYou: 'src/pages/thank-you.html',
-        terms: 'src/pages/terms.html',
-        tourDetails: 'src/pages/tour-details.html',
-        privacy: 'src/pages/privacy.html'
-
+        main: path.resolve(__dirname, 'src/pages/index.html'),
+        register: path.resolve(__dirname, 'src/pages/submit.html'),
+        thankYou: path.resolve(__dirname, 'src/pages/thank-you.html'),
+        terms: path.resolve(__dirname, 'src/pages/terms.html'),
+        tourDetails: path.resolve(__dirname, 'src/pages/tour-details.html'),
+        privacy: path.resolve(__dirname, 'src/pages/privacy.html'),  // Ensure privacy.html is built
+        registrationCheck: path.resolve(__dirname, 'src/pages/registration_check.html')
       }
     }
   }
