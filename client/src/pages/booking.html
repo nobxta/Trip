@@ -3,313 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trip Booking Status Check</title>
+    <title>Booking Status - GLA Travel Club</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #6366f1;
-            --confirmed: #22c55e;
-            --pending: #3b82f6;
-            --locked: #f59e0b;
-            --rejected: #ef4444;
-            --background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
-        }
-
-        body {
-            min-height: 100vh;
-            background: var(--background);
-            display: grid;
-            place-items: center;
-            padding: 1rem;
-            color: #1e293b;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 800px;
-            margin: auto;
-        }
-
-        .search-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 8px 32px rgba(99,102,241,0.1);
-            margin-bottom: 2rem;
-        }
-
-        .search-box {
+        .center-content {
             display: flex;
-            gap: 1rem;
-            position: relative;
-        }
-
-        #bookingId {
-            flex: 1;
-            padding: 1.25rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 1rem;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-
-        #bookingId:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
-        }
-
-        button {
-            padding: 1rem 2rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 0.75rem;
+            min-height: calc(100vh - 4rem);
         }
-
-        button:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .status-card {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            margin-top: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-left: 4px solid var(--status-color);
-        }
-
-        .status-card.confirmed { --status-color: var(--confirmed); }
-        .status-card.pending { --status-color: var(--pending); }
-        .status-card.locked { --status-color: var(--locked); }
-        .status-card.rejected { --status-color: var(--rejected); }
-
-        .status-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .detail-item {
-            margin: 1rem 0;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .travelers-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        .traveler-badge {
-            background: #f1f5f9;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.9rem;
-        }
-
-        .error-message {
-            background: #fee2e2;
-            color: #dc2626;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            margin-top: 2rem;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .loading {
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(99,102,241,0.2);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 640px) {
-            .search-box {
-                flex-direction: column;
-            }
-            
-            button {
-                width: 100%;
-                justify-content: center;
-            }
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="search-container">
-            <h1 style="margin-bottom: 1.5rem; text-align: center;">Check Trip Booking Status</h1>
-            <div class="search-box">
-                <input type="text" 
-                       id="bookingId"
-                       placeholder="Enter 8-digit Booking ID"
-                       inputmode="numeric"
-                       pattern="\d{8}"
-                       maxlength="8">
-                <button onclick="fetchBooking()">
-                    <span class="btn-text">Search</span>
-                    <div class="loading" style="display: none;"></div>
+<body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="/" class="text-2xl font-bold text-indigo-600">
+                    GLA Travel Club
+                </a>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="/submit.html" class="text-gray-700 hover:text-indigo-600">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Home
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
+
+            <!-- Mobile Menu -->
+            <div id="mobileMenu" class="mobile-menu md:hidden bg-white">
+                <div class="px-4 py-2 border-t">
+                    <a href="/submit.html" class="block py-2 text-gray-700 hover:text-indigo-600">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Home
+                    </a>
+                </div>
+            </div>
         </div>
-        <div id="result"></div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="center-content pt-16 pb-8 px-4">
+        <div class="w-full max-w-md">
+            <!-- Search Card -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h1 class="text-2xl font-bold text-center mb-6">Check Booking Status</h1>
+                
+                <div class="flex flex-col space-y-4">
+                    <div class="relative">
+                        <input type="text" 
+                               id="bookingId"
+                               placeholder="Enter 8-digit Booking ID"
+                               class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 text-center"
+                               inputmode="numeric"
+                               pattern="\d{8}"
+                               maxlength="8">
+                        <button onclick="showInfo()" 
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-600">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                    </div>
+                    <button onclick="fetchBooking()" 
+                            class="w-full px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                        Search Booking
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Container -->
+            <div id="result" class="mt-6"></div>
+        </div>
+    </main>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold">About Booking ID</h3>
+                    <button onclick="hideInfo()" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <p class="text-gray-600">
+                    Your 8-digit Booking ID can be found in:
+                    <ul class="list-disc pl-5 mt-2 space-y-2 text-gray-600">
+                        <li>Registration confirmation email</li>
+                        <li>SMS sent to your mobile</li>
+                        <li>Payment receipt (Transaction ID)</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.style.maxHeight;
+            mobileMenu.style.maxHeight = isOpen ? '0' : '200px';
+        });
+
+        // Info Modal Functions
+        function showInfo() {
+            document.getElementById('infoModal').classList.remove('hidden');
+        }
+
+        function hideInfo() {
+            document.getElementById('infoModal').classList.add('hidden');
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            if (event.target.id === 'infoModal') {
+                hideInfo();
+            }
+        }
+
+        // API Integration
         async function fetchBooking() {
             const bookingId = document.getElementById('bookingId').value.trim();
             const resultDiv = document.getElementById('result');
-            const button = document.querySelector('button');
-            const btnText = document.querySelector('.btn-text');
-            const loading = document.querySelector('.loading');
 
             try {
-                // Show loading state
-                btnText.style.display = 'none';
-                loading.style.display = 'inline-block';
-                resultDiv.innerHTML = '';
-
-                // Validate input
-                if (!bookingId || !/^\d{8}$/.test(bookingId)) {
-                    throw new Error('Please enter a valid 8-digit Booking ID');
-                }
-
-                // Fetch from backend
-                const response = await fetch(`https://trip-180x.onrender.com/api/booking/${bookingId}`);
-
-                // Handle 404
-                if (response.status === 404) {
-                    resultDiv.innerHTML = `
-                        <div class="status-card">
-                            <div class="error-message">
-                                <i class="fas fa-search"></i>
-                                <div>
-                                    <h3>Booking Not Found</h3>
-                                    <p>No booking found for ID: ${bookingId}</p>
-                                </div>
-                            </div>
+                // Show loading
+                resultDiv.innerHTML = `
+                    <div class="bg-white rounded-xl p-6 text-center animate-pulse">
+                        <div class="h-8 bg-gray-200 rounded w-1/3 mx-auto mb-4"></div>
+                        <div class="space-y-4">
+                            <div class="h-4 bg-gray-200 rounded w-3/4 mx-auto"></div>
+                            <div class="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
                         </div>
-                    `;
-                    return;
+                    </div>
+                `;
+
+                if (!/^\d{8}$/.test(bookingId)) {
+                    throw new Error('Please enter a valid 8-digit booking ID');
                 }
 
-                // Handle other errors
+                // API Call
+                const response = await fetch(`https://trip-180x.onrender.com/api/booking/${bookingId}`);
+                
                 if (!response.ok) {
-                    const error = await response.json().catch(() => null);
-                    throw new Error(error?.message || `Server error: ${response.status}`);
+                    const error = await response.json();
+                    throw new Error(error.message || 'Failed to fetch booking details');
                 }
 
-                // Process data
                 const data = await response.json();
                 
-                // Validate response
-                if (!data.bookingID || !data.status) {
-                    throw new Error('Invalid booking data received');
-                }
+                // Process MongoDB date
+                const createdAt = new Date(data.createdAt);
+                data.createdAt = createdAt;
 
-                // Create status card
                 resultDiv.innerHTML = createStatusCard(data);
 
             } catch (error) {
                 resultDiv.innerHTML = `
-                    <div class="error-message">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <div>${error.message}</div>
+                    <div class="bg-white rounded-xl p-6 text-center">
+                        <div class="text-red-500 text-4xl mb-4">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h2 class="text-xl font-bold mb-2">${error.message}</h2>
+                        <p class="text-gray-600">Please check the booking ID and try again</p>
                     </div>
                 `;
-                console.error('Error:', error);
-            } finally {
-                btnText.style.display = 'inline-block';
-                loading.style.display = 'none';
             }
         }
 
         function createStatusCard(booking) {
-            const statusClass = booking.status.toLowerCase();
-            const createdAt = new Date(booking.createdAt).toLocaleDateString('en-US', {
+            const statusColors = {
+                confirmed: 'bg-green-100 text-green-800',
+                pending: 'bg-yellow-100 text-yellow-800',
+                locked: 'bg-orange-100 text-orange-800',
+                rejected: 'bg-red-100 text-red-800'
+            };
+
+            const totalAmount = booking.paymentType * booking.peopleCount;
+            const formattedDate = booking.createdAt.toLocaleDateString('en-IN', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
                 hour: '2-digit',
-                minute: '2-digit'
+                minute: '2-digit',
+                hour12: true
             });
 
             return `
-                <div class="status-card ${statusClass}">
-                    <div class="status-header">
-                        <h2>${booking.status.toUpperCase()}</h2>
-                        <p>Booking #${booking.bookingID}</p>
-                    </div>
-
-                    <div class="detail-item">
-                        <i class="fas fa-user"></i>
-                        <div>
-                            <h3>${booking.fullName}</h3>
-                            <p>${booking.peopleCount} traveler${booking.peopleCount > 1 ? 's' : ''}</p>
-                        </div>
-                    </div>
-
-                    <div class="detail-item">
-                        <i class="fas fa-envelope"></i>
-                        <div>${booking.email}</div>
-                    </div>
-
-                    <div class="detail-item">
-                        <i class="fas fa-phone"></i>
-                        <div>${booking.mobile}</div>
-                    </div>
-
-                    <div class="detail-item">
-                        <i class="fas fa-indian-rupee-sign"></i>
-                        <div>
-                            <strong>₹${booking.paymentType} per person</strong>
-                            <p>Transaction ID: ${booking.txid}</p>
-                        </div>
-                    </div>
-
-                    <div class="travelers-container">
-                        ${booking.peopleDetails.map(person => `
-                            <div class="traveler-badge">
-                                <i class="fas fa-user-tag"></i>
-                                ${person.name} (Age ${person.age})
+                <div class="bg-white rounded-xl shadow-md mt-4">
+                    <div class="p-6 border-b">
+                        <div class="flex flex-col md:flex-row justify-between items-start gap-4">
+                            <div>
+                                <span class="${statusColors[booking.status]} px-3 py-1 rounded-full text-sm">
+                                    ${booking.status.toUpperCase()}
+                                </span>
+                                <h2 class="text-xl font-bold mt-2">Booking #${booking.bookingID}</h2>
                             </div>
-                        `).join('')}
+                            <div class="text-sm text-gray-500">
+                                <i class="fas fa-clock"></i> ${formattedDate}
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="detail-item">
-                        <i class="fas fa-clock"></i>
-                        <div>Created: ${createdAt}</div>
+                    <div class="p-6 grid gap-4">
+                        <div class="space-y-2">
+                            <h3 class="font-semibold">Personal Details</h3>
+                            <p>${booking.fullName}</p>
+                            <p class="text-gray-600">${booking.peopleCount} traveler${booking.peopleCount > 1 ? 's' : ''}</p>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="font-semibold">Contact Information</h3>
+                            <p>${booking.mobile}</p>
+                            ${booking.whatsapp ? `<p>WhatsApp: ${booking.whatsapp}</p>` : ''}
+                            <p class="text-gray-600">${booking.email}</p>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="font-semibold">Payment Details</h3>
+                            <p>₹${booking.paymentType} per person</p>
+                            <p class="text-gray-600">TXID: ${booking.txid}</p>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="font-semibold">Travelers</h3>
+                            ${booking.peopleDetails.map(p => `
+                                <div class="bg-gray-50 p-3 rounded">
+                                    <i class="fas fa-user text-gray-500 mr-2"></i>
+                                    ${p.name} (Age ${p.age})
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="pt-4 border-t">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold">Total Amount:</span>
+                                <span class="text-xl text-indigo-600 font-bold">
+                                    ₹${totalAmount.toLocaleString('en-IN')}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             `;
         }
+
+        // Enter key support
+        document.getElementById('bookingId').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') fetchBooking();
+        });
     </script>
 </body>
 </html>
