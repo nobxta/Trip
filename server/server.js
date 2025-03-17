@@ -260,15 +260,24 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
 });
 
 // 1️⃣3️⃣ Handle Telegram Bot Callbacks
+const webhookUrl = process.env.WEBHOOK_URL; // Make sure this is set in your .env
+
+bot.telegram.setWebhook(`${webhookUrl}/telegram-webhook`);
+
+// Express route to handle Telegram bot updates
+app.post("/telegram-webhook", (req, res) => {
+  bot.handleUpdate(req.body);
+  res.sendStatus(200);
+});
+
 bot.on("callback_query", async (ctx) => {
   try {
-    await ctx.answerCbQuery(); // short ack
+    await ctx.answerCbQuery(); // short acknowledgment
   } catch (err) {
     console.error("Error answering callback:", err);
   }
 
-  const data = ctx.callbackQuery.data; 
-  // e.g. "accept_12345678", "reject_12345678", etc.
+  const data = ctx.callbackQuery.data;
 
   // A) ACCEPT
   if (data.startsWith("accept_")) {
@@ -668,5 +677,29 @@ app.get("/api/", (req, res) => {
 
 // 1️⃣6️⃣ Start Server & Telegram Bot
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-bot.launch();
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+
+  // Register webhook when the server starts
+  setWebhook();
+});
+
+// Function to register the Telegram webhook
+const setWebhook = async () => {
+  try {
+    const response = await fetch(
+      `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: `${process.env.WEBHOOK_URL}/telegram-webhook`,
+        }),
+      }
+    );
+    const data = await response.json();
+    console.log("✅ Webhook Set:", data);
+  } catch (err) {
+    console.error("❌ Error setting webhook:", err);
+  }
+};
