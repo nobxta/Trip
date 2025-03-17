@@ -129,17 +129,51 @@ function loadEmailTemplate(filename, replacements = {}) {
   return content;
 }
 
-// Add to server.js
+// Fetch booking by ID
 app.get('/api/booking/:id', async (req, res) => {
-    try {
-        const booking = await Registration.findOne({ bookingID: Number(req.params.id) });
-        if (!booking) {
-            return res.status(404).json({ message: 'Booking not found' });
-        }
-        res.json(booking);
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+  try {
+    const booking = await Registration.findOne({ 
+      bookingID: Number(req.params.id) 
+    }).lean();
+
+    if (!booking) {
+      return res.status(404).json({ 
+        error: "Booking not found",
+        statusCode: 404
+      });
     }
+
+    // Remove MongoDB-specific fields
+    delete booking._id;
+    delete booking.__v;
+
+    // Format response explicitly
+    const response = {
+      bookingID: booking.bookingID,
+      fullName: booking.fullName,
+      email: booking.email,
+      mobile: booking.mobile,
+      whatsapp: booking.whatsapp,
+      paymentType: booking.paymentType,
+      txid: booking.txid,
+      peopleCount: booking.peopleCount,
+      peopleDetails: booking.peopleDetails.map(p => ({
+        name: p.name,
+        age: p.age
+      })),
+      status: booking.status,
+      createdAt: booking.createdAt
+    };
+
+    res.json(response);
+
+  } catch (error) {
+    res.status(500).json({ 
+      error: "Server error",
+      details: error.message,
+      statusCode: 500
+    });
+  }
 });
 
 // 1️⃣2️⃣ Handle Trip Registration
