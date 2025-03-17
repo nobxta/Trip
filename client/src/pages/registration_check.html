@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Status</title>
+    <title>Booking Status Checker</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        :root {
+            --confirmed: #4CAF50;
+            --pending: #2196F3;
+            --rejected: #F44336;
+            --locked: #FFC107;
+        }
+
         * {
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
-            background: #f0f2f5;
-            margin: 0;
-            padding: 20px;
+            background: #f8f9fa;
             min-height: 100vh;
+            padding: 2rem;
         }
 
         .container {
@@ -23,172 +31,312 @@
             margin: 0 auto;
         }
 
-        .search-box {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
+        .search-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
         }
 
-        input[type="text"] {
+        .search-box {
+            display: flex;
+            gap: 1rem;
+        }
+
+        #bookingId {
             flex: 1;
-            padding: 12px;
-            border: 2px solid #ddd;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        #bookingId:focus {
+            outline: none;
+            border-color: var(--pending);
         }
 
         button {
-            padding: 12px 24px;
-            background: #2196F3;
+            padding: 1rem 2rem;
+            background: var(--pending);
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            font-weight: 600;
         }
 
         button:hover {
             background: #1976D2;
+            transform: translateY(-1px);
         }
 
         .status-card {
             background: white;
             border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
         }
 
-        .status-card.confirmed { border-left: 6px solid #4CAF50; }
-        .status-card.pending { border-left: 6px solid #2196F3; }
-        .status-card.rejected { border-left: 6px solid #F44336; }
-        .status-card.locked { border-left: 6px solid #FFEB3B; }
+        .status-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+            background: var(--status-color, #999);
+        }
+
+        .status-card.confirmed::before { background: var(--confirmed); }
+        .status-card.pending::before { background: var(--pending); }
+        .status-card.rejected::before { background: var(--rejected); }
+        .status-card.locked::before { background: var(--locked); }
 
         .status-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
             border-bottom: 1px solid #eee;
         }
 
         .status-title {
-            font-size: 24px;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
         }
 
         .booking-id {
+            font-size: 0.9rem;
             color: #666;
-            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
         .detail-item {
-            margin: 12px 0;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.75rem;
         }
 
         .detail-item i {
-            width: 20px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: #666;
         }
 
-        .travelers {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 15px 0;
+        .travelers-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
         }
 
         .traveler-badge {
-            background: #f0f2f5;
-            padding: 6px 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.5rem 1rem;
             border-radius: 20px;
-            font-size: 14px;
+            margin: 0.25rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .timestamp {
+            text-align: right;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 1rem;
         }
 
         .error-message {
-            color: #F44336;
-            padding: 20px;
-            text-align: center;
+            background: #ffe3e6;
+            color: #dc3545;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: var(--pending);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            .search-box {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="search-box">
-            <input type="text" id="bookingId" placeholder="Enter Booking ID">
-            <button onclick="fetchBooking()">Search</button>
+        <div class="search-container">
+            <h1 style="margin-bottom: 1.5rem; color: #333;">Check Booking Status</h1>
+            <div class="search-box">
+                <input type="text" 
+                       id="bookingId" 
+                       placeholder="Enter your 8-digit Booking ID"
+                       inputmode="numeric"
+                       pattern="[0-9]{8}"
+                       maxlength="8">
+                <button onclick="fetchBooking()">
+                    <span class="search-text">Search</span>
+                    <span class="loading" style="display: none;"></span>
+                </button>
+            </div>
         </div>
         <div id="result"></div>
     </div>
 
     <script>
         async function fetchBooking() {
-            const bookingId = document.getElementById('bookingId').value;
+            const bookingId = document.getElementById('bookingId').value.trim();
             const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = '<div class="status-card">Loading...</div>';
+            const button = document.querySelector('button');
+            const searchText = document.querySelector('.search-text');
+            const loading = document.querySelector('.loading');
 
             try {
-                const response = await fetch(`/api/booking/${bookingId}`);
-                const data = await response.json();
+                // Show loading state
+                searchText.style.display = 'none';
+                loading.style.display = 'inline-block';
+                resultDiv.innerHTML = '';
 
-                if (!response.ok) {
-                    throw new Error(data.message || 'Booking not found');
+                // Validate input
+                if (!bookingId || !/^\d{8}$/.test(bookingId)) {
+                    throw new Error('Please enter a valid 8-digit Booking ID');
                 }
 
+                const response = await fetch(`/api/booking/${bookingId}`);
+                
+                // Handle HTTP errors
+                if (!response.ok) {
+                    const error = await response.json().catch(() => null);
+                    throw new Error(error?.message || `Error ${response.status}: ${response.statusText}`);
+                }
+
+                // Verify content type
+                const contentType = response.headers.get('content-type');
+                if (!contentType?.includes('application/json')) {
+                    throw new Error('Invalid response format from server');
+                }
+
+                const data = await response.json();
+
+                // Validate response structure
+                if (!data.bookingID || !data.status) {
+                    throw new Error('Invalid booking data received');
+                }
+
+                // Display results
                 resultDiv.innerHTML = createStatusCard(data);
             } catch (error) {
-                resultDiv.innerHTML = `<div class="error-message">${error.message}</div>`;
+                resultDiv.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>${error.message}</div>
+                    </div>
+                `;
+                console.error('Fetch error:', error);
+            } finally {
+                // Reset button state
+                searchText.style.display = 'inline-block';
+                loading.style.display = 'none';
             }
         }
 
         function createStatusCard(booking) {
             const statusClass = booking.status.toLowerCase();
             const createdAt = new Date(booking.createdAt).toLocaleDateString('en-US', {
-                year: 'numeric', month: 'long', day: 'numeric'
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
             });
 
             return `
                 <div class="status-card ${statusClass}">
                     <div class="status-header">
-                        <span class="status-title">${booking.status.toUpperCase()}</span>
-                        <span class="booking-id">Booking #${booking.bookingID}</span>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <i class="fas fa-user"></i>
-                        <span>${booking.fullName} (${booking.peopleCount} people)</span>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <i class="fas fa-envelope"></i>
-                        <span>${booking.email}</span>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <i class="fas fa-phone"></i>
-                        <span>${booking.mobile}</span>
-                    </div>
-                    
-                    <div class="detail-item">
-                        <i class="fas fa-rupee-sign"></i>
-                        <span>Paid: ₹${booking.paymentType} (TXID: ${booking.txid})</span>
+                        <div class="status-title">${booking.status.toUpperCase()}</div>
+                        <div class="booking-id">Booking #${booking.bookingID}</div>
                     </div>
 
-                    <div class="travelers">
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <div>
+                                <strong>${booking.fullName}</strong><br>
+                                <small>${booking.peopleCount} traveler${booking.peopleCount > 1 ? 's' : ''}</small>
+                            </div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>${booking.email}</div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-phone"></i>
+                            <div>${booking.mobile}</div>
+                        </div>
+
+                        <div class="detail-item">
+                            <i class="fas fa-indian-rupee-sign"></i>
+                            <div>
+                                ₹${booking.paymentType} per person<br>
+                                <small>TXID: ${booking.txid}</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="travelers-container">
+                        <h4 style="margin-bottom: 0.5rem; color: #666;">Travelers</h4>
                         ${booking.peopleDetails.map(p => `
                             <div class="traveler-badge">
-                                ${p.name} (${p.age})
+                                <i class="fas fa-user-tag"></i>
+                                ${p.name} (Age ${p.age})
                             </div>
                         `).join('')}
                     </div>
 
-                    <div class="detail-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Created: ${createdAt}</span>
+                    <div class="timestamp">
+                        <i class="fas fa-clock"></i>
+                        Created: ${createdAt}
                     </div>
                 </div>
             `;
