@@ -129,6 +129,19 @@ function loadEmailTemplate(filename, replacements = {}) {
   return content;
 }
 
+// Add to server.js
+app.get('/api/booking/:id', async (req, res) => {
+    try {
+        const booking = await Registration.findOne({ bookingID: Number(req.params.id) });
+        if (!booking) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+        res.json(booking);
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
 // 1️⃣2️⃣ Handle Trip Registration
 app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
   try {
