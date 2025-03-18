@@ -732,7 +732,7 @@ app.listen(PORT, () => {
 });
 
 // Function to register the Telegram webhook
-const setWebhook = async (retryCount = 0) => {
+  const setWebhook = async () => {
   try {
     const response = await fetch(
       `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook`,
@@ -751,11 +751,10 @@ const setWebhook = async (retryCount = 0) => {
     } else {
       console.error("❌ Webhook Error:", data);
 
-      // If rate limit error, retry after suggested time
       if (data.error_code === 429 && data.parameters?.retry_after) {
         const waitTime = data.parameters.retry_after * 1000; // Convert to milliseconds
         console.warn(`⚠️ Too many requests. Retrying after ${data.parameters.retry_after} seconds...`);
-        setTimeout(() => setWebhook(retryCount + 1), waitTime);
+        setTimeout(setWebhook, waitTime);
       } else {
         console.error("❌ Webhook could not be set. Check your bot token and webhook URL.");
       }
@@ -764,3 +763,6 @@ const setWebhook = async (retryCount = 0) => {
     console.error("❌ Error setting webhook:", err);
   }
 };
+
+// Run Webhook on Startup
+setWebhook();
