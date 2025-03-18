@@ -722,17 +722,10 @@ app.get("/api/", (req, res) => {
   res.send("API is working!");
 });
 
-// 1️⃣6️⃣ Start Server & Telegram Bot
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
-
-  // Register webhook when the server starts
-  setWebhook();
-});
 
 // Function to register the Telegram webhook
-  const setWebhook = async () => {
+const setWebhook = async (retryCount = 0) => {
   try {
     const response = await fetch(
       `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/setWebhook`,
@@ -754,7 +747,9 @@ app.listen(PORT, () => {
       if (data.error_code === 429 && data.parameters?.retry_after) {
         const waitTime = data.parameters.retry_after * 1000; // Convert to milliseconds
         console.warn(`⚠️ Too many requests. Retrying after ${data.parameters.retry_after} seconds...`);
-        setTimeout(setWebhook, waitTime);
+
+        // Wait before retrying
+        setTimeout(() => setWebhook(retryCount + 1), waitTime);
       } else {
         console.error("❌ Webhook could not be set. Check your bot token and webhook URL.");
       }
@@ -764,5 +759,31 @@ app.listen(PORT, () => {
   }
 };
 
-// Run Webhook on Startup
-setWebhook();
+// Function to keep Render service alive
+const keepAlive = () => {
+  setInterval(() => {
+    fetch(process.env.WEBHOOK_URL)
+      .then(() => console.log("✅ Keep-alive ping successful"))
+      .catch((err) => console.error("⚠️ Keep-alive failed:", err.message));
+  }, 5 * 60 * 1000); // Ping every 5 minutes
+};
+
+// Prevent crashes from unhandled errors
+process.on("uncaughtException", (err) => {
+  console.error("❌ Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("❌ Unhandled Rejection:", err);
+});
+
+// Start the server
+app.listen(PORT, async () => {
+  console.log(`✅ Server running on port ${PORT}`);
+
+  // Register webhook on startup
+  await setWebhook();
+
+  // Keep server alive
+  keepAlive();
+});
