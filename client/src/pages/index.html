@@ -1,568 +1,908 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLA Travel Club | Premium Student Travel Experiences</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Montserrat', sans-serif; }
-        h1, h2, h3, h4, h5 { font-family: 'Poppins', sans-serif; }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeInUp { animation: fadeInUp 1s ease-out forwards; }
-        
-        .hero-bg { 
-            background: linear-gradient(135deg, #4A90E2 0%, #9013FE 100%);
-            position: relative;
-            overflow: hidden;
-        }
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0" />
+  <title>Ghummkars | Premium Student Travel Experiences</title>
 
-        .circles li {
-            position: absolute;
-            display: block;
-            list-style: none;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.15);
-            animation: animate 25s linear infinite;
-            bottom: -150px;
-            pointer-events: none;
-        }
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-        @keyframes animate {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; border-radius: 0; }
-            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; border-radius: 50%; }
-        }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
 
-        .circles li:nth-child(1) { left: 25%; width: 80px; height: 80px; animation-delay: 0s; }
-        .circles li:nth-child(2) { left: 10%; animation-delay: 2s; animation-duration: 12s; }
-        .circles li:nth-child(3) { left: 70%; animation-delay: 4s; }
-        .circles li:nth-child(4) { left: 40%; width: 60px; height: 60px; animation-delay: 0s; animation-duration: 18s; }
-        .circles li:nth-child(5) { left: 65%; animation-delay: 0s; }
-        .circles li:nth-child(6) { left: 75%; width: 110px; height: 110px; animation-delay: 3s; }
-        .circles li:nth-child(7) { left: 35%; width: 150px; height: 150px; animation-delay: 7s; }
-        .circles li:nth-child(8) { left: 50%; animation-delay: 15s; animation-duration: 45s; }
-        .circles li:nth-child(9) { left: 20%; animation-delay: 2s; animation-duration: 35s; }
-        .circles li:nth-child(10) { left: 85%; width: 150px; height: 150px; animation-delay: 0s; animation-duration: 11s; }
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
 
-        .trip-card:hover .trip-image { transform: scale(1.05); }
-        .trip-image { transition: transform 0.3s ease; }
-        .premium-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-family: 'Poppins', sans-serif;
+    }
 
-        .nav-link::after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 2px;
-            background: #4F46E5;
-            transition: width 0.3s;
-        }
-        .nav-link:hover::after { width: 100%; }
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fadeInUp {
+      animation: fadeInUp 1s ease-out forwards;
+    }
 
-        .mobile-menu-transition {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-    </style>
+    .hero-bg {
+      background: linear-gradient(135deg, #4A90E2 0%, #9013FE 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background Animation */
+    .circles li {
+      position: absolute;
+      display: block;
+      list-style: none;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      animation: animate 25s linear infinite;
+      bottom: -150px;
+      pointer-events: none;
+    }
+    @keyframes animate {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+      }
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+      }
+    }
+    .circles li:nth-child(1) {
+      left: 25%;
+      width: 80px;
+      height: 80px;
+      animation-delay: 0s;
+    }
+    .circles li:nth-child(2) {
+      left: 10%;
+      animation-delay: 2s;
+      animation-duration: 12s;
+    }
+    .circles li:nth-child(3) {
+      left: 70%;
+      animation-delay: 4s;
+    }
+    .circles li:nth-child(4) {
+      left: 40%;
+      width: 60px;
+      height: 60px;
+      animation-delay: 0s;
+      animation-duration: 18s;
+    }
+    .circles li:nth-child(5) {
+      left: 65%;
+      animation-delay: 0s;
+    }
+    .circles li:nth-child(6) {
+      left: 75%;
+      width: 110px;
+      height: 110px;
+      animation-delay: 3s;
+    }
+    .circles li:nth-child(7) {
+      left: 35%;
+      width: 150px;
+      height: 150px;
+      animation-delay: 7s;
+    }
+    .circles li:nth-child(8) {
+      left: 50%;
+      animation-delay: 15s;
+      animation-duration: 45s;
+    }
+    .circles li:nth-child(9) {
+      left: 20%;
+      animation-delay: 2s;
+      animation-duration: 35s;
+    }
+    .circles li:nth-child(10) {
+      left: 85%;
+      width: 150px;
+      height: 150px;
+      animation-delay: 0s;
+      animation-duration: 11s;
+    }
+
+    /* Custom Styles */
+    .trip-card:hover .trip-image {
+      transform: scale(1.05);
+    }
+    .trip-image {
+      transition: transform 0.3s ease;
+    }
+    .premium-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+    /* Enable smooth scrolling for horizontal lists */
+    .scroll-smooth {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
+
 <body class="bg-gray-50 text-gray-800">
-<nav class="bg-white/90 backdrop-blur-md shadow-sm fixed w-full z-50 border-b border-gray-100">
+  <!-- Navigation -->
+  <nav
+    class="bg-white/90 backdrop-blur-md shadow-sm fixed w-full z-50 border-b border-gray-100"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
-            <a href="#" class="flex items-center space-x-2">
-                <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
-                    <i class="fa-solid fa-map-marked-alt text-white text-sm"></i>
-                </div>
-                <span class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600">
-                    GLA Travel
-                </span>
-            </a>
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <a
+          href="#"
+          class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-600 hover:to-blue-500 transition-all"
+        >
+          Ghummkars
+        </a>
 
-            <div class="hidden md:flex items-center space-x-6">
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#trips" class="nav-link px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors">Trips</a>
-                    <a href="#features" class="nav-link px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors">Features</a>
-                    <a href="#faq" class="nav-link px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors">FAQ</a>
-                    <a href="/terms.html" class="nav-link px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors">Terms</a>
-                    <a href="/booking.html" class="nav-link px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors">Track</a>
-                </div>
-                <a href="/submit.html" class="ml-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-600 hover:to-blue-500 text-white px-6 py-2.5 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-[1.03] flex items-center">
-                    <i class="fa-solid fa-user-plus mr-2 text-sm"></i>
-                    Register
-                </a>
-            </div>
-
-            <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
+        <!-- Desktop Navigation -->
+        <div class="hidden md:flex items-center space-x-6">
+          <div class="hidden md:flex items-center space-x-4">
+            <a
+              href="#trips"
+              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
+              >Trips</a
+            >
+            <a
+              href="#features"
+              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
+              >Features</a
+            >
+            <a
+              href="#faq"
+              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
+              >FAQ</a
+            >
+            <a
+              href="/terms.html"
+              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
+              >Terms</a
+            >
+            <a
+              href="/booking.html"
+              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
+              >Track Booking</a
+            >
+          </div>
+          <a
+            href="/submit.html"
+            class="ml-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-600 hover:to-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+          >
+            Register
+          </a>
         </div>
-    </div>
 
-    <div id="mobile-menu" class="md:hidden fixed inset-0 z-50 mobile-menu-transition translate-x-full">
-        <div class="absolute inset-0 bg-black/20 backdrop-blur-sm" id="menu-backdrop"></div>
-        <div class="relative bg-white w-80 max-w-full h-full ml-auto shadow-2xl overflow-y-auto">
-            <div class="px-6 py-4">
-                <div class="flex justify-between items-center mb-8">
-                    <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
-                            <i class="fa-solid fa-map-marked-alt text-white text-sm"></i>
-                        </div>
-                        <span class="text-xl font-bold text-gray-800">GLA Travel</span>
-                    </div>
-                    <button id="close-menu-btn" class="p-2 rounded-lg text-gray-600 hover:bg-gray-100">
-                        <i class="fa-solid fa-times text-xl"></i>
-                    </button>
-                </div>
-                
-                <nav class="space-y-2">
-                    <a href="#trips" class="flex items-center px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
-                        <i class="fa-solid fa-map-marked text-indigo-600 w-5 mr-3"></i>
-                        Trips
-                    </a>
-                    <a href="#features" class="flex items-center px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
-                        <i class="fa-solid fa-star text-indigo-600 w-5 mr-3"></i>
-                        Features
-                    </a>
-                    <a href="#faq" class="flex items-center px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
-                        <i class="fa-solid fa-question-circle text-indigo-600 w-5 mr-3"></i>
-                        FAQ
-                    </a>
-                    <a href="/terms.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
-                        <i class="fa-solid fa-file-contract text-indigo-600 w-5 mr-3"></i>
-                        Terms
-                    </a>
-                    <a href="/booking.html" class="flex items-center px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
-                        <i class="fa-solid fa-location-arrow text-indigo-600 w-5 mr-3"></i>
-                        Track Booking
-                    </a>
-                </nav>
-
-                <div class="mt-8 border-t border-gray-100 pt-6">
-                    <a href="/submit.html" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all flex items-center justify-center">
-                        <i class="fa-solid fa-user-plus mr-2"></i>
-                        Register Now
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const closeMenuBtn = document.getElementById('close-menu-btn');
-        const menuBackdrop = document.getElementById('menu-backdrop');
-        let isMenuOpen = false;
-
-        // Menu toggle function
-        const toggleMenu = (show) => {
-            isMenuOpen = show;
-            mobileMenu.classList.toggle('translate-x-full', !show);
-            document.body.style.overflow = show ? 'hidden' : 'auto';
-        };
-
-        // Initialize menu state
-        toggleMenu(false);
-
-        // Event listeners
-        mobileMenuBtn?.addEventListener('click', () => toggleMenu(true));
-        closeMenuBtn?.addEventListener('click', () => toggleMenu(false));
-        menuBackdrop?.addEventListener('click', () => toggleMenu(false));
-
-        // Window resize handler
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768 && isMenuOpen) {
-                toggleMenu(false);
-            }
-        });
-
-        // ESC key handler
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isMenuOpen) {
-                toggleMenu(false);
-            }
-        });
-
-        // Smooth scroll with hash management
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    window.history.replaceState(null, null, ' ');
-                    toggleMenu(false);
-                }
-            });
-        });
-
-        // Active link detection
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-link');
-        
-        const updateActiveLinks = () => {
-            const scrollPos = window.scrollY + 100;
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                
-                if (scrollPos >= sectionTop && scrollPos < (sectionTop + sectionHeight)) {
-                    const id = section.getAttribute('id');
-                    navLinks.forEach(link => {
-                        link.classList.toggle('text-indigo-600', link.getAttribute('href') === `#${id}`);
-                    });
-                }
-            });
-        };
-
-        // Scroll handler with throttle
-        let isScrolling;
-        window.addEventListener('scroll', () => {
-            window.clearTimeout(isScrolling);
-            isScrolling = setTimeout(updateActiveLinks, 100);
-        });
-
-        // Initial check
-        updateActiveLinks();
-    });
-</script>
-
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center pt-24 hero-bg">
-        <!-- Animated Background -->
-        <ul class="circles">
-            <li></li><li></li><li></li><li></li><li></li>
-            <li></li><li></li><li></li><li></li><li></li>
-        </ul>
-
-        <div class="relative z-10 text-center px-6">
-            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 animate-fadeInUp">
-                Adventure Awaits,<br> Memories Guaranteed!
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto animate-fadeInUp" style="animation-delay: 0.3s;">
-                Premium group travel experiences crafted exclusively for college students
-            </p>
-            <a href="#trips" class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-100 transition-all animate-fadeInUp" style="animation-delay: 0.6s;">
-                Explore Upcoming Trips
-            </a>
-        </div>
-    </section>
-
-    <!-- Upcoming Trips -->
-    <section id="trips" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-12">Upcoming Adventures</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                
-                <!-- Manali -->
-                <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
-                    <img src="https://i.ytimg.com/vi/7NKk41YVWyA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDNPJFJDXtCyVjPDtzARd1lcUe_4Q" 
-                        alt="Manali" 
-                        class="trip-image w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-2">Manali Mountain Escape</h3>
-                        <p class="text-gray-600">Snow adventures, hot springs, and mountain trekking</p>
-                    </div>
-                </div>
-
-                <!-- Jaipur -->
-                <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
-                    <img src="https://s7ap1.scene7.com/is/image/incredibleindia/hawa-mahal-jaipur-rajasthan-city-1-hero?qlt=82&ts=1726660605161" 
-                        alt="Jaipur" 
-                        class="trip-image w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-2">Royal Jaipur Expedition</h3>
-                        <p class="text-gray-600">Discover Rajasthan's cultural heritage</p>
-                    </div>
-                </div>
-
-                <!-- Mussoorie -->
-                <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
-                    <img src="https://s3.india.com/wp-content/uploads/2024/04/Feature-Image_-Mussoorie-13.jpg?impolicy=Medium_Widthonly&w=350&h=263" 
-                        alt="Mussoorie" 
-                        class="trip-image w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-2">Mussoorie Mountain Retreat</h3>
-                        <p class="text-gray-600">Scenic views and colonial architecture</p>
-                    </div>
-                </div>
-
-                <!-- Rishikesh -->
-                <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
-                    <img src="https://s3.india.com/wp-content/uploads/2024/11/rishikesh-history.jpg" 
-                        alt="Rishikesh" 
-                        class="trip-image w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-2">Rishikesh Adventure Camp</h3>
-                        <p class="text-gray-600">River rafting and yoga retreats</p>
-                    </div>
-                </div>
-
-                <!-- Goa -->
-                <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
-                    <img src="https://c.ndtvimg.com/gws/ms/trip-to-goa-3-day-itinerary/assets/2.webp" 
-                        alt="Goa" 
-                        class="trip-image w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-2">Goa Beach Experience</h3>
-                        <p class="text-gray-600">Sun, sand, and coastal culture</p>
-                    </div>
-                </div>
-
-                <!-- Shimla -->
-                <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
-                    <img src="https://t3.ftcdn.net/jpg/04/09/57/16/360_F_409571615_KEsl0FOjDX23T805YsCUVqJyhjy6iRJt.jpg" 
-                        alt="Shimla" 
-                        class="trip-image w-full h-56 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-semibold mb-2">Shimla Winter Wonderland</h3>
-                        <p class="text-gray-600">Snow-filled mountain adventures</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    
-<!-- Key Features -->
-<section id="features" class="py-20 bg-gradient-to-b from-white to-blue-50">
-  <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center mb-12">Why Choose Us</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          
-          <div class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all">
-              <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i class="fa-solid fa-indian-rupee-sign text-3xl text-indigo-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold mb-4">Budget Friendly</h3>
-              <p class="text-gray-600">Special student pricing with flexible payment options</p>
-          </div>
-
-          <div class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all">
-              <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i class="fa-solid fa-shield-heart text-3xl text-indigo-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold mb-4">Safe Travel</h3>
-              <p class="text-gray-600">24/7 support, verified accommodations, and insured trips</p>
-          </div>
-
-          <div class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all">
-              <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i class="fa-solid fa-route text-3xl text-indigo-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold mb-4">Curated Experiences</h3>
-              <p class="text-gray-600">Expertly planned itineraries with local experiences</p>
-          </div>
-
-          <div class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all">
-              <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i class="fa-solid fa-utensils text-3xl text-indigo-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold mb-4">Meals Included</h3>
-              <p class="text-gray-600">Enjoy breakfast, lunch, and dinner without extra costs</p>
-          </div>
-
-          <div class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all">
-              <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i class="fa-solid fa-bus text-3xl text-indigo-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold mb-4">Comfortable Transport</h3>
-              <p class="text-gray-600">Travel in AC buses with experienced drivers and onboard entertainment</p>
-          </div>
-
-          <div class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all">
-              <div class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i class="fa-solid fa-headset text-3xl text-indigo-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold mb-4">24/7 Support</h3>
-              <p class="text-gray-600">Our team is always available to assist you during the trip</p>
-          </div>
-
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobile-menu-btn"
+          class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
       </div>
-  </div>
-</section>
+    </div>
 
+    <!-- Mobile Menu -->
+    <div
+      id="mobile-menu"
+      class="md:hidden absolute top-16 w-full bg-white shadow-xl origin-top transform scale-y-0 transition-transform duration-300 ease-out"
+    >
+      <div class="px-4 pt-2 pb-6 space-y-4">
+        <a
+          href="#trips"
+          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
+          >Trips</a
+        >
+        <a
+          href="#features"
+          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
+          >Features</a
+        >
+        <a
+          href="#faq"
+          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
+          >FAQ</a
+        >
+        <a
+          href="/terms.html"
+          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
+          >Terms</a
+        >
+        <a
+          href="/booking.html"
+          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
+          >Track Booking</a
+        >
+        <a
+          href="/submit.html"
+          class="block mt-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-center px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all"
+        >
+          Register
+        </a>
+      </div>
+    </div>
+  </nav>
 
-    <!-- FAQ Section -->
-    <section id="faq" class="py-20 bg-white">
-        <div class="max-w-4xl mx-auto px-6">
-            <h2 class="text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-            <div class="space-y-4">
-                
-                <!-- FAQ Items -->
-                <details class="group bg-white shadow-lg p-6 rounded-xl">
-                  <summary class="flex justify-between items-center cursor-pointer">
-                      <h3 class="text-lg font-semibold">How can I join the trip?</h3>
-                      <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
-                      <i class="fa-solid fa-minus text-gray-500 hidden group-open:block"></i>
-                  </summary>
-                  <p class="mt-4 text-gray-600">
-                      Joining the trip is simple! Just follow these steps:
-                      <ul class="list-disc pl-6 space-y-2">
-                          <li><strong>Step 1:</strong> Visit our website and go to the registration page.</li>
-                          <li><strong>Step 2:</strong> Fill up the required details, including your name, contact info, and preferred trip.</li>
-                          <li><strong>Step 3:</strong> Choose your payment option and complete the payment.</li>
-                          <li><strong>Step 4:</strong> Once your payment is confirmed, you’re all set! You will receive a confirmation email and be added to the WhatsApp group for trip updates.</li>
-                      </ul>
-                      That’s it! Now just pack your bags and get ready for an amazing experience. 🚀
-                  </p>
-              </details>
-              
-              <details class="group bg-white shadow-lg p-6 rounded-xl">
-                <summary class="flex justify-between items-center cursor-pointer">
-                    <h3 class="text-lg font-semibold">What if I can’t book right now because I don’t have enough money?</h3>
-                    <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
-                    <i class="fa-solid fa-minus text-gray-500 hidden group-open:block"></i>
-                </summary>
-                <p class="mt-4 text-gray-600">
-                    No worries! You can still secure your spot by paying a <strong>Seat Lock Fee</strong>. This allows you to temporarily reserve your seat while you arrange the remaining amount. 
-                    <br><br>
-                    You will need to pay the **full trip fee at least 10 days before the trip** to confirm your participation. If you do not complete the payment within this period, your seat will be given to another participant.
-                </p>
-            </details>
-            
-                
-                <details class="group bg-white shadow-lg p-6 rounded-xl">
-                  <summary class="flex justify-between items-center cursor-pointer">
-                      <h3 class="text-lg font-semibold">What should I bring with me?</h3>
-                      <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
-                      <i class="fa-solid fa-minus text-gray-500 hidden group-open:block"></i>
-                  </summary>
-                  <p class="mt-4 text-gray-600">
-                      You are free to take whatever you need for the trip, but some essentials include:
-                      <ul class="list-disc pl-6 space-y-2">
-                          <li><strong>Cash:</strong> Carry enough money depending on the activities you wish to do at the destination.</li>
-                          <li><strong>Government-issued ID:</strong> Aadhar card, passport, or driver's license is mandatory for verification.</li>
-                          <li><strong>Medicines:</strong> Basic medicines for headache, fever, or body pain.</li>
-                          <li><strong>Power Bank:</strong> Keep your phone charged during travel.</li>
-                          <li><strong>Comfortable Clothing:</strong> Pack as per the weather and activities planned.</li>
-                      </ul>
-                  </p>
-              </details>
-              <details class="group bg-white shadow-lg p-6 rounded-xl">
-                <summary class="flex justify-between items-center cursor-pointer">
-                    <h3 class="text-lg font-semibold">How will I receive trip updates and notifications?</h3>
-                    <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
-                    <i class="fa-solid fa-minus text-gray-500 hidden group-open:block"></i>
-                </summary>
-                <p class="mt-4 text-gray-600">
-                    After registering for the trip via our website, you will receive all updates and notifications via **email and WhatsApp**. We will add all participants to a dedicated WhatsApp group where important announcements, schedule updates, and reminders will be shared.
-                </p>
-            </details>
-                <!-- Contact Card -->
-                <div class="mt-12 text-center bg-indigo-50 p-8 rounded-xl">
-                    <h3 class="text-2xl font-bold mb-4">Still Have Questions?</h3>
-                    <p class="text-gray-600 mb-6">Our support team is ready to assist you!</p>
-                    <a href="https://wa.me/918384826414" target="_blank" class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors">
-                      Contact Support on WhatsApp
-                  </a>
-                </div>
-            </div>
+  <!-- Hero Section -->
+  <section
+    class="relative min-h-screen flex items-center justify-center pt-24 hero-bg"
+  >
+    <!-- Animated Background -->
+    <ul class="circles">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+
+    <div class="relative z-10 text-center px-6">
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 animate-fadeInUp">
+        Adventure Awaits,<br />
+        Memories Guaranteed!
+      </h1>
+      <p
+        class="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto animate-fadeInUp"
+        style="animation-delay: 0.3s;"
+      >
+        Premium group travel experiences crafted exclusively for college
+        students
+      </p>
+      <a
+        href="#trips"
+        class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-100 transition-all animate-fadeInUp"
+        style="animation-delay: 0.6s;"
+      >
+        Explore Upcoming Trips
+      </a>
+    </div>
+  </section>
+
+  <!-- Upcoming Trips -->
+  <section id="trips" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Upcoming Adventures</h2>
+
+      <!-- Desktop View: Grid -->
+      <div class="hidden md:grid md:grid-cols-3 gap-8">
+        <!-- Manali -->
+        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+          <img
+            src="https://i.ytimg.com/vi/7NKk41YVWyA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDNPJFJDXtCyVjPDtzARd1lcUe_4Q"
+            alt="Manali"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Manali Mountain Escape
+            </h3>
+            <p class="text-gray-600">
+              Snow adventures, hot springs, and mountain trekking
+            </p>
+          </div>
         </div>
-    </section>
 
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-                <h3 class="text-xl font-bold mb-4">GLA Travel Club</h3>
-                <p class="text-gray-400">Creating unforgettable student travel experiences since 2023</p>
-            </div>
-            <div>
-                <h3 class="text-xl font-bold mb-4">Quick Links</h3>
-                <ul class="space-y-2">
-                    <li><a href="#trips" class="text-gray-400 hover:text-white">Upcoming Trips</a></li>
-                    <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
-                    <li><a href="#faq" class="text-gray-400 hover:text-white">FAQ</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-xl font-bold mb-4">Legal</h3>
-                <ul class="space-y-2">
-                    <li><a href="/terms.html" class="text-gray-400 hover:text-white">Terms of Service</a></li>
-                    <li><a href="/privacy.html" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-xl font-bold mb-4">Connect</h3>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-gray-400 hover:text-white">
-                        <i class="fab fa-instagram text-2xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white">
-                        <i class="fab fa-facebook text-2xl"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white">
-                        <i class="fab fa-whatsapp text-2xl"></i>
-                    </a>
-                </div>
-            </div>
+        <!-- Jaipur -->
+        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+          <img
+            src="https://s7ap1.scene7.com/is/image/incredibleindia/hawa-mahal-jaipur-rajasthan-city-1-hero?qlt=82&ts=1726660605161"
+            alt="Jaipur"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">Royal Jaipur Expedition</h3>
+            <p class="text-gray-600">
+              Discover Rajasthan's cultural heritage
+            </p>
+          </div>
         </div>
-        <div class="mt-12 pt-8 border-t border-gray-800 text-center">
-            <p class="text-gray-400">&copy; 2025 GLA Travel Club. All rights reserved.</p>
+
+        <!-- Mussoorie -->
+        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+          <img
+            src="https://s3.india.com/wp-content/uploads/2024/04/Feature-Image_-Mussoorie-13.jpg?impolicy=Medium_Widthonly&w=350&h=263"
+            alt="Mussoorie"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Mussoorie Mountain Retreat
+            </h3>
+            <p class="text-gray-600">
+              Scenic views and colonial architecture
+            </p>
+          </div>
         </div>
-    </footer>
 
-    <!-- Scripts -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Mobile Menu
-            const menuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
+        <!-- Rishikesh -->
+        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden md:col-span-1 hidden"></div>
 
-            menuBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                mobileMenu.classList.toggle('hidden');
-            });
+        <!-- Goa -->
+        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden md:col-span-1 hidden"></div>
 
-            document.addEventListener('click', (e) => {
-                if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-                    mobileMenu.classList.add('hidden');
-                }
-            });
+        <!-- Shimla -->
+        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden md:col-span-1 hidden"></div>
+      </div>
 
-            // Smooth Scroll
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
+      <!-- The above 3 placeholders for Rishikesh, Goa, Shimla are hidden in this layout.
+           We'll rely on the mobile/horizontal slider for them or copy them if we want to show all 6 in desktop grid.
+           If you want all 6 trips in the desktop grid, uncomment and adapt below:
 
-            // FAQ Accordions
-            document.querySelectorAll('details').forEach(detail => {
-                detail.addEventListener('toggle', () => {
-                    if (detail.open) {
-                        document.querySelectorAll('details').forEach(other => {
-                            if (other !== detail && other.open) other.open = false;
-                        });
-                    }
-                });
-            });
+        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+          <img
+            src="https://s3.india.com/wp-content/uploads/2024/11/rishikesh-history.jpg"
+            alt="Rishikesh"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Rishikesh Adventure Camp
+            </h3>
+            <p class="text-gray-600">River rafting and yoga retreats</p>
+          </div>
+        </div>
+
+        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+          <img
+            src="https://c.ndtvimg.com/gws/ms/trip-to-goa-3-day-itinerary/assets/2.webp"
+            alt="Goa"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Goa Beach Experience
+            </h3>
+            <p class="text-gray-600">Sun, sand, and coastal culture</p>
+          </div>
+        </div>
+
+        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+          <img
+            src="https://t3.ftcdn.net/jpg/04/09/57/16/360_F_409571615_KEsl0FOjDX23T805YsCUVqJyhjy6iRJt.jpg"
+            alt="Shimla"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Shimla Winter Wonderland
+            </h3>
+            <p class="text-gray-600">
+              Snow-filled mountain adventures
+            </p>
+          </div>
+        </div>-->
+
+      <!-- Mobile View: Horizontal slider -->
+      <div class="md:hidden flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-6 mt-6">
+        <!-- Manali -->
+        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+          <img
+            src="https://i.ytimg.com/vi/7NKk41YVWyA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDNPJFJDXtCyVjPDtzARd1lcUe_4Q"
+            alt="Manali"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Manali Mountain Escape
+            </h3>
+            <p class="text-gray-600">
+              Snow adventures, hot springs, and mountain trekking
+            </p>
+          </div>
+        </div>
+        <!-- Jaipur -->
+        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+          <img
+            src="https://s7ap1.scene7.com/is/image/incredibleindia/hawa-mahal-jaipur-rajasthan-city-1-hero?qlt=82&ts=1726660605161"
+            alt="Jaipur"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">Royal Jaipur Expedition</h3>
+            <p class="text-gray-600">
+              Discover Rajasthan's cultural heritage
+            </p>
+          </div>
+        </div>
+        <!-- Mussoorie -->
+        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+          <img
+            src="https://s3.india.com/wp-content/uploads/2024/04/Feature-Image_-Mussoorie-13.jpg?impolicy=Medium_Widthonly&w=350&h=263"
+            alt="Mussoorie"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Mussoorie Mountain Retreat
+            </h3>
+            <p class="text-gray-600">
+              Scenic views and colonial architecture
+            </p>
+          </div>
+        </div>
+        <!-- Rishikesh -->
+        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+          <img
+            src="https://s3.india.com/wp-content/uploads/2024/11/rishikesh-history.jpg"
+            alt="Rishikesh"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Rishikesh Adventure Camp
+            </h3>
+            <p class="text-gray-600">River rafting and yoga retreats</p>
+          </div>
+        </div>
+        <!-- Goa -->
+        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+          <img
+            src="https://c.ndtvimg.com/gws/ms/trip-to-goa-3-day-itinerary/assets/2.webp"
+            alt="Goa"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Goa Beach Experience
+            </h3>
+            <p class="text-gray-600">Sun, sand, and coastal culture</p>
+          </div>
+        </div>
+        <!-- Shimla -->
+        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+          <img
+            src="https://t3.ftcdn.net/jpg/04/09/57/16/360_F_409571615_KEsl0FOjDX23T805YsCUVqJyhjy6iRJt.jpg"
+            alt="Shimla"
+            class="trip-image w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold mb-2">
+              Shimla Winter Wonderland
+            </h3>
+            <p class="text-gray-600">
+              Snow-filled mountain adventures
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Key Features -->
+  <section id="features" class="py-20 bg-gradient-to-b from-white to-blue-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Why Choose Us</h2>
+      <!-- 2 columns for small boxes -->
+      <div class="grid grid-cols-2 gap-8">
+        <div
+          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
+        >
+          <div
+            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="fa-solid fa-indian-rupee-sign text-3xl text-indigo-600"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Budget Friendly</h3>
+          <p class="text-gray-600">
+            Special student pricing with flexible payment options
+          </p>
+        </div>
+
+        <div
+          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
+        >
+          <div
+            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="fa-solid fa-shield-heart text-3xl text-indigo-600"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Safe Travel</h3>
+          <p class="text-gray-600">
+            24/7 support, verified accommodations, and insured trips
+          </p>
+        </div>
+
+        <div
+          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
+        >
+          <div
+            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="fa-solid fa-route text-3xl text-indigo-600"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Curated Experiences</h3>
+          <p class="text-gray-600">
+            Expertly planned itineraries with local experiences
+          </p>
+        </div>
+
+        <div
+          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
+        >
+          <div
+            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="fa-solid fa-utensils text-3xl text-indigo-600"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Meals Included</h3>
+          <p class="text-gray-600">
+            Enjoy breakfast, lunch, and dinner without extra costs
+          </p>
+        </div>
+
+        <div
+          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
+        >
+          <div
+            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="fa-solid fa-bus text-3xl text-indigo-600"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Comfortable Transport</h3>
+          <p class="text-gray-600">
+            Travel in AC buses with experienced drivers and onboard
+            entertainment
+          </p>
+        </div>
+
+        <div
+          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
+        >
+          <div
+            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="fa-solid fa-headset text-3xl text-indigo-600"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">24/7 Support</h3>
+          <p class="text-gray-600">
+            Our team is always available to assist you during the trip
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">
+        Frequently Asked Questions
+      </h2>
+      <div class="space-y-4">
+        <!-- FAQ Items -->
+        <details class="group bg-white shadow-lg p-6 rounded-xl">
+          <summary
+            class="flex justify-between items-center cursor-pointer"
+          >
+            <h3 class="text-lg font-semibold">How can I join the trip?</h3>
+            <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
+            <i
+              class="fa-solid fa-minus text-gray-500 hidden group-open:block"
+            ></i>
+          </summary>
+          <p class="mt-4 text-gray-600">
+            Joining the trip is simple! Just follow these steps:
+          <ul class="list-disc pl-6 space-y-2 mt-2">
+            <li>
+              <strong>Step 1:</strong> Visit our website and go to the
+              registration page.
+            </li>
+            <li>
+              <strong>Step 2:</strong> Fill up the required details,
+              including your name, contact info, and preferred trip.
+            </li>
+            <li>
+              <strong>Step 3:</strong> Choose your payment option and
+              complete the payment.
+            </li>
+            <li>
+              <strong>Step 4:</strong> Once your payment is confirmed,
+              you’re all set! You will receive a confirmation email and
+              be added to the WhatsApp group for trip updates.
+            </li>
+          </ul>
+            That’s it! Now just pack your bags and get ready for an
+            amazing experience. 🚀
+          </p>
+        </details>
+
+        <details class="group bg-white shadow-lg p-6 rounded-xl">
+          <summary
+            class="flex justify-between items-center cursor-pointer"
+          >
+            <h3 class="text-lg font-semibold">
+              What if I can’t book right now because I don’t have enough
+              money?
+            </h3>
+            <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
+            <i
+              class="fa-solid fa-minus text-gray-500 hidden group-open:block"
+            ></i>
+          </summary>
+          <p class="mt-4 text-gray-600">
+            No worries! You can still secure your spot by paying a
+            <strong>Seat Lock Fee</strong>. This allows you to temporarily
+            reserve your seat while you arrange the remaining amount.
+            <br /><br />
+            You will need to pay the
+            <strong>full trip fee at least 10 days before the trip</strong>
+            to confirm your participation. If you do not complete the
+            payment within this period, your seat will be given to
+            another participant.
+          </p>
+        </details>
+
+        <details class="group bg-white shadow-lg p-6 rounded-xl">
+          <summary
+            class="flex justify-between items-center cursor-pointer"
+          >
+            <h3 class="text-lg font-semibold">What should I bring with me?</h3>
+            <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
+            <i
+              class="fa-solid fa-minus text-gray-500 hidden group-open:block"
+            ></i>
+          </summary>
+          <p class="mt-4 text-gray-600">
+            You are free to take whatever you need for the trip, but some
+            essentials include:
+          <ul class="list-disc pl-6 space-y-2 mt-2">
+            <li>
+              <strong>Cash:</strong> Carry enough money depending on the
+              activities you wish to do at the destination.
+            </li>
+            <li>
+              <strong>Government-issued ID:</strong> Aadhar card,
+              passport, or driver's license is mandatory for verification.
+            </li>
+            <li>
+              <strong>Medicines:</strong> Basic medicines for headache,
+              fever, or body pain.
+            </li>
+            <li>
+              <strong>Power Bank:</strong> Keep your phone charged during
+              travel.
+            </li>
+            <li>
+              <strong>Comfortable Clothing:</strong> Pack as per the
+              weather and activities planned.
+            </li>
+          </ul>
+          </p>
+        </details>
+
+        <details class="group bg-white shadow-lg p-6 rounded-xl">
+          <summary
+            class="flex justify-between items-center cursor-pointer"
+          >
+            <h3 class="text-lg font-semibold">
+              How will I receive trip updates and notifications?
+            </h3>
+            <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
+            <i
+              class="fa-solid fa-minus text-gray-500 hidden group-open:block"
+            ></i>
+          </summary>
+          <p class="mt-4 text-gray-600">
+            After registering for the trip via our website, you will
+            receive all updates and notifications via
+            <strong>email and WhatsApp</strong>. We will add all
+            participants to a dedicated WhatsApp group where important
+            announcements, schedule updates, and reminders will be
+            shared.
+          </p>
+        </details>
+
+        <!-- Contact Card -->
+        <div class="mt-12 text-center bg-indigo-50 p-8 rounded-xl">
+          <h3 class="text-2xl font-bold mb-4">Still Have Questions?</h3>
+          <p class="text-gray-600 mb-6">
+            Our support team is ready to assist you!
+          </p>
+          <a
+            href="https://wa.me/918384826414"
+            target="_blank"
+            class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors"
+          >
+            Contact Support on WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div>
+        <h3 class="text-xl font-bold mb-4">Ghummkars</h3>
+        <p class="text-gray-400">
+          Creating unforgettable student travel experiences since 2024
+        </p>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li>
+            <a href="#trips" class="text-gray-400 hover:text-white"
+              >Upcoming Trips</a
+            >
+          </li>
+          <li>
+            <a href="#features" class="text-gray-400 hover:text-white"
+              >Features</a
+            >
+          </li>
+          <li>
+            <a href="#faq" class="text-gray-400 hover:text-white">FAQ</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold mb-4">Legal</h3>
+        <ul class="space-y-2">
+          <li>
+            <a href="/terms.html" class="text-gray-400 hover:text-white"
+              >Terms of Service</a
+            >
+          </li>
+          <li>
+            <a href="/privacy.html" class="text-gray-400 hover:text-white"
+              >Privacy Policy</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold mb-4">Connect</h3>
+        <div class="flex space-x-4">
+          <a href="https://www.instagram.com/yashtrek/" class="text-gray-400 hover:text-white">
+            <i class="fab fa-instagram text-2xl"></i>
+          </a>
+          <a href="#" class="text-gray-400 hover:text-white">
+            <i class="fab fa-facebook text-2xl"></i>
+          </a>
+          <a href="https://wa.me/918384826414" class="text-gray-400 hover:text-white">
+            <i class="fab fa-whatsapp text-2xl"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="mt-12 pt-8 border-t border-gray-800 text-center">
+      <p class="text-gray-400">
+        &copy; 2025 Ghummkars. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Consolidated Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mobile Menu
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      let menuOpen = false;
+
+      // Toggle mobile menu on button click
+      mobileMenuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('scale-y-0', !menuOpen);
+        mobileMenu.classList.toggle('scale-y-100', menuOpen);
+        // Animate hamburger icon
+        mobileMenuBtn
+          .querySelector('svg')
+          .classList.toggle('rotate-90', menuOpen);
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (
+          !mobileMenu.contains(e.target) &&
+          !mobileMenuBtn.contains(e.target)
+        ) {
+          mobileMenu.classList.add('scale-y-0');
+          mobileMenu.classList.remove('scale-y-100');
+          mobileMenuBtn
+            .querySelector('svg')
+            .classList.remove('rotate-90');
+          menuOpen = false;
+        }
+      });
+
+      // Close menu when clicking a link
+      mobileMenu.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('scale-y-0');
+          mobileMenu.classList.remove('scale-y-100');
+          mobileMenuBtn
+            .querySelector('svg')
+            .classList.remove('rotate-90');
+          menuOpen = false;
         });
-    </script>
+      });
+
+      // Smooth Scroll
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth',
+          });
+        });
+      });
+
+      // FAQ Accordions (only one open at a time)
+      document.querySelectorAll('details').forEach((detail) => {
+        detail.addEventListener('toggle', () => {
+          if (detail.open) {
+            // close any other open detail
+            document.querySelectorAll('details').forEach((other) => {
+              if (other !== detail && other.open) other.open = false;
+            });
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
