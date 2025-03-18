@@ -67,8 +67,8 @@ const Registration = mongoose.model("Registration", registrationSchema);
 
 // 7️⃣ Environment-based Trip Details
 const tripDetails = {
-  tripStart: process.env.TRIP_START || "30/March/2025",
-  tripEnd: process.env.TRIP_END || "2/Apr/2025",
+  tripStart: process.env.TRIP_START || "28/March/2025",
+  tripEnd: process.env.TRIP_END || "1/Apr/2025",
   fromLocation: process.env.FROM_LOCATION || "Mathura",
   toLocation: process.env.TO_LOCATION || "Nainital & Kainchi Dham",
 };
@@ -287,7 +287,7 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
 <b>Email:</b> ${email}
 <b>Mobile:</b> ${mobile}
 <b>PaymentType (pp):</b> ₹${paymentType}
-<b>TXID:</b> ${txid}
+<b>UPI TXID:</b> ${txid}
 <b>Total People:</b> ${peopleCount}
     `;
     bot.telegram.sendMessage(process.env.TELEGRAM_CHAT_ID, telegramMsg, {
