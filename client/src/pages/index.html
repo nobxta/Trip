@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ghummkars | Premium Student Travel Experiences</title>
 
   <!-- Tailwind CSS -->
@@ -12,11 +10,7 @@
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@400;500&display=swap"
     rel="stylesheet"
@@ -26,21 +20,30 @@
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-/>
+  />
 
   <style>
+    /* Base Fonts */
     body {
       font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
     }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5 {
+    h1, h2, h3, h4, h5 {
       font-family: 'Poppins', sans-serif;
     }
 
-    /* Animations */
+    /* Keyframe Animations */
+    @keyframes fadeSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -51,17 +54,22 @@
         transform: translateY(0);
       }
     }
+
+    .animate-fadeSlideDown {
+      animation: fadeSlideDown 1s ease-out forwards;
+    }
     .animate-fadeInUp {
       animation: fadeInUp 1s ease-out forwards;
     }
 
+    /* Hero Section Background */
     .hero-bg {
       background: linear-gradient(135deg, #4A90E2 0%, #9013FE 100%);
       position: relative;
       overflow: hidden;
     }
 
-    /* Background Animation */
+    /* Animated Circles (Background) */
     .circles li {
       position: absolute;
       display: block;
@@ -85,6 +93,7 @@
         border-radius: 50%;
       }
     }
+    /* Positions & sizes of circles */
     .circles li:nth-child(1) {
       left: 25%;
       width: 80px;
@@ -141,20 +150,39 @@
       animation-duration: 11s;
     }
 
-    /* Custom Styles */
+    /* Trip Card Image Hover */
     .trip-card:hover .trip-image {
       transform: scale(1.05);
     }
     .trip-image {
       transition: transform 0.3s ease;
     }
-    .premium-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+    /* Revised Card Style for "Why Choose Us"  */
+    .feature-card {
+      background-color: #fff;
+      border-radius: 0.75rem; /* Rounded corners */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+      transition: transform 0.3s ease;
     }
-    /* Enable smooth scrolling for horizontal lists */
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Keep smaller icon size and heading size for a polished look */
+    .feature-icon {
+      width: 3rem;
+      height: 3rem;
+      background-color: #EBF4FF; /* light indigo background */
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    /* Horizontal Smooth Scroll */
     .scroll-smooth {
       scroll-behavior: smooth;
     }
@@ -163,9 +191,7 @@
 
 <body class="bg-gray-50 text-gray-800">
   <!-- Navigation -->
-  <nav
-    class="bg-white/90 backdrop-blur-md shadow-sm fixed w-full z-50 border-b border-gray-100"
-  >
+  <nav class="bg-white/90 backdrop-blur-md shadow-sm fixed w-full z-50 border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <!-- Logo -->
@@ -277,9 +303,7 @@
   </nav>
 
   <!-- Hero Section -->
-  <section
-    class="relative min-h-screen flex items-center justify-center pt-24 hero-bg"
-  >
+  <section class="relative min-h-screen flex items-center justify-center pt-24 hero-bg">
     <!-- Animated Background -->
     <ul class="circles">
       <li></li>
@@ -295,53 +319,52 @@
     </ul>
 
     <div class="relative z-10 text-center px-6">
-      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 animate-fadeInUp">
-        Adventure Awaits,<br />
-        Memories Guaranteed!
-      </h1>
-      <p
-        class="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto animate-fadeInUp"
+      <!-- Fade + Slide heading -->
+      <h1
+        class="text-5xl md:text-7xl font-bold text-white mb-6 mx-auto animate-fadeSlideDown"
         style="animation-delay: 0.3s;"
       >
-        Premium group travel experiences crafted exclusively for college
-        students
+        Adventure Awaits, Memories Guaranteed!
+      </h1>
+      <!-- Sub-text -->
+      <p
+        class="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto animate-fadeInUp"
+        style="animation-delay: 0.6s;"
+      >
+        Premium group travel experiences crafted exclusively for college students
       </p>
       <a
         href="#trips"
         class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-100 transition-all animate-fadeInUp"
-        style="animation-delay: 0.6s;"
+        style="animation-delay: 0.9s;"
       >
         Explore Upcoming Trips
       </a>
     </div>
   </section>
 
-  <!-- Upcoming Trips -->
-  <section id="trips" class="py-20 bg-white">
+<!-- Upcoming Trips -->
+<section id="trips" class="py-20 bg-[#ffffff]">
     <div class="max-w-7xl mx-auto px-6">
       <h2 class="text-4xl font-bold text-center mb-12">Upcoming Adventures</h2>
-
+  
       <!-- Desktop View: Grid -->
       <div class="hidden md:grid md:grid-cols-3 gap-8">
         <!-- Manali -->
-        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
           <img
             src="https://i.ytimg.com/vi/7NKk41YVWyA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDNPJFJDXtCyVjPDtzARd1lcUe_4Q"
             alt="Manali"
             class="trip-image w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Manali Mountain Escape
-            </h3>
-            <p class="text-gray-600">
-              Snow adventures, hot springs, and mountain trekking
-            </p>
+            <h3 class="text-2xl font-semibold mb-2">Manali Mountain Escape</h3>
+            <p class="text-gray-600">Snow adventures, hot springs, and mountain trekking</p>
           </div>
         </div>
-
+  
         <!-- Jaipur -->
-        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
           <img
             src="https://s7ap1.scene7.com/is/image/incredibleindia/hawa-mahal-jaipur-rajasthan-city-1-hero?qlt=82&ts=1726660605161"
             alt="Jaipur"
@@ -349,181 +372,143 @@
           />
           <div class="p-6">
             <h3 class="text-2xl font-semibold mb-2">Royal Jaipur Expedition</h3>
-            <p class="text-gray-600">
-              Discover Rajasthan's cultural heritage
-            </p>
+            <p class="text-gray-600">Discover Rajasthan's cultural heritage</p>
           </div>
         </div>
-
+  
         <!-- Mussoorie -->
-        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
           <img
             src="https://s3.india.com/wp-content/uploads/2024/04/Feature-Image_-Mussoorie-13.jpg?impolicy=Medium_Widthonly&w=350&h=263"
             alt="Mussoorie"
             class="trip-image w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Mussoorie Mountain Retreat
-            </h3>
-            <p class="text-gray-600">
-              Scenic views and colonial architecture
-            </p>
+            <h3 class="text-2xl font-semibold mb-2">Mussoorie Mountain Retreat</h3>
+            <p class="text-gray-600">Scenic views and colonial architecture</p>
           </div>
         </div>
-
+  
         <!-- Rishikesh -->
-        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden md:col-span-1 hidden"></div>
-
-        <!-- Goa -->
-        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden md:col-span-1 hidden"></div>
-
-        <!-- Shimla -->
-        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden md:col-span-1 hidden"></div>
-      </div>
-
-      <!-- The above 3 placeholders for Rishikesh, Goa, Shimla are hidden in this layout.
-           We'll rely on the mobile/horizontal slider for them or copy them if we want to show all 6 in desktop grid.
-           If you want all 6 trips in the desktop grid, uncomment and adapt below:
-
-        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
           <img
             src="https://s3.india.com/wp-content/uploads/2024/11/rishikesh-history.jpg"
             alt="Rishikesh"
             class="trip-image w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Rishikesh Adventure Camp
-            </h3>
+            <h3 class="text-2xl font-semibold mb-2">Rishikesh Adventure Camp</h3>
             <p class="text-gray-600">River rafting and yoga retreats</p>
           </div>
         </div>
-
-        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+  
+        <!-- Goa -->
+        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
           <img
             src="https://c.ndtvimg.com/gws/ms/trip-to-goa-3-day-itinerary/assets/2.webp"
             alt="Goa"
             class="trip-image w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Goa Beach Experience
-            </h3>
+            <h3 class="text-2xl font-semibold mb-2">Goa Beach Experience</h3>
             <p class="text-gray-600">Sun, sand, and coastal culture</p>
           </div>
         </div>
-
-        <div class="trip-card bg-white rounded-xl shadow-2xl overflow-hidden">
+  
+        <!-- Shimla -->
+        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
           <img
             src="https://t3.ftcdn.net/jpg/04/09/57/16/360_F_409571615_KEsl0FOjDX23T805YsCUVqJyhjy6iRJt.jpg"
             alt="Shimla"
             class="trip-image w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Shimla Winter Wonderland
-            </h3>
-            <p class="text-gray-600">
-              Snow-filled mountain adventures
-            </p>
+            <h3 class="text-2xl font-semibold mb-2">Shimla Winter Wonderland</h3>
+            <p class="text-gray-600">Snow-filled mountain adventures</p>
           </div>
-        </div>-->
-
+        </div>
+      </div>
+  
       <!-- Mobile View: Horizontal slider -->
-      <div class="md:hidden flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-6 mt-6">
+      <div class="md:hidden flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-6 mt-6 pb-4">
         <!-- Manali -->
-        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
           <img
             src="https://i.ytimg.com/vi/7NKk41YVWyA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDNPJFJDXtCyVjPDtzARd1lcUe_4Q"
             alt="Manali"
-            class="trip-image w-full h-56 object-cover"
+            class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Manali Mountain Escape
-            </h3>
-            <p class="text-gray-600">
-              Snow adventures, hot springs, and mountain trekking
-            </p>
+            <h3 class="text-2xl font-semibold mb-2">Manali Mountain Escape</h3>
+            <p class="text-gray-600">Snow adventures, hot springs, and mountain trekking</p>
           </div>
         </div>
+  
         <!-- Jaipur -->
-        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
           <img
             src="https://s7ap1.scene7.com/is/image/incredibleindia/hawa-mahal-jaipur-rajasthan-city-1-hero?qlt=82&ts=1726660605161"
             alt="Jaipur"
-            class="trip-image w-full h-56 object-cover"
+            class="w-full h-56 object-cover"
           />
           <div class="p-6">
             <h3 class="text-2xl font-semibold mb-2">Royal Jaipur Expedition</h3>
-            <p class="text-gray-600">
-              Discover Rajasthan's cultural heritage
-            </p>
+            <p class="text-gray-600">Discover Rajasthan's cultural heritage</p>
           </div>
         </div>
+  
         <!-- Mussoorie -->
-        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
           <img
             src="https://s3.india.com/wp-content/uploads/2024/04/Feature-Image_-Mussoorie-13.jpg?impolicy=Medium_Widthonly&w=350&h=263"
             alt="Mussoorie"
-            class="trip-image w-full h-56 object-cover"
+            class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Mussoorie Mountain Retreat
-            </h3>
-            <p class="text-gray-600">
-              Scenic views and colonial architecture
-            </p>
+            <h3 class="text-2xl font-semibold mb-2">Mussoorie Mountain Retreat</h3>
+            <p class="text-gray-600">Scenic views and colonial architecture</p>
           </div>
         </div>
+  
         <!-- Rishikesh -->
-        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
           <img
             src="https://s3.india.com/wp-content/uploads/2024/11/rishikesh-history.jpg"
             alt="Rishikesh"
-            class="trip-image w-full h-56 object-cover"
+            class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Rishikesh Adventure Camp
-            </h3>
+            <h3 class="text-2xl font-semibold mb-2">Rishikesh Adventure Camp</h3>
             <p class="text-gray-600">River rafting and yoga retreats</p>
           </div>
         </div>
+  
         <!-- Goa -->
-        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
           <img
             src="https://c.ndtvimg.com/gws/ms/trip-to-goa-3-day-itinerary/assets/2.webp"
             alt="Goa"
-            class="trip-image w-full h-56 object-cover"
+            class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Goa Beach Experience
-            </h3>
+            <h3 class="text-2xl font-semibold mb-2">Goa Beach Experience</h3>
             <p class="text-gray-600">Sun, sand, and coastal culture</p>
           </div>
         </div>
+  
         <!-- Shimla -->
-        <div class="trip-card snap-center bg-white rounded-xl shadow-2xl overflow-hidden flex-shrink-0 w-64">
+        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
           <img
             src="https://t3.ftcdn.net/jpg/04/09/57/16/360_F_409571615_KEsl0FOjDX23T805YsCUVqJyhjy6iRJt.jpg"
             alt="Shimla"
-            class="trip-image w-full h-56 object-cover"
+            class="w-full h-56 object-cover"
           />
           <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">
-              Shimla Winter Wonderland
-            </h3>
-            <p class="text-gray-600">
-              Snow-filled mountain adventures
-            </p>
+            <h3 class="text-2xl font-semibold mb-2">Shimla Winter Wonderland</h3>
+            <p class="text-gray-600">Snow-filled mountain adventures</p>
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -531,89 +516,72 @@
   <section id="features" class="py-20 bg-gradient-to-b from-white to-blue-50">
     <div class="max-w-7xl mx-auto px-6">
       <h2 class="text-4xl font-bold text-center mb-12">Why Choose Us</h2>
-      <!-- 2 columns for small boxes -->
-      <div class="grid grid-cols-2 gap-8">
-        <div
-          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
-        >
-          <div
-            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i class="fa-solid fa-indian-rupee-sign text-3xl text-indigo-600"></i>
+
+      <!-- Modified layout: 1 column on mobile, 3 columns on md+ -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <div class="feature-card p-5 text-center">
+          <div class="feature-icon">
+            <i class="fa-solid fa-indian-rupee-sign text-indigo-600 text-xl"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-4">Budget Friendly</h3>
-          <p class="text-gray-600">
+          <h3 class="text-xl font-semibold mb-2">Budget Friendly</h3>
+          <p class="text-gray-600 text-sm">
             Special student pricing with flexible payment options
           </p>
         </div>
 
-        <div
-          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
-        >
-          <div
-            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i class="fa-solid fa-shield-heart text-3xl text-indigo-600"></i>
+        <!-- Card 2 -->
+        <div class="feature-card p-5 text-center">
+          <div class="feature-icon">
+            <i class="fa-solid fa-shield-heart text-indigo-600 text-xl"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-4">Safe Travel</h3>
-          <p class="text-gray-600">
+          <h3 class="text-xl font-semibold mb-2">Safe Travel</h3>
+          <p class="text-gray-600 text-sm">
             24/7 support, verified accommodations, and insured trips
           </p>
         </div>
 
-        <div
-          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
-        >
-          <div
-            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i class="fa-solid fa-route text-3xl text-indigo-600"></i>
+        <!-- Card 3 -->
+        <div class="feature-card p-5 text-center">
+          <div class="feature-icon">
+            <i class="fa-solid fa-route text-indigo-600 text-xl"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-4">Curated Experiences</h3>
-          <p class="text-gray-600">
+          <h3 class="text-xl font-semibold mb-2">Curated Experiences</h3>
+          <p class="text-gray-600 text-sm">
             Expertly planned itineraries with local experiences
           </p>
         </div>
 
-        <div
-          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
-        >
-          <div
-            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i class="fa-solid fa-utensils text-3xl text-indigo-600"></i>
+        <!-- Card 4 -->
+        <div class="feature-card p-5 text-center">
+          <div class="feature-icon">
+            <i class="fa-solid fa-utensils text-indigo-600 text-xl"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-4">Meals Included</h3>
-          <p class="text-gray-600">
+          <h3 class="text-xl font-semibold mb-2">Meals Included</h3>
+          <p class="text-gray-600 text-sm">
             Enjoy breakfast, lunch, and dinner without extra costs
           </p>
         </div>
 
-        <div
-          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
-        >
-          <div
-            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i class="fa-solid fa-bus text-3xl text-indigo-600"></i>
+        <!-- Card 5 -->
+        <div class="feature-card p-5 text-center">
+          <div class="feature-icon">
+            <i class="fa-solid fa-bus text-indigo-600 text-xl"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-4">Comfortable Transport</h3>
-          <p class="text-gray-600">
+          <h3 class="text-xl font-semibold mb-2">Comfortable Transport</h3>
+          <p class="text-gray-600 text-sm">
             Travel in AC buses with experienced drivers and onboard
             entertainment
           </p>
         </div>
 
-        <div
-          class="premium-card p-8 text-center hover:transform hover:scale-[1.02] transition-all"
-        >
-          <div
-            class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6"
-          >
-            <i class="fa-solid fa-headset text-3xl text-indigo-600"></i>
+        <!-- Card 6 -->
+        <div class="feature-card p-5 text-center">
+          <div class="feature-icon">
+            <i class="fa-solid fa-headset text-indigo-600 text-xl"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-4">24/7 Support</h3>
-          <p class="text-gray-600">
+          <h3 class="text-xl font-semibold mb-2">24/7 Support</h3>
+          <p class="text-gray-600 text-sm">
             Our team is always available to assist you during the trip
           </p>
         </div>
@@ -828,7 +796,7 @@
     </div>
     <div class="mt-12 pt-8 border-t border-gray-800 text-center">
       <p class="text-gray-400">
-        &copy; 2025 Ghummkars. All rights reserved.
+        &copy; 2024 Ghummkars. All rights reserved.
       </p>
     </div>
   </footer>
@@ -839,49 +807,38 @@
       // Mobile Menu
       const mobileMenuBtn = document.getElementById('mobile-menu-btn');
       const mobileMenu = document.getElementById('mobile-menu');
-
       let menuOpen = false;
 
-      // Toggle mobile menu on button click
       mobileMenuBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         menuOpen = !menuOpen;
         mobileMenu.classList.toggle('scale-y-0', !menuOpen);
         mobileMenu.classList.toggle('scale-y-100', menuOpen);
         // Animate hamburger icon
-        mobileMenuBtn
-          .querySelector('svg')
-          .classList.toggle('rotate-90', menuOpen);
+        mobileMenuBtn.querySelector('svg').classList.toggle('rotate-90', menuOpen);
       });
 
       // Close menu when clicking outside
       document.addEventListener('click', (e) => {
-        if (
-          !mobileMenu.contains(e.target) &&
-          !mobileMenuBtn.contains(e.target)
-        ) {
+        if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
           mobileMenu.classList.add('scale-y-0');
           mobileMenu.classList.remove('scale-y-100');
-          mobileMenuBtn
-            .querySelector('svg')
-            .classList.remove('rotate-90');
+          mobileMenuBtn.querySelector('svg').classList.remove('rotate-90');
           menuOpen = false;
         }
       });
 
-      // Close menu when clicking a link
+      // Close menu when clicking a link inside mobile menu
       mobileMenu.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', () => {
           mobileMenu.classList.add('scale-y-0');
           mobileMenu.classList.remove('scale-y-100');
-          mobileMenuBtn
-            .querySelector('svg')
-            .classList.remove('rotate-90');
+          mobileMenuBtn.querySelector('svg').classList.remove('rotate-90');
           menuOpen = false;
         });
       });
 
-      // Smooth Scroll
+      // Smooth Scroll for anchor links
       document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener('click', function (e) {
           e.preventDefault();
@@ -891,11 +848,10 @@
         });
       });
 
-      // FAQ Accordions (only one open at a time)
+      // FAQ Accordion - only one open at a time
       document.querySelectorAll('details').forEach((detail) => {
         detail.addEventListener('toggle', () => {
           if (detail.open) {
-            // close any other open detail
             document.querySelectorAll('details').forEach((other) => {
               if (other !== detail && other.open) other.open = false;
             });
