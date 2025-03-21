@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/form",
+      "destination": "/form.html"
+    }
+  ]
+}
