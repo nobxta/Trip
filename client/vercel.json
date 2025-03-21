@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/form",
-      "destination": "/form.html"
+      "destination": "src/pages/form.html"
     }
   ]
 }
