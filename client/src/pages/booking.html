@@ -29,6 +29,13 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -71,7 +78,7 @@
     <main class="center-content pt-16 pb-8 px-4">
         <div class="w-full max-w-md">
             <!-- Search Card -->
-            <div class="bg-white rounded-xl shadow-md p-6">
+            <div id="searchCard" class="bg-white rounded-xl shadow-md p-6 fade-in">
                 <h1 class="text-2xl font-bold text-center mb-6">Check Booking Status</h1>
                 
                 <div class="flex flex-col space-y-4">
@@ -96,7 +103,15 @@
             </div>
 
             <!-- Results Container -->
-            <div id="result" class="mt-6"></div>
+            <div id="result" class="mt-6 fade-in"></div>
+
+            <!-- Search Again Button -->
+            <div id="searchAgain" class="hidden mt-6 text-center">
+                <button onclick="showSearch()" 
+                        class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                    Search Again
+                </button>
+            </div>
         </div>
     </main>
 
@@ -148,10 +163,19 @@
             }
         }
 
+        // Show search card and hide search again button
+        function showSearch() {
+            document.getElementById('searchCard').classList.remove('hidden');
+            document.getElementById('searchAgain').classList.add('hidden');
+            document.getElementById('result').innerHTML = '';
+        }
+
         // API Integration
         async function fetchBooking() {
             const bookingId = document.getElementById('bookingId').value.trim();
             const resultDiv = document.getElementById('result');
+            const searchCard = document.getElementById('searchCard');
+            const searchAgain = document.getElementById('searchAgain');
 
             try {
                 // Show loading
@@ -184,6 +208,8 @@
                 data.createdAt = createdAt;
 
                 resultDiv.innerHTML = createStatusCard(data);
+                searchCard.classList.add('hidden');
+                searchAgain.classList.remove('hidden');
 
             } catch (error) {
                 resultDiv.innerHTML = `
