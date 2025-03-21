@@ -19,16 +19,6 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         }
-        .animated-background {
-            background: linear-gradient(270deg, #25D366, #ff4444, #FFBF00, #3498db);
-            background-size: 800% 800%;
-            animation: GradientBackground 10s ease infinite;
-        }
-        @keyframes GradientBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
@@ -76,10 +66,10 @@
 
     <!-- Main Content -->
     <main class="center-content pt-16 pb-8 px-4">
-        <div class="w-full max-w-md">
+        <div class="w-full max-w-2xl">
             <!-- Search Card -->
-            <div id="searchCard" class="bg-white rounded-xl shadow-md p-6 fade-in">
-                <h1 class="text-2xl font-bold text-center mb-6">Check Booking Status</h1>
+            <div id="searchCard" class="bg-white rounded-xl shadow-md p-8 fade-in">
+                <h1 class="text-3xl font-bold text-center mb-6">Check Booking Status</h1>
                 
                 <div class="flex flex-col space-y-4">
                     <div class="relative">
@@ -279,43 +269,47 @@
                         </div>
                     </div>
 
-                    <div class="p-6 grid gap-4">
+                    <div class="p-6 grid gap-6">
                         <div class="space-y-2">
-                            <h3 class="font-semibold">Personal Details</h3>
-                            <p>${booking.fullName}</p>
+                            <h3 class="font-semibold text-lg">Personal Details</h3>
+                            <p class="text-gray-700">${booking.fullName}</p>
                             <p class="text-gray-600">${booking.peopleCount} traveler${booking.peopleCount > 1 ? 's' : ''}</p>
                         </div>
 
                         <div class="space-y-2">
-                            <h3 class="font-semibold">Contact Information</h3>
-                            <p>${booking.mobile}</p>
-                            ${booking.whatsapp ? `<p>WhatsApp: ${booking.whatsapp}</p>` : ''}
+                            <h3 class="font-semibold text-lg">Contact Information</h3>
+                            <p class="text-gray-700">${booking.mobile}</p>
+                            ${booking.whatsapp ? `<p class="text-gray-700">WhatsApp: ${booking.whatsapp}</p>` : ''}
                             <p class="text-gray-600">${booking.email}</p>
                         </div>
 
                         <div class="space-y-2">
-                            <h3 class="font-semibold">Payment Details</h3>
-                            <p>₹${booking.paymentType} per person</p>
-                            <p class="text-gray-600">TXID: ${booking.txid}</p>
+                            <h3 class="font-semibold text-lg">Payment Details</h3>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-700">Per Person:</span>
+                                    <span class="text-gray-700 font-medium">₹${booking.paymentType}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-700">Total Travelers:</span>
+                                    <span class="text-gray-700 font-medium">${booking.peopleCount}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-700">Total Amount:</span>
+                                    <span class="text-indigo-600 font-bold">₹${totalAmount.toLocaleString('en-IN')}</span>
+                                </div>
+                            </div>
+                            <p class="text-gray-600 text-sm">TXID: ${booking.txid}</p>
                         </div>
 
                         <div class="space-y-2">
-                            <h3 class="font-semibold">Travelers</h3>
+                            <h3 class="font-semibold text-lg">Travelers</h3>
                             ${booking.peopleDetails.map(p => `
                                 <div class="bg-gray-50 p-3 rounded">
                                     <i class="fas fa-user text-gray-500 mr-2"></i>
                                     ${p.name} (Age ${p.age})
                                 </div>
                             `).join('')}
-                        </div>
-
-                        <div class="pt-4 border-t">
-                            <div class="flex justify-between items-center">
-                                <span class="font-semibold">Total Amount:</span>
-                                <span class="text-xl text-indigo-600 font-bold">
-                                    ₹${totalAmount.toLocaleString('en-IN')}
-                                </span>
-                            </div>
                         </div>
                     </div>
                 </div>
