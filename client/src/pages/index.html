@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ghummkars</title>
 
   <!-- Tailwind CSS -->
@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Montserrat:wght@400;500&display=swap"
     rel="stylesheet"
   />
 
@@ -22,15 +22,28 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
   />
 
+  <!-- Swiper CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+  />
+
   <style>
     /* Base Fonts */
     body {
       font-family: 'Montserrat', sans-serif;
       margin: 0;
       padding: 0;
+      color: #333;
+      background-color: #f8fafc;
     }
     h1, h2, h3, h4, h5 {
       font-family: 'Poppins', sans-serif;
+    }
+
+    /* Smooth Scroll */
+    .scroll-smooth {
+      scroll-behavior: smooth;
     }
 
     /* Keyframe Animations */
@@ -54,7 +67,6 @@
         transform: translateY(0);
       }
     }
-
     .animate-fadeSlideDown {
       animation: fadeSlideDown 1s ease-out forwards;
     }
@@ -80,20 +92,18 @@
       animation: animate 25s linear infinite;
       bottom: -150px;
       pointer-events: none;
+      border-radius: 50%;
     }
     @keyframes animate {
       0% {
         transform: translateY(0) rotate(0deg);
         opacity: 1;
-        border-radius: 0;
       }
       100% {
         transform: translateY(-1000px) rotate(720deg);
         opacity: 0;
-        border-radius: 50%;
       }
     }
-    /* Positions & sizes of circles */
     .circles li:nth-child(1) {
       left: 25%;
       width: 80px;
@@ -150,31 +160,43 @@
       animation-duration: 11s;
     }
 
-    /* Trip Card Image Hover */
-    .trip-card:hover .trip-image {
-      transform: scale(1.05);
-    }
-    .trip-image {
-      transition: transform 0.3s ease;
+    /* Navbar Glass Effect */
+    .glass-nav {
+      background-color: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    /* Revised Card Style for "Why Choose Us"  */
+    /* Modern Buttons */
+    .btn-gradient {
+      background: linear-gradient(to right, #4A90E2, #9013FE);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .btn-gradient:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 4px 12px rgba(144, 19, 254, 0.3);
+    }
+
+    /* Feature Cards */
     .feature-card {
       background-color: #fff;
-      border-radius: 0.75rem; /* Rounded corners */
+      border-radius: 0.75rem;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .feature-card:hover {
       transform: translateY(-4px);
       box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
     }
-
-    /* Keep smaller icon size and heading size for a polished look */
     .feature-icon {
       width: 3rem;
       height: 3rem;
-      background-color: #EBF4FF; /* light indigo background */
+      background-color: #EBF4FF;
       border-radius: 9999px;
       display: flex;
       align-items: center;
@@ -182,16 +204,79 @@
       margin: 0 auto 1rem;
     }
 
-    /* Horizontal Smooth Scroll */
-    .scroll-smooth {
-      scroll-behavior: smooth;
+    /* Swiper Slides */
+    .swiper-slide {
+      background: #fff;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.12);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .swiper-slide:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
+    }
+    .swiper-slide-img {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+    .swiper-slide-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .swiper-slide:hover img {
+      transform: scale(1.1);
+    }
+    .swiper-slide-content {
+      padding: 1rem;
+      background: #fff;
+    }
+    .swiper-slide-content h3 {
+      margin: 0;
+      text-transform: capitalize;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .swiper-slide-content p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.25rem;
+    }
+
+    /* FAQ Section */
+    details[open] summary ~ * {
+      animation: fadeInUp 0.5s forwards;
+    }
+
+    /* Footer */
+    .footer-bg {
+      background: #1f2937;
+    }
+
+    /* Attempt to hide code (not foolproof) */
+    .no-inspect {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-touch-callout: none;
     }
   </style>
 </head>
 
-<body class="bg-gray-50 text-gray-800">
+<!-- Disable Right Click & Some Key Shortcuts -->
+<body class="scroll-smooth no-inspect" oncontextmenu="return false">
+
   <!-- Navigation -->
-  <nav class="bg-white/90 backdrop-blur-md shadow-sm fixed w-full z-50 border-b border-gray-100">
+  <nav class="glass-nav fixed w-full z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-16">
         <!-- Logo -->
@@ -204,36 +289,25 @@
 
         <!-- Desktop Navigation -->
         <div class="hidden md:flex items-center space-x-6">
-          <div class="hidden md:flex items-center space-x-4">
-            <a
-              href="#trips"
-              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
-              >Trips</a
-            >
-            <a
-              href="#features"
-              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
-              >Features</a
-            >
-            <a
-              href="#faq"
-              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
-              >FAQ</a
-            >
-            <a
-              href="/terms.html"
-              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
-              >Terms</a
-            >
-            <a
-              href="/booking.html"
-              class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200"
-              >Track Booking</a
-            >
-          </div>
+          <a href="#trips" class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">
+            Trips
+          </a>
+          <a href="#features" class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">
+            Features
+          </a>
+          <a href="#faq" class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">
+            FAQ
+          </a>
+          <a href="/terms.html" class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">
+            Terms
+          </a>
+          <a href="/booking.html" class="px-3 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors duration-200">
+            Track Booking
+          </a>
+          <!-- Register Button -->
           <a
             href="/submit.html"
-            class="ml-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-600 hover:to-blue-500 text-white px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105"
+            class="btn-gradient ml-2"
           >
             Register
           </a>
@@ -267,34 +341,24 @@
       class="md:hidden absolute top-16 w-full bg-white shadow-xl origin-top transform scale-y-0 transition-transform duration-300 ease-out"
     >
       <div class="px-4 pt-2 pb-6 space-y-4">
-        <a
-          href="#trips"
-          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
-          >Trips</a
-        >
-        <a
-          href="#features"
-          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
-          >Features</a
-        >
-        <a
-          href="#faq"
-          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
-          >FAQ</a
-        >
-        <a
-          href="/terms.html"
-          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
-          >Terms</a
-        >
-        <a
-          href="/booking.html"
-          class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors"
-          >Track Booking</a
-        >
+        <a href="#trips" class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
+          Trips
+        </a>
+        <a href="#features" class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
+          Features
+        </a>
+        <a href="#faq" class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
+          FAQ
+        </a>
+        <a href="/terms.html" class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
+          Terms
+        </a>
+        <a href="/booking.html" class="block px-4 py-3 text-gray-700 hover:bg-indigo-50 rounded-lg transition-colors">
+          Track Booking
+        </a>
         <a
           href="/submit.html"
-          class="block mt-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-center px-6 py-3 rounded-full font-semibold hover:shadow-lg transition-all"
+          class="block mt-4 btn-gradient text-center"
         >
           Register
         </a>
@@ -319,23 +383,22 @@
     </ul>
 
     <div class="relative z-10 text-center px-6">
-      <!-- Fade + Slide heading -->
       <h1
-        class="text-5xl md:text-7xl font-bold text-white mb-6 mx-auto animate-fadeSlideDown"
+        class="text-5xl md:text-6xl font-bold text-white mb-6 mx-auto animate-fadeSlideDown leading-tight"
         style="animation-delay: 0.3s;"
       >
-        Adventure Awaits, Memories Guaranteed!
+        Adventure Awaits, <br class="hidden md:block" />
+        Memories Guaranteed!
       </h1>
-      <!-- Sub-text -->
       <p
         class="text-xl md:text-2xl text-gray-100 mb-8 max-w-2xl mx-auto animate-fadeInUp"
         style="animation-delay: 0.6s;"
       >
-        Premium group travel experiences crafted exclusively for college students
+        Premium group travel experiences crafted exclusively for college students.
       </p>
       <a
         href="#trips"
-        class="inline-block bg-white text-indigo-600 px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:bg-gray-100 transition-all animate-fadeInUp"
+        class="inline-block btn-gradient text-white text-lg font-semibold shadow-lg hover:shadow-xl transition-all animate-fadeInUp"
         style="animation-delay: 0.9s;"
       >
         Explore Upcoming Trips
@@ -343,169 +406,89 @@
     </div>
   </section>
 
-<!-- Upcoming Trips -->
-<section id="trips" class="py-20 bg-[#ffffff]">
+  <!-- Upcoming Trips (Swiper Slider) -->
+  <section id="trips" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
       <h2 class="text-4xl font-bold text-center mb-12">Upcoming Adventures</h2>
-  
-      <!-- Desktop View: Grid -->
-      <div class="hidden md:grid md:grid-cols-3 gap-8">
-        <!-- Manali -->
-        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
-          <img
-            src="https://i.ytimg.com/vi/7NKk41YVWyA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDNPJFJDXtCyVjPDtzARd1lcUe_4Q"
-            alt="Manali"
-            class="trip-image w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Manali Mountain Escape</h3>
-            <p class="text-gray-600">Snow adventures, hot springs, and mountain trekking</p>
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <!-- Slide 1 -->
+          <div class="swiper-slide">
+            <div class="swiper-slide-img">
+              <img
+                src="https://i.ytimg.com/vi/7NKk41YVWyA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDNPJFJDXtCyVjPDtzARd1lcUe_4Q"
+                alt="Manali"
+              />
+            </div>
+            <div class="swiper-slide-content">
+              <h3>Manali Mountain Escape</h3>
+              <p>Snow adventures, hot springs, and mountain trekking</p>
+            </div>
           </div>
-        </div>
-  
-        <!-- Jaipur -->
-        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
-          <img
-            src="https://s7ap1.scene7.com/is/image/incredibleindia/hawa-mahal-jaipur-rajasthan-city-1-hero?qlt=82&ts=1726660605161"
-            alt="Jaipur"
-            class="trip-image w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Royal Jaipur Expedition</h3>
-            <p class="text-gray-600">Discover Rajasthan's cultural heritage</p>
+          <!-- Slide 2 -->
+          <div class="swiper-slide">
+            <div class="swiper-slide-img">
+              <img
+                src="https://s7ap1.scene7.com/is/image/incredibleindia/hawa-mahal-jaipur-rajasthan-city-1-hero?qlt=82&ts=1726660605161"
+                alt="Jaipur"
+              />
+            </div>
+            <div class="swiper-slide-content">
+              <h3>Royal Jaipur Expedition</h3>
+              <p>Discover Rajasthan's cultural heritage</p>
+            </div>
           </div>
-        </div>
-  
-        <!-- Mussoorie -->
-        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
-          <img
-            src="https://s3.india.com/wp-content/uploads/2024/04/Feature-Image_-Mussoorie-13.jpg?impolicy=Medium_Widthonly&w=350&h=263"
-            alt="Mussoorie"
-            class="trip-image w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Mussoorie Mountain Retreat</h3>
-            <p class="text-gray-600">Scenic views and colonial architecture</p>
+          <!-- Slide 3 -->
+          <div class="swiper-slide">
+            <div class="swiper-slide-img">
+              <img
+                src="https://s3.india.com/wp-content/uploads/2024/04/Feature-Image_-Mussoorie-13.jpg?impolicy=Medium_Widthonly&w=350&h=263"
+                alt="Mussoorie"
+              />
+            </div>
+            <div class="swiper-slide-content">
+              <h3>Mussoorie Mountain Retreat</h3>
+              <p>Scenic views and colonial architecture</p>
+            </div>
           </div>
-        </div>
-  
-        <!-- Rishikesh -->
-        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
-          <img
-            src="https://s3.india.com/wp-content/uploads/2024/11/rishikesh-history.jpg"
-            alt="Rishikesh"
-            class="trip-image w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Rishikesh Adventure Camp</h3>
-            <p class="text-gray-600">River rafting and yoga retreats</p>
+          <!-- Slide 4 -->
+          <div class="swiper-slide">
+            <div class="swiper-slide-img">
+              <img
+                src="https://s3.india.com/wp-content/uploads/2024/11/rishikesh-history.jpg"
+                alt="Rishikesh"
+              />
+            </div>
+            <div class="swiper-slide-content">
+              <h3>Rishikesh Adventure Camp</h3>
+              <p>River rafting and yoga retreats</p>
+            </div>
           </div>
-        </div>
-  
-        <!-- Goa -->
-        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
-          <img
-            src="https://c.ndtvimg.com/gws/ms/trip-to-goa-3-day-itinerary/assets/2.webp"
-            alt="Goa"
-            class="trip-image w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Goa Beach Experience</h3>
-            <p class="text-gray-600">Sun, sand, and coastal culture</p>
+          <!-- Slide 5 -->
+          <div class="swiper-slide">
+            <div class="swiper-slide-img">
+              <img
+                src="https://c.ndtvimg.com/gws/ms/trip-to-goa-3-day-itinerary/assets/2.webp"
+                alt="Goa"
+              />
+            </div>
+            <div class="swiper-slide-content">
+              <h3>Goa Beach Experience</h3>
+              <p>Sun, sand, and coastal culture</p>
+            </div>
           </div>
-        </div>
-  
-        <!-- Shimla -->
-        <div class="trip-card bg-[#ffffff] rounded-xl shadow-sm overflow-hidden border border-gray-100">
-          <img
-            src="https://t3.ftcdn.net/jpg/04/09/57/16/360_F_409571615_KEsl0FOjDX23T805YsCUVqJyhjy6iRJt.jpg"
-            alt="Shimla"
-            class="trip-image w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Shimla Winter Wonderland</h3>
-            <p class="text-gray-600">Snow-filled mountain adventures</p>
-          </div>
-        </div>
-      </div>
-  
-      <!-- Mobile View: Horizontal slider -->
-      <div class="md:hidden flex overflow-x-auto scroll-smooth snap-x snap-mandatory space-x-6 mt-6 pb-4">
-        <!-- Manali -->
-        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
-          <img
-            src="https://i.ytimg.com/vi/7NKk41YVWyA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDNPJFJDXtCyVjPDtzARd1lcUe_4Q"
-            alt="Manali"
-            class="w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Manali Mountain Escape</h3>
-            <p class="text-gray-600">Snow adventures, hot springs, and mountain trekking</p>
-          </div>
-        </div>
-  
-        <!-- Jaipur -->
-        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
-          <img
-            src="https://s7ap1.scene7.com/is/image/incredibleindia/hawa-mahal-jaipur-rajasthan-city-1-hero?qlt=82&ts=1726660605161"
-            alt="Jaipur"
-            class="w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Royal Jaipur Expedition</h3>
-            <p class="text-gray-600">Discover Rajasthan's cultural heritage</p>
-          </div>
-        </div>
-  
-        <!-- Mussoorie -->
-        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
-          <img
-            src="https://s3.india.com/wp-content/uploads/2024/04/Feature-Image_-Mussoorie-13.jpg?impolicy=Medium_Widthonly&w=350&h=263"
-            alt="Mussoorie"
-            class="w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Mussoorie Mountain Retreat</h3>
-            <p class="text-gray-600">Scenic views and colonial architecture</p>
-          </div>
-        </div>
-  
-        <!-- Rishikesh -->
-        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
-          <img
-            src="https://s3.india.com/wp-content/uploads/2024/11/rishikesh-history.jpg"
-            alt="Rishikesh"
-            class="w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Rishikesh Adventure Camp</h3>
-            <p class="text-gray-600">River rafting and yoga retreats</p>
-          </div>
-        </div>
-  
-        <!-- Goa -->
-        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
-          <img
-            src="https://c.ndtvimg.com/gws/ms/trip-to-goa-3-day-itinerary/assets/2.webp"
-            alt="Goa"
-            class="w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Goa Beach Experience</h3>
-            <p class="text-gray-600">Sun, sand, and coastal culture</p>
-          </div>
-        </div>
-  
-        <!-- Shimla -->
-        <div class="snap-center bg-[#ffffff] rounded-xl shadow-sm overflow-hidden flex-shrink-0 w-64 border border-gray-100">
-          <img
-            src="https://t3.ftcdn.net/jpg/04/09/57/16/360_F_409571615_KEsl0FOjDX23T805YsCUVqJyhjy6iRJt.jpg"
-            alt="Shimla"
-            class="w-full h-56 object-cover"
-          />
-          <div class="p-6">
-            <h3 class="text-2xl font-semibold mb-2">Shimla Winter Wonderland</h3>
-            <p class="text-gray-600">Snow-filled mountain adventures</p>
+          <!-- Slide 6 -->
+          <div class="swiper-slide">
+            <div class="swiper-slide-img">
+              <img
+                src="https://t3.ftcdn.net/jpg/04/09/57/16/360_F_409571615_KEsl0FOjDX23T805YsCUVqJyhjy6iRJt.jpg"
+                alt="Shimla"
+              />
+            </div>
+            <div class="swiper-slide-content">
+              <h3>Shimla Winter Wonderland</h3>
+              <p>Snow-filled mountain adventures</p>
+            </div>
           </div>
         </div>
       </div>
@@ -516,10 +499,8 @@
   <section id="features" class="py-20 bg-gradient-to-b from-white to-blue-50">
     <div class="max-w-7xl mx-auto px-6">
       <h2 class="text-4xl font-bold text-center mb-12">Why Choose Us</h2>
-
-      <!-- Modified layout: 1 column on mobile, 3 columns on md+ -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-        <!-- Card 1 -->
+        <!-- Feature Card 1 -->
         <div class="feature-card p-5 text-center">
           <div class="feature-icon">
             <i class="fa-solid fa-indian-rupee-sign text-indigo-600 text-xl"></i>
@@ -529,8 +510,7 @@
             Special student pricing with flexible payment options
           </p>
         </div>
-
-        <!-- Card 2 -->
+        <!-- Feature Card 2 -->
         <div class="feature-card p-5 text-center">
           <div class="feature-icon">
             <i class="fa-solid fa-shield-heart text-indigo-600 text-xl"></i>
@@ -540,8 +520,7 @@
             24/7 support, verified accommodations, and insured trips
           </p>
         </div>
-
-        <!-- Card 3 -->
+        <!-- Feature Card 3 -->
         <div class="feature-card p-5 text-center">
           <div class="feature-icon">
             <i class="fa-solid fa-route text-indigo-600 text-xl"></i>
@@ -551,8 +530,7 @@
             Expertly planned itineraries with local experiences
           </p>
         </div>
-
-        <!-- Card 4 -->
+        <!-- Feature Card 4 -->
         <div class="feature-card p-5 text-center">
           <div class="feature-icon">
             <i class="fa-solid fa-utensils text-indigo-600 text-xl"></i>
@@ -562,20 +540,17 @@
             Enjoy breakfast, lunch, and dinner without extra costs
           </p>
         </div>
-
-        <!-- Card 5 -->
+        <!-- Feature Card 5 -->
         <div class="feature-card p-5 text-center">
           <div class="feature-icon">
             <i class="fa-solid fa-bus text-indigo-600 text-xl"></i>
           </div>
           <h3 class="text-xl font-semibold mb-2">Comfortable Transport</h3>
           <p class="text-gray-600 text-sm">
-            Travel in AC buses with experienced drivers and onboard
-            entertainment
+            Travel in AC buses with experienced drivers and onboard entertainment
           </p>
         </div>
-
-        <!-- Card 6 -->
+        <!-- Feature Card 6 -->
         <div class="feature-card p-5 text-center">
           <div class="feature-icon">
             <i class="fa-solid fa-headset text-indigo-600 text-xl"></i>
@@ -590,193 +565,100 @@
   </section>
 
   <!-- FAQ Section -->
-  <section id="faq" class="py-20 bg-white">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center mb-12">
-        Frequently Asked Questions
-      </h2>
-      <div class="space-y-4">
-        <!-- FAQ Items -->
-        <details class="group bg-white shadow-lg p-6 rounded-xl">
-          <summary
-            class="flex justify-between items-center cursor-pointer"
-          >
-            <h3 class="text-lg font-semibold">How can I join the trip?</h3>
-            <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
-            <i
-              class="fa-solid fa-minus text-gray-500 hidden group-open:block"
-            ></i>
-          </summary>
-          <p class="mt-4 text-gray-600">
-            Joining the trip is simple! Just follow these steps:
-          <ul class="list-disc pl-6 space-y-2 mt-2">
-            <li>
-              <strong>Step 1:</strong> Visit our website and go to the
-              registration page.
-            </li>
-            <li>
-              <strong>Step 2:</strong> Fill up the required details,
-              including your name, contact info, and preferred trip.
-            </li>
-            <li>
-              <strong>Step 3:</strong> Choose your payment option and
-              complete the payment.
-            </li>
-            <li>
-              <strong>Step 4:</strong> Once your payment is confirmed,
-              you’re all set! You will receive a confirmation email and
-              be added to the WhatsApp group for trip updates.
-            </li>
-          </ul>
-            That’s it! Now just pack your bags and get ready for an
-            amazing experience. 🚀
-          </p>
-        </details>
+  <section id="faq" class="max-w-2xl mx-auto my-16 px-4">
+    <!-- Title & Subtitle -->
+    <h2 class="text-3xl font-bold text-center mb-2">Frequently Asked Questions</h2>
+    <p class="text-center text-gray-500 mb-8">
+      If there are questions you want to ask, we will answer all your questions.
+    </p>
 
-        <details class="group bg-white shadow-lg p-6 rounded-xl">
-          <summary
-            class="flex justify-between items-center cursor-pointer"
-          >
-            <h3 class="text-lg font-semibold">
-              What if I can’t book right now because I don’t have enough
-              money?
-            </h3>
-            <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
-            <i
-              class="fa-solid fa-minus text-gray-500 hidden group-open:block"
-            ></i>
-          </summary>
-          <p class="mt-4 text-gray-600">
-            No worries! You can still secure your spot by paying a
-            <strong>Seat Lock Fee</strong>. This allows you to temporarily
-            reserve your seat while you arrange the remaining amount.
-            <br /><br />
-            You will need to pay the
-            <strong>full trip fee at least 10 days before the trip</strong>
-            to confirm your participation. If you do not complete the
-            payment within this period, your seat will be given to
-            another participant.
-          </p>
-        </details>
+    <!-- FAQ Items Container -->
+    <div class="space-y-4">
+      <!-- FAQ Item 1 -->
+      <details class="bg-white shadow-md rounded-xl p-4 group">
+        <summary class="flex justify-between items-center cursor-pointer">
+          <h3 class="font-semibold text-lg">
+            How can I join the trip?
+          </h3>
+          <div class="text-2xl font-bold text-gray-600">
+            <span class="group-open:hidden">+</span>
+            <span class="hidden group-open:inline">-</span>
+          </div>
+        </summary>
+        <p class="mt-4 text-gray-600">
+          Joining the trip is simple! Just fill out our registration form, pay the fee, and you’ll be added to the group.
+        </p>
+      </details>
 
-        <details class="group bg-white shadow-lg p-6 rounded-xl">
-          <summary
-            class="flex justify-between items-center cursor-pointer"
-          >
-            <h3 class="text-lg font-semibold">What should I bring with me?</h3>
-            <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
-            <i
-              class="fa-solid fa-minus text-gray-500 hidden group-open:block"
-            ></i>
-          </summary>
-          <p class="mt-4 text-gray-600">
-            You are free to take whatever you need for the trip, but some
-            essentials include:
-          <ul class="list-disc pl-6 space-y-2 mt-2">
-            <li>
-              <strong>Cash:</strong> Carry enough money depending on the
-              activities you wish to do at the destination.
-            </li>
-            <li>
-              <strong>Government-issued ID:</strong> Aadhar card,
-              passport, or driver's license is mandatory for verification.
-            </li>
-            <li>
-              <strong>Medicines:</strong> Basic medicines for headache,
-              fever, or body pain.
-            </li>
-            <li>
-              <strong>Power Bank:</strong> Keep your phone charged during
-              travel.
-            </li>
-            <li>
-              <strong>Comfortable Clothing:</strong> Pack as per the
-              weather and activities planned.
-            </li>
-          </ul>
-          </p>
-        </details>
+      <!-- FAQ Item 2 -->
+      <details class="bg-white shadow-md rounded-xl p-4 group">
+        <summary class="flex justify-between items-center cursor-pointer">
+          <h3 class="font-semibold text-lg">
+            What if I don’t have enough money right now?
+          </h3>
+          <div class="text-2xl font-bold text-gray-600">
+            <span class="group-open:hidden">+</span>
+            <span class="hidden group-open:inline">-</span>
+          </div>
+        </summary>
+        <p class="mt-4 text-gray-600">
+          You can pay a small Seat Lock Fee to reserve your spot. Complete the full payment at least 10 days before the trip.
+        </p>
+      </details>
 
-        <details class="group bg-white shadow-lg p-6 rounded-xl">
-          <summary
-            class="flex justify-between items-center cursor-pointer"
-          >
-            <h3 class="text-lg font-semibold">
-              How will I receive trip updates and notifications?
-            </h3>
-            <i class="fa-solid fa-plus text-gray-500 group-open:hidden"></i>
-            <i
-              class="fa-solid fa-minus text-gray-500 hidden group-open:block"
-            ></i>
-          </summary>
-          <p class="mt-4 text-gray-600">
-            After registering for the trip via our website, you will
-            receive all updates and notifications via
-            <strong>email and WhatsApp</strong>. We will add all
-            participants to a dedicated WhatsApp group where important
-            announcements, schedule updates, and reminders will be
-            shared.
-          </p>
-        </details>
+      <!-- FAQ Item 3 -->
+      <details class="bg-white shadow-md rounded-xl p-4 group">
+        <summary class="flex justify-between items-center cursor-pointer">
+          <h3 class="font-semibold text-lg">
+            How will I receive updates?
+          </h3>
+          <div class="text-2xl font-bold text-gray-600">
+            <span class="group-open:hidden">+</span>
+            <span class="hidden group-open:inline">-</span>
+          </div>
+        </summary>
+        <p class="mt-4 text-gray-600">
+          We send all updates via email and WhatsApp. You’ll also be added to a dedicated WhatsApp group.
+        </p>
+      </details>
+    </div>
 
-        <!-- Contact Card -->
-        <div class="mt-12 text-center bg-indigo-50 p-8 rounded-xl">
-          <h3 class="text-2xl font-bold mb-4">Still Have Questions?</h3>
-          <p class="text-gray-600 mb-6">
-            Our support team is ready to assist you!
-          </p>
-          <a
-            href="https://wa.me/918384826414"
-            target="_blank"
-            class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors"
-          >
-            Contact Support on WhatsApp
-          </a>
-        </div>
-      </div>
+    <!-- Contact Card -->
+    <div class="mt-12 text-center bg-indigo-50 p-8 rounded-xl">
+      <h3 class="text-2xl font-bold mb-4">Still Have Questions?</h3>
+      <p class="text-gray-600 mb-6">Our support team is ready to assist you!</p>
+      <a
+        href="https://wa.me/918384826414"
+        target="_blank"
+        class="inline-block bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors"
+      >
+        Contact Support on WhatsApp
+      </a>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-12">
+  <footer class="footer-bg text-white py-12">
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
       <div>
         <h3 class="text-xl font-bold mb-4">Ghummkars</h3>
-        <p class="text-gray-400">
+        <p class="text-gray-300">
           Creating unforgettable student travel experiences since 2024
         </p>
       </div>
       <div>
         <h3 class="text-xl font-bold mb-4">Quick Links</h3>
         <ul class="space-y-2">
-          <li>
-            <a href="#trips" class="text-gray-400 hover:text-white"
-              >Upcoming Trips</a
-            >
-          </li>
-          <li>
-            <a href="#features" class="text-gray-400 hover:text-white"
-              >Features</a
-            >
-          </li>
-          <li>
-            <a href="#faq" class="text-gray-400 hover:text-white">FAQ</a>
-          </li>
+          <li><a href="#trips" class="text-gray-400 hover:text-white">Upcoming Trips</a></li>
+          <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
+          <li><a href="#faq" class="text-gray-400 hover:text-white">FAQ</a></li>
         </ul>
       </div>
       <div>
         <h3 class="text-xl font-bold mb-4">Legal</h3>
         <ul class="space-y-2">
-          <li>
-            <a href="/terms.html" class="text-gray-400 hover:text-white"
-              >Terms of Service</a
-            >
-          </li>
-          <li>
-            <a href="/privacy.html" class="text-gray-400 hover:text-white"
-              >Privacy Policy</a
-            >
-          </li>
+          <li><a href="/terms.html" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+          <li><a href="/privacy.html" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
         </ul>
       </div>
       <div>
@@ -794,15 +676,32 @@
         </div>
       </div>
     </div>
-    <div class="mt-12 pt-8 border-t border-gray-800 text-center">
-      <p class="text-gray-400">
-        &copy; 2024 Ghummkars. All rights reserved.
-      </p>
+    <div class="mt-12 pt-8 border-t border-gray-700 text-center">
+      <p class="text-gray-400">&copy; 2024 Ghummkars. All rights reserved.</p>
     </div>
   </footer>
 
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+  
   <!-- Consolidated Scripts -->
   <script>
+    // Attempt to disable common shortcuts
+    document.onkeydown = function(e) {
+      // Disable F12
+      if(e.keyCode == 123) {
+        return false;
+      }
+      // Disable Ctrl+Shift+I or Ctrl+Shift+J
+      if(e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) {
+        return false;
+      }
+      // Disable Ctrl+U
+      if(e.ctrlKey && e.keyCode == 85) {
+        return false;
+      }
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
       // Mobile Menu
       const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -814,11 +713,9 @@
         menuOpen = !menuOpen;
         mobileMenu.classList.toggle('scale-y-0', !menuOpen);
         mobileMenu.classList.toggle('scale-y-100', menuOpen);
-        // Animate hamburger icon
         mobileMenuBtn.querySelector('svg').classList.toggle('rotate-90', menuOpen);
       });
 
-      // Close menu when clicking outside
       document.addEventListener('click', (e) => {
         if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
           mobileMenu.classList.add('scale-y-0');
@@ -828,7 +725,6 @@
         }
       });
 
-      // Close menu when clicking a link inside mobile menu
       mobileMenu.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', () => {
           mobileMenu.classList.add('scale-y-0');
@@ -838,7 +734,7 @@
         });
       });
 
-      // Smooth Scroll for anchor links
+      // Smooth scroll for anchor links
       document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
         anchor.addEventListener('click', function (e) {
           e.preventDefault();
@@ -848,7 +744,7 @@
         });
       });
 
-      // FAQ Accordion - only one open at a time
+      // Only allow one <details> open at a time in FAQ
       document.querySelectorAll('details').forEach((detail) => {
         detail.addEventListener('toggle', () => {
           if (detail.open) {
@@ -857,6 +753,31 @@
             });
           }
         });
+      });
+
+      // Initialize Swiper
+      var swiper = new Swiper(".swiper", {
+        effect: "coverflow",
+        grabCursor: true,
+        centeredSlides: true,
+        speed: 600,
+        loop: true,
+        initialSlide: 2,
+        slidesPerView: 1.3,
+        spaceBetween: 20,
+        coverflowEffect: {
+          rotate: 0,
+          stretch: 0,
+          depth: 100,
+          modifier: 2.5,
+          slideShadows: false,
+        },
+        keyboard: { enabled: true },
+        mousewheel: { thresholdDelta: 70 },
+        breakpoints: {
+          640: { slidesPerView: 2.3 },
+          1024: { slidesPerView: 3.3 }
+        }
       });
     });
   </script>
