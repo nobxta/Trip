@@ -19,6 +19,16 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out;
         }
+        .animated-background {
+            background: linear-gradient(270deg, #25D366, #ff4444, #FFBF00, #3498db);
+            background-size: 800% 800%;
+            animation: GradientBackground 10s ease infinite;
+        }
+        @keyframes GradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -190,11 +200,34 @@
 
         function createStatusCard(booking) {
             const statusColors = {
-                confirmed: 'bg-green-100 text-green-800',
-                pending: 'bg-yellow-100 text-yellow-800',
-                locked: 'bg-orange-100 text-orange-800',
-                rejected: 'bg-red-100 text-red-800'
+                confirmed: {
+                    bg: 'bg-green-500',
+                    text: 'text-green-500',
+                    icon: 'fa-check-circle',
+                    animation: 'animate-bounce'
+                },
+                pending: {
+                    bg: 'bg-blue-500',
+                    text: 'text-blue-500',
+                    icon: 'fa-clock',
+                    animation: 'animate-pulse'
+                },
+                locked: {
+                    bg: 'bg-yellow-500',
+                    text: 'text-yellow-500',
+                    icon: 'fa-lock',
+                    animation: 'animate-pulse'
+                },
+                rejected: {
+                    bg: 'bg-red-500',
+                    text: 'text-red-500',
+                    icon: 'fa-times-circle',
+                    animation: 'animate-pulse'
+                }
             };
+
+            const status = booking.status.toLowerCase();
+            const statusTheme = statusColors[status] || statusColors.pending;
 
             const totalAmount = booking.paymentType * booking.peopleCount;
             const formattedDate = booking.createdAt.toLocaleDateString('en-IN', {
@@ -207,18 +240,16 @@
             });
 
             return `
-                <div class="bg-white rounded-xl shadow-md mt-4">
-                    <div class="p-6 border-b">
-                        <div class="flex flex-col md:flex-row justify-between items-start gap-4">
-                            <div>
-                                <span class="${statusColors[booking.status]} px-3 py-1 rounded-full text-sm">
-                                    ${booking.status.toUpperCase()}
-                                </span>
-                                <h2 class="text-xl font-bold mt-2">Booking #${booking.bookingID}</h2>
-                            </div>
-                            <div class="text-sm text-gray-500">
-                                <i class="fas fa-clock"></i> ${formattedDate}
-                            </div>
+                <div class="bg-white rounded-xl shadow-md mt-4 overflow-hidden">
+                    <div class="${statusTheme.bg} p-6 text-white">
+                        <div class="flex items-center justify-center space-x-4">
+                            <i class="fas ${statusTheme.icon} text-4xl ${statusTheme.animation}"></i>
+                            <h2 class="text-2xl font-bold">Booking #${booking.bookingID}</h2>
+                        </div>
+                        <div class="text-center mt-2">
+                            <span class="px-3 py-1 rounded-full text-sm bg-white ${statusTheme.text}">
+                                ${booking.status.toUpperCase()}
+                            </span>
                         </div>
                     </div>
 
