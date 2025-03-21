@@ -12,7 +12,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'src/pages/index.html'),
-        register: path.resolve(__dirname, 'src/pages/submit.html'),
+        register: path.resolve(__dirname, 'src/pages/form.html'),
         thankYou: path.resolve(__dirname, 'src/pages/thank-you.html'),
         terms: path.resolve(__dirname, 'src/pages/terms.html'),
         tourDetails: path.resolve(__dirname, 'src/pages/tour-details.html'),
