@@ -1,3 +1,7 @@
+/******************************************************************** 
+ *  FULL UPDATED CODE FOR server.js
+ ********************************************************************/
+
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
@@ -16,7 +20,7 @@ app.use(
   cors({
     origin: [
       "https://www.ghumakkars.in",
-      "https://gla-trip.vercel.app", // Add your Vercel URL here
+      "https://gla-trip.vercel.app" // Add more URLs if needed
     ],
   })
 );
@@ -133,7 +137,9 @@ function loadEmailTemplate(filename, replacements = {}) {
   return content;
 }
 
-// Fetch booking by ID
+/******************************************************
+ * Fetch booking by ID (API route)
+ ******************************************************/
 app.get("/api/booking/:id", async (req, res) => {
   try {
     const booking = await Registration.findOne({
@@ -179,7 +185,9 @@ app.get("/api/booking/:id", async (req, res) => {
   }
 });
 
-// 1️⃣2️⃣ Handle Trip Registration
+/******************************************************
+ * 1️⃣2️⃣ Handle Trip Registration
+ ******************************************************/
 app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
   try {
     const {
@@ -247,7 +255,7 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
       }
     );
     await transporter.sendMail({
-      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // FIXED SENDER NAME
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // Show name "Ghumakkars"
       to: email,
       subject: "Registration Received - Our Team Will Review",
       html: registrationReceivedHTML,
@@ -275,7 +283,7 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
       <ul>${peopleListHTML}</ul>
     `;
     await transporter.sendMail({
-      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // FIXED SENDER NAME
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // Show name "Ghumakkars"
       to: process.env.SMTP_ADMIN,
       subject: "New Trip Registration Received",
       html: adminHTML,
@@ -309,8 +317,10 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
   }
 });
 
-// 1️⃣3️⃣ Handle Telegram Bot Callbacks
-const webhookUrl = process.env.WEBHOOK_URL; // Ensure this is set in your .env
+/******************************************************
+ * 1️⃣3️⃣ Handle Telegram Bot Callbacks
+ ******************************************************/
+const webhookUrl = process.env.WEBHOOK_URL; // Make sure this is set in your .env
 
 bot.telegram.setWebhook(`${webhookUrl}/telegram-webhook`);
 
@@ -320,6 +330,9 @@ app.post("/telegram-webhook", (req, res) => {
   res.sendStatus(200);
 });
 
+/******************************************************
+ * Accept/Reject Callback Queries (existing logic)
+ ******************************************************/
 bot.on("callback_query", async (ctx) => {
   try {
     await ctx.answerCbQuery(); // short acknowledgment
@@ -391,7 +404,7 @@ bot.on("callback_query", async (ctx) => {
 
     const finalHTML = loadEmailTemplate(templateFile, replacements);
     await transporter.sendMail({
-      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // FIXED SENDER NAME
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`,
       to: record.email,
       subject: emailSubject,
       html: finalHTML,
@@ -425,7 +438,7 @@ bot.on("callback_query", async (ctx) => {
     });
 
     await transporter.sendMail({
-      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // FIXED SENDER NAME
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`,
       to: record.email,
       subject: "Your Registration Has Been Cancelled",
       html: rejectionHTML,
@@ -437,9 +450,9 @@ bot.on("callback_query", async (ctx) => {
     );
   }
 
-  // ---------- NEW LOCK-RELATED CALLBACKS ----------
-  // "lockinfo_", "lockreminder_", "lockconfirm_"
-
+  /******************************************************
+   * Additional Lock-Related Callbacks (existing logic)
+   ******************************************************/
   else if (data.startsWith("lockinfo_")) {
     const bookingID = data.split("_")[1];
     await handleLockInfo(ctx, bookingID);
@@ -450,9 +463,40 @@ bot.on("callback_query", async (ctx) => {
     const bookingID = data.split("_")[1];
     await handleLockConfirm(ctx, bookingID);
   }
+
+  /******************************************************
+   * New: userInfo_ callback to display full user data
+   ******************************************************/
+  else if (data.startsWith("userInfo_")) {
+    const bookingID = data.split("_")[1];
+    const record = await Registration.findOne({ bookingID: Number(bookingID) });
+    if (!record) {
+      return ctx.editMessageText("User not found.");
+    }
+
+    // Build a nicely formatted message with all details
+    let msg = `<b>Booking ID:</b> ${record.bookingID}\n`;
+    msg += `<b>Name:</b> ${record.fullName}\n`;
+    msg += `<b>Email:</b> ${record.email}\n`;
+    msg += `<b>Mobile:</b> ${record.mobile}\n`;
+    msg += `<b>WhatsApp:</b> ${record.whatsapp}\n`;
+    msg += `<b>Payment Type (₹):</b> ${record.paymentType}\n`;
+    msg += `<b>TXID:</b> ${record.txid}\n`;
+    msg += `<b>People Count:</b> ${record.peopleCount}\n`;
+    msg += `<b>Status:</b> ${record.status}\n\n`;
+
+    msg += `<b>People Details:</b>\n`;
+    record.peopleDetails.forEach((p, idx) => {
+      msg += `   ${idx + 1}. ${p.name} (Age: ${p.age})\n`;
+    });
+
+    await ctx.editMessageText(msg, { parse_mode: "HTML" });
+  }
 });
 
-// Helper for LOCK flow #1: show locked user info
+/******************************************************
+ * Helper Functions for "Locked" flow (existing)
+ ******************************************************/
 async function handleLockInfo(ctx, bookingID) {
   try {
     const record = await Registration.findOne({ bookingID: Number(bookingID) });
@@ -498,7 +542,6 @@ async function handleLockInfo(ctx, bookingID) {
   }
 }
 
-// Helper for LOCK flow #2: send reminder email
 async function handleLockReminder(ctx, bookingID) {
   try {
     const record = await Registration.findOne({ bookingID: Number(bookingID) });
@@ -533,7 +576,6 @@ async function handleLockReminder(ctx, bookingID) {
   }
 }
 
-// Helper for LOCK flow #3: confirm locked => "confirmed"
 async function handleLockConfirm(ctx, bookingID) {
   try {
     const record = await Registration.findOne({ bookingID: Number(bookingID) });
@@ -598,64 +640,218 @@ async function handleLockConfirm(ctx, bookingID) {
   }
 }
 
-// 1️⃣4️⃣ Telegram Bot Commands
+/******************************************************
+ * Emoji Helpers for Status
+ ******************************************************/
+function getStatusEmoji(status) {
+  switch (status) {
+    case "confirmed":
+      return "🟢";
+    case "locked":
+      return "🟡";
+    case "rejected":
+      return "🔴";
+    case "pending":
+      return "⚪";
+    default:
+      return "⚪";
+  }
+}
 
-// (A) /users - list minimal info about all
+function getInlineButtonLabel(reg) {
+  const emoji = getStatusEmoji(reg.status);
+  if (reg.peopleCount === 1) {
+    // e.g. "[ 🟢 -- John ]"
+    return `${emoji} -- ${reg.fullName}`;
+  } else {
+    // e.g. "[ 🟡 -- Gaurav | 2 people ]"
+    return `${emoji} -- ${reg.fullName} | ${reg.peopleCount} people`;
+  }
+}
+
+/******************************************************
+ * 1️⃣4️⃣ Telegram Bot Commands (NEW & UPDATED)
+ ******************************************************/
+
+/**
+ * Helper to get status counts
+ */
+async function getStatusCounts() {
+  const totalRegistrations = await Registration.countDocuments({});
+  const lockedCount = await Registration.countDocuments({ status: "locked" });
+  const confirmedCount = await Registration.countDocuments({ status: "confirmed" });
+  const rejectedCount = await Registration.countDocuments({ status: "rejected" });
+  const pendingCount = await Registration.countDocuments({ status: "pending" });
+
+  return { totalRegistrations, lockedCount, confirmedCount, rejectedCount, pendingCount };
+}
+
+/** 
+ * /users 
+ * Show all users + stats
+ */
 bot.command("users", async (ctx) => {
   try {
-    const registrations = await Registration.find({});
+    // Stats on top
+    const {
+      totalRegistrations,
+      lockedCount,
+      confirmedCount,
+      rejectedCount,
+      pendingCount,
+    } = await getStatusCounts();
+
+    // Build top line
+    let topMsg = `Total Registration: ${totalRegistrations}, `;
+    topMsg += `Confirmed: ${confirmedCount}, `;
+    topMsg += `Rejected: ${rejectedCount}, `;
+    topMsg += `Seat Lock: ${lockedCount}, `;
+    topMsg += `Pending: ${pendingCount}\n\n`;
+
+    // Fetch all registrations
+    const registrations = await Registration.find({}).sort({ createdAt: -1 });
     if (!registrations.length) {
       return ctx.reply("No registrations found.");
     }
 
-    let msg = "<b>All Registrations</b>\n\n";
-    registrations.forEach((r) => {
-      msg += `ID: <b>${r.bookingID}</b>\nName: ${r.fullName}\nStatus: ${r.status}\nPayment: ₹${r.paymentType}\n\n`;
+    // Build inline keyboard
+    const inlineKeyboard = registrations.map((reg) => {
+      const label = getInlineButtonLabel(reg);
+      return [Markup.button.callback(label, `userInfo_${reg.bookingID}`)];
     });
-    return ctx.reply(msg, { parse_mode: "HTML" });
+
+    await ctx.reply(`<b>${topMsg}</b>`, {
+      parse_mode: "HTML",
+      reply_markup: { inline_keyboard: inlineKeyboard },
+    });
   } catch (err) {
     console.error("Error in /users:", err);
-    return ctx.reply("Error fetching users.");
+    ctx.reply("Error fetching users.");
   }
 });
 
-// (B) /user 12345678 - show details for one
-bot.command("user", async (ctx) => {
-  const parts = ctx.message.text.split(" ");
-  if (parts.length < 2) {
-    return ctx.reply("Please provide a Booking ID, e.g. /user 12345678");
-  }
-  const bookingID = parts[1];
-
+/** 
+ * /confirmed 
+ * Show only confirmed users
+ */
+bot.command("confirmed", async (ctx) => {
   try {
-    const record = await Registration.findOne({ bookingID: Number(bookingID) });
-    if (!record) {
-      return ctx.reply("No user found for Booking ID " + bookingID);
+    const confirmedRegs = await Registration.find({ status: "confirmed" });
+    const count = confirmedRegs.length;
+
+    if (count === 0) {
+      return ctx.reply("No confirmed users found.");
     }
 
-    let msg =
-      `<b>Booking ID:</b> ${record.bookingID}\n` +
-      `<b>Name:</b> ${record.fullName}\n` +
-      `<b>Email:</b> ${record.email}\n` +
-      `<b>Mobile:</b> ${record.mobile}\n` +
-      `<b>WhatsApp:</b> ${record.whatsapp}\n` +
-      `<b>Payment Type:</b> ₹${record.paymentType}\n` +
-      `<b>TXID:</b> ${record.txid}\n` +
-      `<b>People Count:</b> ${record.peopleCount}\n` +
-      `<b>Status:</b> ${record.status}\n\n` +
-      `<b>People Details:</b>\n`;
-
-    record.peopleDetails.forEach((p, idx) => {
-      msg += `  ${idx + 1}. ${p.name} (Age: ${p.age})\n`;
+    let header = `Confirmed Users: ${count}\n\n`;
+    // Build inline keyboard
+    const inlineKeyboard = confirmedRegs.map((reg) => {
+      const label = getInlineButtonLabel(reg);
+      return [Markup.button.callback(label, `userInfo_${reg.bookingID}`)];
     });
-    return ctx.reply(msg, { parse_mode: "HTML" });
+
+    await ctx.reply(`<b>${header}</b>`, {
+      parse_mode: "HTML",
+      reply_markup: { inline_keyboard: inlineKeyboard },
+    });
   } catch (err) {
-    console.error("Error in /user command:", err);
-    return ctx.reply("Error fetching user data.");
+    console.error("Error in /confirmed:", err);
+    ctx.reply("Error fetching confirmed users.");
   }
 });
 
-// (C) /stats - aggregated stats
+/**
+ * /rejected
+ * Show all rejected users
+ */
+bot.command("rejected", async (ctx) => {
+  try {
+    const rejectedRegs = await Registration.find({ status: "rejected" });
+    const count = rejectedRegs.length;
+
+    if (count === 0) {
+      return ctx.reply("No rejected users found.");
+    }
+
+    let header = `Rejected Users: ${count}\n\n`;
+    const inlineKeyboard = rejectedRegs.map((reg) => {
+      const label = getInlineButtonLabel(reg);
+      return [Markup.button.callback(label, `userInfo_${reg.bookingID}`)];
+    });
+
+    await ctx.reply(`<b>${header}</b>`, {
+      parse_mode: "HTML",
+      reply_markup: { inline_keyboard: inlineKeyboard },
+    });
+  } catch (err) {
+    console.error("Error in /rejected:", err);
+    ctx.reply("Error fetching rejected users.");
+  }
+});
+
+/**
+ * /pending
+ * Show all pending users
+ */
+bot.command("pending", async (ctx) => {
+  try {
+    const pendingRegs = await Registration.find({ status: "pending" });
+    const count = pendingRegs.length;
+
+    if (count === 0) {
+      return ctx.reply("No pending users found.");
+    }
+
+    let header = `Pending Users: ${count}\n\n`;
+    const inlineKeyboard = pendingRegs.map((reg) => {
+      const label = getInlineButtonLabel(reg);
+      return [Markup.button.callback(label, `userInfo_${reg.bookingID}`)];
+    });
+
+    await ctx.reply(`<b>${header}</b>`, {
+      parse_mode: "HTML",
+      reply_markup: { inline_keyboard: inlineKeyboard },
+    });
+  } catch (err) {
+    console.error("Error in /pending:", err);
+    ctx.reply("Error fetching pending users.");
+  }
+});
+
+/**
+ * /lock 
+ * Similar to old one, but add total count on top and color-coded
+ */
+bot.command("lock", async (ctx) => {
+  try {
+    const lockedRegs = await Registration.find({ status: "locked" });
+    const count = lockedRegs.length;
+
+    if (!count) {
+      return ctx.reply("No locked registrations found.");
+    }
+
+    let header = `Locked Registrations: ${count}\n\n`;
+    // Build inline keyboard
+    const inlineButtons = lockedRegs.map((reg) => {
+      const label = getInlineButtonLabel(reg);
+      return [Markup.button.callback(label, `lockinfo_${reg.bookingID}`)];
+    });
+
+    await ctx.reply(`<b>${header}</b>`, {
+      parse_mode: "HTML",
+      reply_markup: { inline_keyboard: inlineButtons },
+      parse_mode: "HTML",
+    });
+  } catch (err) {
+    console.error("Error in /lock:", err);
+    ctx.reply("Error fetching locked registrations.");
+  }
+});
+
+/******************************************************
+ * (Existing) /stats - aggregated stats
+ ******************************************************/
 bot.command("stats", async (ctx) => {
   try {
     const totalRegistrations = await Registration.countDocuments({});
@@ -665,6 +861,9 @@ bot.command("stats", async (ctx) => {
     });
     const rejectedCount = await Registration.countDocuments({
       status: "rejected",
+    });
+    const pendingCount = await Registration.countDocuments({
+      status: "pending",
     });
 
     // sum of peopleCount for locked + confirmed
@@ -684,6 +883,7 @@ bot.command("stats", async (ctx) => {
     msg += `Locked: <b>${lockedCount}</b>\n`;
     msg += `Confirmed: <b>${confirmedCount}</b>\n`;
     msg += `Rejected: <b>${rejectedCount}</b>\n`;
+    msg += `Pending: <b>${pendingCount}</b>\n`;
     msg += `\nTotal People (locked+confirmed): <b>${totalPeople}</b>\n`;
     msg += `Total Money (locked+confirmed): <b>₹${totalMoney}</b>\n`;
 
@@ -694,31 +894,9 @@ bot.command("stats", async (ctx) => {
   }
 });
 
-// (D) /lock - see all locked
-bot.command("lock", async (ctx) => {
-  try {
-    const lockedRegs = await Registration.find({ status: "locked" });
-    if (!lockedRegs.length) {
-      return ctx.reply("No locked registrations found.");
-    }
-
-    // Build inline keyboard: each locked user => row
-    const inlineButtons = lockedRegs.map((reg) => {
-      const buttonText = `${reg.fullName} (${reg.peopleCount})`;
-      return [Markup.button.callback(buttonText, `lockinfo_${reg.bookingID}`)];
-    });
-
-    await ctx.reply("<b>Locked Registrations</b>", {
-      parse_mode: "HTML",
-      reply_markup: { inline_keyboard: inlineButtons },
-    });
-  } catch (err) {
-    console.error("Error in /lock:", err);
-    ctx.reply("Error fetching locked registrations.");
-  }
-});
-
-// 1️⃣5️⃣ Health Check Routes
+/******************************************************
+ * 1️⃣5️⃣ Health Check Routes
+ ******************************************************/
 app.get("/", (req, res) => {
   res.send("Backend is running!");
 });
@@ -728,7 +906,9 @@ app.get("/api/", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-// Function to register (and re-register) the Telegram webhook
+/******************************************************
+ * Telegram Webhook Registration & Keep-Alive
+ ******************************************************/
 const setWebhook = async (retryCount = 0) => {
   try {
     const response = await fetch(
@@ -753,8 +933,6 @@ const setWebhook = async (retryCount = 0) => {
         console.warn(
           `⚠️ Too many requests. Retrying after ${data.parameters.retry_after} seconds...`
         );
-
-        // Wait before retrying
         setTimeout(() => setWebhook(retryCount + 1), waitTime);
       } else {
         console.error(
@@ -767,10 +945,10 @@ const setWebhook = async (retryCount = 0) => {
   }
 };
 
-// Re-register the webhook every 30 minutes to keep it alive
+// Re-register the webhook every 30 minutes
 setInterval(setWebhook, 30 * 60 * 1000);
 
-// Function to keep Render service alive (pings the URL every 5 minutes)
+// Keep Render free-tier service alive every 5 minutes
 const keepAlive = () => {
   setInterval(() => {
     fetch(process.env.WEBHOOK_URL)
@@ -797,3 +975,6 @@ app.listen(PORT, async () => {
   // Keep server alive
   keepAlive();
 });
+/********************************************************************
+ *  END OF FULL UPDATED CODE
+ ********************************************************************/
