@@ -14,7 +14,7 @@ const app = express();
 // 2️⃣ Configure CORS to allow requests from your Vercel frontend
 app.use(
   cors({
-    origin: "https://gla-trip.vercel.app", // Replace with your actual frontend URL
+    origin: "https://www.ghumakkars.in/", 
   })
 );
 
