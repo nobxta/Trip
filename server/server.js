@@ -331,7 +331,7 @@ app.post("/telegram-webhook", (req, res) => {
 });
 
 /******************************************************
- * Accept/Reject Callback Queries (existing logic)
+ * Accept/Reject Callback Queries
  ******************************************************/
 bot.on("callback_query", async (ctx) => {
   try {
@@ -450,9 +450,7 @@ bot.on("callback_query", async (ctx) => {
     );
   }
 
-  /******************************************************
-   * Additional Lock-Related Callbacks (existing logic)
-   ******************************************************/
+  // ---------- LOCK-RELATED CALLBACKS ----------
   else if (data.startsWith("lockinfo_")) {
     const bookingID = data.split("_")[1];
     await handleLockInfo(ctx, bookingID);
@@ -464,9 +462,7 @@ bot.on("callback_query", async (ctx) => {
     await handleLockConfirm(ctx, bookingID);
   }
 
-  /******************************************************
-   * New: userInfo_ callback to display full user data
-   ******************************************************/
+  // ---------- NEW userInfo_ Callback: Show Full Data + Accept/Reject if Pending ----------
   else if (data.startsWith("userInfo_")) {
     const bookingID = data.split("_")[1];
     const record = await Registration.findOne({ bookingID: Number(bookingID) });
@@ -484,13 +480,24 @@ bot.on("callback_query", async (ctx) => {
     msg += `<b>TXID:</b> ${record.txid}\n`;
     msg += `<b>People Count:</b> ${record.peopleCount}\n`;
     msg += `<b>Status:</b> ${record.status}\n\n`;
-
     msg += `<b>People Details:</b>\n`;
     record.peopleDetails.forEach((p, idx) => {
       msg += `   ${idx + 1}. ${p.name} (Age: ${p.age})\n`;
     });
 
-    await ctx.editMessageText(msg, { parse_mode: "HTML" });
+    // If pending, show "Accept" + "Reject" inline buttons
+    let inlineKeyboard = [];
+    if (record.status === "pending") {
+      inlineKeyboard.push([
+        Markup.button.callback("Accept", `accept_${record.bookingID}`),
+        Markup.button.callback("Reject", `reject_${record.bookingID}`),
+      ]);
+    }
+
+    await ctx.editMessageText(msg, {
+      parse_mode: "HTML",
+      reply_markup: { inline_keyboard: inlineKeyboard },
+    });
   }
 });
 
