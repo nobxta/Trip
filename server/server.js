@@ -11,10 +11,13 @@ import { Telegraf, Markup } from "telegraf";
 // 1️⃣ Create Express app
 const app = express();
 
-// 2️⃣ Configure CORS to allow requests from your Vercel frontend
+// 2️⃣ Configure CORS to allow requests from multiple frontends
 app.use(
   cors({
-    origin: "https://www.ghumakkars.in/", 
+    origin: [
+      "https://www.ghumakkars.in",
+      "https://gla-trip.vercel.app", // Add your Vercel URL here
+    ],
   })
 );
 
@@ -45,7 +48,7 @@ const registrationSchema = new mongoose.Schema({
   email: String,
   mobile: String,
   whatsapp: String,
-  paymentType: Number, // e.g. 1200 or 3300
+  paymentType: Number, // e.g., 1200 or 3300
   txid: String,
   peopleCount: Number,
   peopleDetails: [
@@ -84,7 +87,8 @@ if (
   !process.env.SMTP_PORT ||
   !process.env.SMTP_ADMIN ||
   !process.env.TELEGRAM_BOT_TOKEN ||
-  !process.env.TELEGRAM_CHAT_ID
+  !process.env.TELEGRAM_CHAT_ID ||
+  !process.env.WEBHOOK_URL
 ) {
   console.error("Missing environment variables. Check your .env file.");
   process.exit(1);
@@ -130,16 +134,16 @@ function loadEmailTemplate(filename, replacements = {}) {
 }
 
 // Fetch booking by ID
-app.get('/api/booking/:id', async (req, res) => {
+app.get("/api/booking/:id", async (req, res) => {
   try {
-    const booking = await Registration.findOne({ 
-      bookingID: Number(req.params.id) 
+    const booking = await Registration.findOne({
+      bookingID: Number(req.params.id),
     }).lean();
 
     if (!booking) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         error: "Booking not found",
-        statusCode: 404
+        statusCode: 404,
       });
     }
 
@@ -157,21 +161,20 @@ app.get('/api/booking/:id', async (req, res) => {
       paymentType: booking.paymentType,
       txid: booking.txid,
       peopleCount: booking.peopleCount,
-      peopleDetails: booking.peopleDetails.map(p => ({
+      peopleDetails: booking.peopleDetails.map((p) => ({
         name: p.name,
-        age: p.age
+        age: p.age,
       })),
       status: booking.status,
-      createdAt: booking.createdAt
+      createdAt: booking.createdAt,
     };
 
     res.json(response);
-
   } catch (error) {
-    res.status(500).json({ 
+    res.status(500).json({
       error: "Server error",
       details: error.message,
-      statusCode: 500
+      statusCode: 500,
     });
   }
 });
@@ -244,7 +247,7 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
       }
     );
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // FIXED SENDER NAME
       to: email,
       subject: "Registration Received - Our Team Will Review",
       html: registrationReceivedHTML,
@@ -272,7 +275,7 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
       <ul>${peopleListHTML}</ul>
     `;
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // FIXED SENDER NAME
       to: process.env.SMTP_ADMIN,
       subject: "New Trip Registration Received",
       html: adminHTML,
@@ -307,7 +310,7 @@ app.post("/register", upload.array("aadhaarFiles"), async (req, res) => {
 });
 
 // 1️⃣3️⃣ Handle Telegram Bot Callbacks
-const webhookUrl = process.env.WEBHOOK_URL; // Make sure this is set in your .env
+const webhookUrl = process.env.WEBHOOK_URL; // Ensure this is set in your .env
 
 bot.telegram.setWebhook(`${webhookUrl}/telegram-webhook`);
 
@@ -388,7 +391,7 @@ bot.on("callback_query", async (ctx) => {
 
     const finalHTML = loadEmailTemplate(templateFile, replacements);
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // FIXED SENDER NAME
       to: record.email,
       subject: emailSubject,
       html: finalHTML,
@@ -422,7 +425,7 @@ bot.on("callback_query", async (ctx) => {
     });
 
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`, // FIXED SENDER NAME
       to: record.email,
       subject: "Your Registration Has Been Cancelled",
       html: rejectionHTML,
@@ -462,16 +465,17 @@ async function handleLockInfo(ctx, bookingID) {
       );
     }
 
-    let msg = `<b>Booking ID:</b> ${record.bookingID}\n`
-      + `<b>Name:</b> ${record.fullName}\n`
-      + `<b>Email:</b> ${record.email}\n`
-      + `<b>Mobile:</b> ${record.mobile}\n`
-      + `<b>WhatsApp:</b> ${record.whatsapp}\n`
-      + `<b>Payment Type:</b> ₹${record.paymentType}\n`
-      + `<b>TXID:</b> ${record.txid}\n`
-      + `<b>People Count:</b> ${record.peopleCount}\n`
-      + `<b>Status:</b> ${record.status}\n\n`
-      + `<b>People Details:</b>\n`;
+    let msg =
+      `<b>Booking ID:</b> ${record.bookingID}\n` +
+      `<b>Name:</b> ${record.fullName}\n` +
+      `<b>Email:</b> ${record.email}\n` +
+      `<b>Mobile:</b> ${record.mobile}\n` +
+      `<b>WhatsApp:</b> ${record.whatsapp}\n` +
+      `<b>Payment Type:</b> ₹${record.paymentType}\n` +
+      `<b>TXID:</b> ${record.txid}\n` +
+      `<b>People Count:</b> ${record.peopleCount}\n` +
+      `<b>Status:</b> ${record.status}\n\n` +
+      `<b>People Details:</b>\n`;
 
     record.peopleDetails.forEach((p, idx) => {
       msg += `  ${idx + 1}. ${p.name} (Age: ${p.age})\n`;
@@ -513,7 +517,7 @@ async function handleLockReminder(ctx, bookingID) {
     });
 
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`,
       to: record.email,
       subject: "Payment Reminder - Your Seat is Locked",
       html: reminderHTML,
@@ -578,7 +582,7 @@ async function handleLockConfirm(ctx, bookingID) {
     // Send "tripConfirm"
     const confirmHTML = loadEmailTemplate("tripConfirm.html", replacements);
     await transporter.sendMail({
-      from: process.env.SMTP_USER,
+      from: `"Ghumakkars" <${process.env.SMTP_USER}>`,
       to: record.email,
       subject: "Your Trip is Confirmed!",
       html: confirmHTML,
@@ -595,6 +599,7 @@ async function handleLockConfirm(ctx, bookingID) {
 }
 
 // 1️⃣4️⃣ Telegram Bot Commands
+
 // (A) /users - list minimal info about all
 bot.command("users", async (ctx) => {
   try {
@@ -699,7 +704,6 @@ bot.command("lock", async (ctx) => {
 
     // Build inline keyboard: each locked user => row
     const inlineButtons = lockedRegs.map((reg) => {
-      // e.g. "John Doe (4)" => "lockinfo_<bookingID>"
       const buttonText = `${reg.fullName} (${reg.peopleCount})`;
       return [Markup.button.callback(buttonText, `lockinfo_${reg.bookingID}`)];
     });
@@ -724,7 +728,7 @@ app.get("/api/", (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-// Function to register the Telegram webhook
+// Function to register (and re-register) the Telegram webhook
 const setWebhook = async (retryCount = 0) => {
   try {
     const response = await fetch(
@@ -745,13 +749,17 @@ const setWebhook = async (retryCount = 0) => {
       console.error("❌ Webhook Error:", data);
 
       if (data.error_code === 429 && data.parameters?.retry_after) {
-        const waitTime = data.parameters.retry_after * 1000; // Convert to milliseconds
-        console.warn(`⚠️ Too many requests. Retrying after ${data.parameters.retry_after} seconds...`);
+        const waitTime = data.parameters.retry_after * 1000;
+        console.warn(
+          `⚠️ Too many requests. Retrying after ${data.parameters.retry_after} seconds...`
+        );
 
         // Wait before retrying
         setTimeout(() => setWebhook(retryCount + 1), waitTime);
       } else {
-        console.error("❌ Webhook could not be set. Check your bot token and webhook URL.");
+        console.error(
+          "❌ Webhook could not be set. Check your bot token and webhook URL."
+        );
       }
     }
   } catch (err) {
@@ -759,20 +767,22 @@ const setWebhook = async (retryCount = 0) => {
   }
 };
 
-// Function to keep Render service alive
+// Re-register the webhook every 30 minutes to keep it alive
+setInterval(setWebhook, 30 * 60 * 1000);
+
+// Function to keep Render service alive (pings the URL every 5 minutes)
 const keepAlive = () => {
   setInterval(() => {
     fetch(process.env.WEBHOOK_URL)
       .then(() => console.log("✅ Keep-alive ping successful"))
       .catch((err) => console.error("⚠️ Keep-alive failed:", err.message));
-  }, 5 * 60 * 1000); // Ping every 5 minutes
+  }, 5 * 60 * 1000);
 };
 
 // Prevent crashes from unhandled errors
 process.on("uncaughtException", (err) => {
   console.error("❌ Uncaught Exception:", err);
 });
-
 process.on("unhandledRejection", (err) => {
   console.error("❌ Unhandled Rejection:", err);
 });
